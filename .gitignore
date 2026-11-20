@@ -1,0 +1,16 @@
+# 本地连接凭据与 VPN 证书
+HiDevLab环境信息_*.xlsx
+HiDevLab设备借用协议_*.docx
+环境使用指导书.pdf
+*.p12
+*.pfx
+*.key
+*.pem
+.env
+.env.*
+!.env.example
+
+# 本地系统文件
+.DS_Store
+~$*.xlsx
+~$*.docx
