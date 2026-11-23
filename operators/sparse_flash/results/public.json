@@ -1,0 +1,3315 @@
+{
+  "environment": {
+    "timestamp": "2026-11-23T04:07:47.165170+00:00",
+    "architecture": "aarch64",
+    "python": "3.11.15",
+    "device": "npu:0",
+    "visible_devices": "1",
+    "hardware": {
+      "name": "Ascend910B3",
+      "total_memory": 65452113920,
+      "cube_core_num": 20,
+      "vector_core_num": 40
+    },
+    "driver": "Version=25.5.0",
+    "cann": "/usr/local/Ascend/cann-9.2.0-beta.2",
+    "versions": {
+      "torch": "2.9.0+cpu",
+      "torch-npu": "2.9.0.post9",
+      "triton": "3.6.0",
+      "triton-ascend": "3.6.0",
+      "numpy": "1.26.4"
+    },
+    "source_sha256": {
+      "kernel.py": "674f11f3fdcf0ab2de30fb413d1e4e57a37b5c07d013594fe2d51cd1d322baf9",
+      "inputs.py": "d3fac74b44696230f3ca1a782319f7561ffa843dd7640454f4f2ffb027194e75",
+      "reference.py": "90950b1bcd3ac62a2fddec9cd9bcf169fe86ec0a5c74c54319860c6028d3053c",
+      "benchmark.py": "14b75041b52090ad3994caed3135ae04d7526fcd0fb553bbc78d88ad6e0d9720",
+      "baseline.py": "3d76e1d431b121d948cfc9409d5e61246104204a12a0963bb21364c6f7dcf881",
+      "../lightning_diag/benchmark.py": "9eee6cd22992adbeb2984cba82be563e1023b0315d118daa49064215cf7b770b"
+    },
+    "upstream": {
+      "repository": "https://gitcode.com/linjianyong00111/Triton-1",
+      "commit": "78d27fb86f9f172d58e5d86f6e7adc20acbe89f0",
+      "path": "\u516c\u5f00\u6848\u4f8b\u9898/\u7a00\u758f Flash \u6ce8\u610f\u529b\u7b97\u5b50",
+      "task_path": "\u4efb\u52a1\u8bf4\u660e\u4e66/\u4efb\u52a1\u4e66\u8bf4\u660e/\uff08\u9ad8\u7ea7 \u7a00\u758f Flash \u6ce8\u610f\u529b\u7b97\u5b50\uff09sparse_flash_attention_\u7b97\u5b50\u5927\u8d5b\u4efb\u52a1\u4e66.md",
+      "license": "Apache-2.0",
+      "sha256": {
+        "definition.json": "82f189efad95af64a3533ee41782736f983ef63672e714bca24ef0450e29cd61",
+        "workload.jsonl": "c0040a8dce8af7fa3a5c3cc1bb8d1e48c3e3f4957727cabd24918cee31a2859b",
+        "LICENSE": "c5accbbd8546e94c34aed24afe689a617627d18eed5a6c48277e48db57c23851",
+        "task.md": "6a8cc4877473e38d3c66639f91af18eb629a354c136d58274319d29d7e8ec953"
+      },
+      "cann_contract": "https://github.com/hicann/ops-transformer/blob/e32b1329d9e4e22bc4b478ada2b70951b08efbf8/attention/sparse_flash_attention/docs/torchapi_sparse_flash_attention.md"
+    }
+  },
+  "suite": "public",
+  "control": null,
+  "cases": [
+    {
+      "case": {
+        "name": "sfa-001",
+        "b": 1,
+        "q": 1,
+        "s": 2048,
+        "h": 128,
+        "k": 2048,
+        "dtype_code": 0,
+        "pattern": "public"
+      },
+      "shared_value": false,
+      "input_sha256": "cdf339255b5b97308f91a128fed25b908460317e61cabb52da1a2858c6ab1beb",
+      "baseline": "public FP32",
+      "config": {
+        "mode": "gather_wide",
+        "wave": 1,
+        "width": 2048,
+        "scratch_bytes": 3145728,
+        "head_tile": 64,
+        "score_tile": 128,
+        "dot_tile": 512,
+        "value_tile": 128,
+        "product_k": 128,
+        "softmax_heads": 1
+      },
+      "accuracy": {
+        "elements": 65536,
+        "finite": true,
+        "max_abs": 0.00048828125,
+        "rmse": 2.3897375601735965e-06,
+        "public_matched": 1.0,
+        "strict_matched": 1.0,
+        "atol": 0.008,
+        "rtol": 0.008,
+        "passed": true
+      },
+      "fp64": {
+        "batch": [
+          0
+        ],
+        "queries": [
+          0
+        ],
+        "heads": [
+          0,
+          64,
+          127
+        ],
+        "elements": 1536,
+        "candidate": {
+          "mare": 0.0037699054986912277,
+          "mere": 0.0014457456205716208,
+          "rmse": 6.022706347715352e-05,
+          "max_abs": 0.0003104060940436748
+        },
+        "public_reference": {
+          "mare": 0.0037699054986912277,
+          "mere": 0.0014457464820074447,
+          "rmse": 6.022706903198777e-05,
+          "max_abs": 0.0003104060940436748
+        },
+        "passed": true
+      },
+      "deterministic": true,
+      "performance": {
+        "timing": "graph",
+        "capture_ops": 6,
+        "replays_per_measurement": 3,
+        "samples": [
+          {
+            "baseline_us": [
+              412.5466611650255,
+              413.58555687798395
+            ],
+            "candidate_us": [
+              50.058888064490425,
+              51.382223765055336
+            ],
+            "order": [
+              "baseline",
+              "candidate",
+              "candidate",
+              "baseline"
+            ]
+          },
+          {
+            "baseline_us": [
+              413.7055608961317,
+              416.7966577741835
+            ],
+            "candidate_us": [
+              52.1488885084788,
+              48.172222243414986
+            ],
+            "order": [
+              "candidate",
+              "baseline",
+              "baseline",
+              "candidate"
+            ]
+          },
+          {
+            "baseline_us": [
+              413.83443938361273,
+              413.54444291856555
+            ],
+            "candidate_us": [
+              50.39222372902764,
+              49.680001205868194
+            ],
+            "order": [
+              "baseline",
+              "candidate",
+              "candidate",
+              "baseline"
+            ]
+          },
+          {
+            "baseline_us": [
+              413.34554884168836,
+              413.62667083740234
+            ],
+            "candidate_us": [
+              50.57555437088013,
+              50.731112559636436
+            ],
+            "order": [
+              "candidate",
+              "baseline",
+              "baseline",
+              "candidate"
+            ]
+          },
+          {
+            "baseline_us": [
+              412.92889912923175,
+              413.2522212134467
+            ],
+            "candidate_us": [
+              48.762222131093345,
+              49.49666725264655
+            ],
+            "order": [
+              "baseline",
+              "candidate",
+              "candidate",
+              "baseline"
+            ]
+          },
+          {
+            "baseline_us": [
+              413.3299986521403,
+              413.676659266154
+            ],
+            "candidate_us": [
+              50.04222194353739,
+              50.26444461610582
+            ],
+            "order": [
+              "candidate",
+              "baseline",
+              "baseline",
+              "candidate"
+            ]
+          },
+          {
+            "baseline_us": [
+              413.4733412000868,
+              413.2044315338135
+            ],
+            "candidate_us": [
+              50.777776373757256,
+              49.72777764002482
+            ],
+            "order": [
+              "baseline",
+              "candidate",
+              "candidate",
+              "baseline"
+            ]
+          }
+        ],
+        "baseline_us": 413.5088920593262,
+        "candidate_us": 50.161666340298126,
+        "speedup": 8.243523834596532,
+        "baseline_min_max_us": [
+          412.5466611650255,
+          416.7966577741835
+        ],
+        "candidate_min_max_us": [
+          48.172222243414986,
+          52.1488885084788
+        ]
+      },
+      "inputs_unchanged": true,
+      "passed": true
+    },
+    {
+      "case": {
+        "name": "sfa-002",
+        "b": 1,
+        "q": 1,
+        "s": 4096,
+        "h": 128,
+        "k": 2048,
+        "dtype_code": 0,
+        "pattern": "public"
+      },
+      "shared_value": false,
+      "input_sha256": "930cabb4a938c43119e54f4e2aa687a9908613cc8ac772158f7aac0aea982d79",
+      "baseline": "public FP32",
+      "config": {
+        "mode": "gather_wide",
+        "wave": 1,
+        "width": 2048,
+        "scratch_bytes": 3145728,
+        "head_tile": 64,
+        "score_tile": 128,
+        "dot_tile": 512,
+        "value_tile": 128,
+        "product_k": 128,
+        "softmax_heads": 1
+      },
+      "accuracy": {
+        "elements": 65536,
+        "finite": true,
+        "max_abs": 0.000244140625,
+        "rmse": 1.055060777620729e-06,
+        "public_matched": 1.0,
+        "strict_matched": 1.0,
+        "atol": 0.008,
+        "rtol": 0.008,
+        "passed": true
+      },
+      "fp64": {
+        "batch": [
+          0
+        ],
+        "queries": [
+          0
+        ],
+        "heads": [
+          0,
+          64,
+          127
+        ],
+        "elements": 1536,
+        "candidate": {
+          "mare": 0.003765969846527365,
+          "mere": 0.001385318048074637,
+          "rmse": 5.5480011986488615e-05,
+          "max_abs": 0.0002435151768157423
+        },
+        "public_reference": {
+          "mare": 0.003765969846527365,
+          "mere": 0.001385318048074637,
+          "rmse": 5.5480011986488615e-05,
+          "max_abs": 0.0002435151768157423
+        },
+        "passed": true
+      },
+      "deterministic": true,
+      "performance": {
+        "timing": "graph",
+        "capture_ops": 6,
+        "replays_per_measurement": 3,
+        "samples": [
+          {
+            "baseline_us": [
+              432.7555497487386,
+              433.66667959425183
+            ],
+            "candidate_us": [
+              51.36111047532823,
+              50.91444320148892
+            ],
+            "order": [
+              "baseline",
+              "candidate",
+              "candidate",
+              "baseline"
+            ]
+          },
+          {
+            "baseline_us": [
+              433.16443761189777,
+              433.6588912540012
+            ],
+            "candidate_us": [
+              49.875554111268784,
+              48.60222339630127
+            ],
+            "order": [
+              "candidate",
+              "baseline",
+              "baseline",
+              "candidate"
+            ]
+          },
+          {
+            "baseline_us": [
+              433.46444765726727,
+              433.3799944983588
+            ],
+            "candidate_us": [
+              49.73222149742974,
+              51.58999893400404
+            ],
+            "order": [
+              "baseline",
+              "candidate",
+              "candidate",
+              "baseline"
+            ]
+          },
+          {
+            "baseline_us": [
+              434.42445331149634,
+              433.64667892456055
+            ],
+            "candidate_us": [
+              50.50999919573466,
+              75.0288897090488
+            ],
+            "order": [
+              "candidate",
+              "baseline",
+              "baseline",
+              "candidate"
+            ]
+          },
+          {
+            "baseline_us": [
+              433.47332212660046,
+              433.0088827345106
+            ],
+            "candidate_us": [
+              48.83889026112027,
+              48.923333485921226
+            ],
+            "order": [
+              "baseline",
+              "candidate",
+              "candidate",
+              "baseline"
+            ]
+          },
+          {
+            "baseline_us": [
+              432.67220920986597,
+              434.2955483330621
+            ],
+            "candidate_us": [
+              50.77888899379306,
+              50.32555593384637
+            ],
+            "order": [
+              "candidate",
+              "baseline",
+              "baseline",
+              "candidate"
+            ]
+          },
+          {
+            "baseline_us": [
+              432.82334009806317,
+              433.32444296942816
+            ],
+            "candidate_us": [
+              49.93888735771179,
+              49.05666576491462
+            ],
+            "order": [
+              "baseline",
+              "candidate",
+              "candidate",
+              "baseline"
+            ]
+          }
+        ],
+        "baseline_us": 433.42222107781305,
+        "candidate_us": 50.13222164577908,
+        "speedup": 8.645581760574245,
+        "baseline_min_max_us": [
+          432.67220920986597,
+          434.42445331149634
+        ],
+        "candidate_min_max_us": [
+          48.60222339630127,
+          75.0288897090488
+        ]
+      },
+      "inputs_unchanged": true,
+      "passed": true
+    },
+    {
+      "case": {
+        "name": "decode8k",
+        "b": 1,
+        "q": 1,
+        "s": 8192,
+        "h": 128,
+        "k": 2048,
+        "dtype_code": 0,
+        "pattern": "public"
+      },
+      "shared_value": false,
+      "input_sha256": "55bda693d01efb74942eaeb890663ed3d4fb4f5211306280f27d0d2fc7634f21",
+      "baseline": "public FP32",
+      "config": {
+        "mode": "gather_wide",
+        "wave": 1,
+        "width": 2048,
+        "scratch_bytes": 3145728,
+        "head_tile": 64,
+        "score_tile": 128,
+        "dot_tile": 512,
+        "value_tile": 128,
+        "product_k": 128,
+        "softmax_heads": 1
+      },
+      "accuracy": {
+        "elements": 65536,
+        "finite": true,
+        "max_abs": 0.000244140625,
+        "rmse": 2.1022576669135264e-06,
+        "public_matched": 1.0,
+        "strict_matched": 1.0,
+        "atol": 0.008,
+        "rtol": 0.008,
+        "passed": true
+      },
+      "fp64": {
+        "batch": [
+          0
+        ],
+        "queries": [
+          0
+        ],
+        "heads": [
+          0,
+          64,
+          127
+        ],
+        "elements": 1536,
+        "candidate": {
+          "mare": 0.003863842660238633,
+          "mere": 0.0013796262083026305,
+          "rmse": 5.818026048638457e-05,
+          "max_abs": 0.00024245950774687275
+        },
+        "public_reference": {
+          "mare": 0.003863842660238633,
+          "mere": 0.0013804381159730507,
+          "rmse": 5.818026049260716e-05,
+          "max_abs": 0.00024245950774687275
+        },
+        "passed": true
+      },
+      "deterministic": true,
+      "performance": {
+        "timing": "graph",
+        "capture_ops": 6,
+        "replays_per_measurement": 3,
+        "samples": [
+          {
+            "baseline_us": [
+              476.87445746527777,
+              476.4089054531521
+            ],
+            "candidate_us": [
+              51.08999874856737,
+              49.037777715259125
+            ],
+            "order": [
+              "baseline",
+              "candidate",
+              "candidate",
+              "baseline"
+            ]
+          },
+          {
+            "baseline_us": [
+              476.23666127522785,
+              476.18219587537976
+            ],
+            "candidate_us": [
+              51.15222268634372,
+              49.86555708779229
+            ],
+            "order": [
+              "candidate",
+              "baseline",
+              "baseline",
+              "candidate"
+            ]
+          },
+          {
+            "baseline_us": [
+              476.7189025878906,
+              477.1766662597656
+            ],
+            "candidate_us": [
+              50.752222537994385,
+              51.19666788313124
+            ],
+            "order": [
+              "baseline",
+              "candidate",
+              "candidate",
+              "baseline"
+            ]
+          },
+          {
+            "baseline_us": [
+              476.81554158528644,
+              476.812203725179
+            ],
+            "candidate_us": [
+              51.18888947698805,
+              50.54444405767653
+            ],
+            "order": [
+              "candidate",
+              "baseline",
+              "baseline",
+              "candidate"
+            ]
+          },
+          {
+            "baseline_us": [
+              475.76220830281574,
+              475.2955436706543
+            ],
+            "candidate_us": [
+              50.58666732576158,
+              51.0133339299096
+            ],
+            "order": [
+              "baseline",
+              "candidate",
+              "candidate",
+              "baseline"
+            ]
+          },
+          {
+            "baseline_us": [
+              475.57777828640405,
+              476.348876953125
+            ],
+            "candidate_us": [
+              49.284444914923775,
+              49.615555339389374
+            ],
+            "order": [
+              "candidate",
+              "baseline",
+              "baseline",
+              "candidate"
+            ]
+          },
+          {
+            "baseline_us": [
+              475.99220275878906,
+              476.44890679253473
+            ],
+            "candidate_us": [
+              48.18777905570136,
+              49.28000105751885
+            ],
+            "order": [
+              "baseline",
+              "candidate",
+              "candidate",
+              "baseline"
+            ]
+          }
+        ],
+        "baseline_us": 476.37889120313855,
+        "candidate_us": 50.565555691719055,
+        "speedup": 9.421015643681603,
+        "baseline_min_max_us": [
+          475.2955436706543,
+          477.1766662597656
+        ],
+        "candidate_min_max_us": [
+          48.18777905570136,
+          51.19666788313124
+        ]
+      },
+      "inputs_unchanged": true,
+      "passed": true
+    },
+    {
+      "case": {
+        "name": "decode16k",
+        "b": 1,
+        "q": 1,
+        "s": 16384,
+        "h": 128,
+        "k": 2048,
+        "dtype_code": 0,
+        "pattern": "public"
+      },
+      "shared_value": false,
+      "input_sha256": "17e2dc3a9382455732e60113e067860fe3d9ab8b227e8aad1fa116b484caa658",
+      "baseline": "public FP32",
+      "config": {
+        "mode": "gather_wide",
+        "wave": 1,
+        "width": 2048,
+        "scratch_bytes": 3145728,
+        "head_tile": 64,
+        "score_tile": 128,
+        "dot_tile": 512,
+        "value_tile": 128,
+        "product_k": 128,
+        "softmax_heads": 1
+      },
+      "accuracy": {
+        "elements": 65536,
+        "finite": true,
+        "max_abs": 0.000244140625,
+        "rmse": 2.0765465475137944e-06,
+        "public_matched": 1.0,
+        "strict_matched": 1.0,
+        "atol": 0.008,
+        "rtol": 0.008,
+        "passed": true
+      },
+      "fp64": {
+        "batch": [
+          0
+        ],
+        "queries": [
+          0
+        ],
+        "heads": [
+          0,
+          64,
+          127
+        ],
+        "elements": 1536,
+        "candidate": {
+          "mare": 0.0038862498816913684,
+          "mere": 0.001382888982841635,
+          "rmse": 5.9077706768411554e-05,
+          "max_abs": 0.000393646750218718
+        },
+        "public_reference": {
+          "mare": 0.0038862498816913684,
+          "mere": 0.001382888982841635,
+          "rmse": 5.9077706768411554e-05,
+          "max_abs": 0.000393646750218718
+        },
+        "passed": true
+      },
+      "deterministic": true,
+      "performance": {
+        "timing": "graph",
+        "capture_ops": 6,
+        "replays_per_measurement": 3,
+        "samples": [
+          {
+            "baseline_us": [
+              564.3322202894423,
+              565.14220767551
+            ],
+            "candidate_us": [
+              51.41333407825894,
+              52.01888746685452
+            ],
+            "order": [
+              "baseline",
+              "candidate",
+              "candidate",
+              "baseline"
+            ]
+          },
+          {
+            "baseline_us": [
+              563.7299749586317,
+              563.4699927435981
+            ],
+            "candidate_us": [
+              51.62333448727926,
+              51.216665241453384
+            ],
+            "order": [
+              "candidate",
+              "baseline",
+              "baseline",
+              "candidate"
+            ]
+          },
+          {
+            "baseline_us": [
+              563.3499887254503,
+              565.0077925788032
+            ],
+            "candidate_us": [
+              51.387776931126915,
+              51.36000116666158
+            ],
+            "order": [
+              "baseline",
+              "candidate",
+              "candidate",
+              "baseline"
+            ]
+          },
+          {
+            "baseline_us": [
+              564.4922256469727,
+              564.4422107272678
+            ],
+            "candidate_us": [
+              50.003333224190605,
+              51.11333396699693
+            ],
+            "order": [
+              "candidate",
+              "baseline",
+              "baseline",
+              "candidate"
+            ]
+          },
+          {
+            "baseline_us": [
+              563.3355776468912,
+              564.5910898844401
+            ],
+            "candidate_us": [
+              49.375553925832115,
+              50.65222250090705
+            ],
+            "order": [
+              "baseline",
+              "candidate",
+              "candidate",
+              "baseline"
+            ]
+          },
+          {
+            "baseline_us": [
+              564.6488931443956,
+              565.2555359734429
+            ],
+            "candidate_us": [
+              50.97111066182455,
+              49.36333497365316
+            ],
+            "order": [
+              "candidate",
+              "baseline",
+              "baseline",
+              "candidate"
+            ]
+          },
+          {
+            "baseline_us": [
+              564.5311143663195,
+              565.4311180114746
+            ],
+            "candidate_us": [
+              51.40777760081821,
+              51.289998822742035
+            ],
+            "order": [
+              "baseline",
+              "candidate",
+              "candidate",
+              "baseline"
+            ]
+          }
+        ],
+        "baseline_us": 564.511670006646,
+        "candidate_us": 51.25333203209771,
+        "speedup": 11.014145766232664,
+        "baseline_min_max_us": [
+          563.3355776468912,
+          565.4311180114746
+        ],
+        "candidate_min_max_us": [
+          49.36333497365316,
+          52.01888746685452
+        ]
+      },
+      "inputs_unchanged": true,
+      "passed": true
+    },
+    {
+      "case": {
+        "name": "decode_batch8",
+        "b": 8,
+        "q": 1,
+        "s": 8192,
+        "h": 128,
+        "k": 2048,
+        "dtype_code": 0,
+        "pattern": "public"
+      },
+      "shared_value": false,
+      "input_sha256": "ffc1c5c2a383b89365d82a2d7369e6684f5fbf5f758b070eab9f972f8a691387",
+      "baseline": "public FP32",
+      "config": {
+        "mode": "pack_large",
+        "wave": 8,
+        "width": 2048,
+        "scratch_bytes": 44040192,
+        "head_tile": 128,
+        "score_tile": 256,
+        "dot_tile": 512,
+        "value_tile": 256,
+        "product_k": 128,
+        "softmax_heads": 1
+      },
+      "accuracy": {
+        "elements": 524288,
+        "finite": true,
+        "max_abs": 0.00048828125,
+        "rmse": 1.5157006720364714e-06,
+        "public_matched": 1.0,
+        "strict_matched": 1.0,
+        "atol": 0.008,
+        "rtol": 0.008,
+        "passed": true
+      },
+      "fp64": {
+        "batch": [
+          0,
+          7
+        ],
+        "queries": [
+          0
+        ],
+        "heads": [
+          0,
+          64,
+          127
+        ],
+        "elements": 3072,
+        "candidate": {
+          "mare": 0.006378150354667517,
+          "mere": 0.0014294148704111689,
+          "rmse": 5.797519338455284e-05,
+          "max_abs": 0.00028478671873927164
+        },
+        "public_reference": {
+          "mare": 0.02570407995021369,
+          "mere": 0.0014357058631180525,
+          "rmse": 5.7975193385139573e-05,
+          "max_abs": 0.00028478671873927164
+        },
+        "passed": true
+      },
+      "deterministic": true,
+      "performance": {
+        "timing": "graph",
+        "capture_ops": 6,
+        "replays_per_measurement": 3,
+        "samples": [
+          {
+            "baseline_us": [
+              2554.468790690104,
+              2552.76001824273
+            ],
+            "candidate_us": [
+              149.95666344960532,
+              147.8899982240465
+            ],
+            "order": [
+              "baseline",
+              "candidate",
+              "candidate",
+              "baseline"
+            ]
+          },
+          {
+            "baseline_us": [
+              2552.056630452474,
+              2549.5056576199004
+            ],
+            "candidate_us": [
+              150.22999710506863,
+              157.43333763546414
+            ],
+            "order": [
+              "candidate",
+              "baseline",
+              "baseline",
+              "candidate"
+            ]
+          },
+          {
+            "baseline_us": [
+              2553.570005628798,
+              2552.4444580078125
+            ],
+            "candidate_us": [
+              150.14333195156522,
+              149.03110928005643
+            ],
+            "order": [
+              "baseline",
+              "candidate",
+              "candidate",
+              "baseline"
+            ]
+          },
+          {
+            "baseline_us": [
+              2552.7877807617188,
+              2553.1489054361978
+            ],
+            "candidate_us": [
+              150.70666207207574,
+              150.47666761610242
+            ],
+            "order": [
+              "candidate",
+              "baseline",
+              "baseline",
+              "candidate"
+            ]
+          },
+          {
+            "baseline_us": [
+              2551.793416341146,
+              2551.922268337674
+            ],
+            "candidate_us": [
+              150.93333191341824,
+              148.6977736155192
+            ],
+            "order": [
+              "baseline",
+              "candidate",
+              "candidate",
+              "baseline"
+            ]
+          },
+          {
+            "baseline_us": [
+              2551.4089796278213,
+              2551.0078006320527
+            ],
+            "candidate_us": [
+              149.97443887922498,
+              150.34555064307318
+            ],
+            "order": [
+              "candidate",
+              "baseline",
+              "baseline",
+              "candidate"
+            ]
+          },
+          {
+            "baseline_us": [
+              2551.0667165120444,
+              2550.972196790907
+            ],
+            "candidate_us": [
+              150.3044499291314,
+              148.55666955312094
+            ],
+            "order": [
+              "baseline",
+              "candidate",
+              "candidate",
+              "baseline"
+            ]
+          }
+        ],
+        "baseline_us": 2551.989449395074,
+        "candidate_us": 150.18666452831692,
+        "speedup": 16.992117491988843,
+        "baseline_min_max_us": [
+          2549.5056576199004,
+          2554.468790690104
+        ],
+        "candidate_min_max_us": [
+          147.8899982240465,
+          157.43333763546414
+        ]
+      },
+      "inputs_unchanged": true,
+      "passed": true
+    },
+    {
+      "case": {
+        "name": "prefill1k",
+        "b": 1,
+        "q": 1024,
+        "s": 1024,
+        "h": 128,
+        "k": 2048,
+        "dtype_code": 0,
+        "pattern": "public"
+      },
+      "shared_value": false,
+      "input_sha256": "fa12aeb8690755051340902997a5400ec360f0d6292ae69d79dae395341909f8",
+      "baseline": "public FP32",
+      "config": {
+        "mode": "counts_large",
+        "wave": 127,
+        "width": 1024,
+        "scratch_bytes": 67104768,
+        "head_tile": 128,
+        "score_tile": 256,
+        "dot_tile": 512,
+        "value_tile": 256,
+        "product_k": 128,
+        "softmax_heads": 8
+      },
+      "accuracy": {
+        "elements": 67108864,
+        "finite": true,
+        "max_abs": 0.0009765625,
+        "rmse": 2.3258754792606724e-06,
+        "public_matched": 1.0,
+        "strict_matched": 1.0,
+        "atol": 0.008,
+        "rtol": 0.008,
+        "passed": true
+      },
+      "fp64": {
+        "batch": [
+          0
+        ],
+        "queries": [
+          0,
+          1,
+          512,
+          1023
+        ],
+        "heads": [
+          0,
+          64,
+          127
+        ],
+        "elements": 6144,
+        "candidate": {
+          "mare": 0.005428100767536504,
+          "mere": 0.001413133513241115,
+          "rmse": 8.063624625068748e-05,
+          "max_abs": 0.0004586930977555359
+        },
+        "public_reference": {
+          "mare": 0.005428100767536504,
+          "mere": 0.0014136153312587297,
+          "rmse": 8.063625226301735e-05,
+          "max_abs": 0.0004586930977555359
+        },
+        "passed": true
+      },
+      "deterministic": true,
+      "performance": {
+        "timing": "event",
+        "capture_ops": 1,
+        "replays_per_measurement": 1,
+        "samples": [
+          {
+            "baseline_us": [
+              111756.91986083984,
+              111454.37622070312
+            ],
+            "candidate_us": [
+              5629.199981689453,
+              5579.140186309814
+            ],
+            "order": [
+              "baseline",
+              "candidate",
+              "candidate",
+              "baseline"
+            ]
+          },
+          {
+            "baseline_us": [
+              111364.93682861328,
+              111633.3236694336
+            ],
+            "candidate_us": [
+              5616.040229797363,
+              5638.2598876953125
+            ],
+            "order": [
+              "candidate",
+              "baseline",
+              "baseline",
+              "candidate"
+            ]
+          },
+          {
+            "baseline_us": [
+              111588.98162841797,
+              111423.01940917969
+            ],
+            "candidate_us": [
+              5616.3201332092285,
+              5569.980144500732
+            ],
+            "order": [
+              "baseline",
+              "candidate",
+              "candidate",
+              "baseline"
+            ]
+          }
+        ],
+        "baseline_us": 111521.67892456055,
+        "candidate_us": 5616.180181503296,
+        "speedup": 19.85721172049528,
+        "baseline_min_max_us": [
+          111364.93682861328,
+          111756.91986083984
+        ],
+        "candidate_min_max_us": [
+          5569.980144500732,
+          5638.2598876953125
+        ]
+      },
+      "inputs_unchanged": true,
+      "passed": true
+    },
+    {
+      "case": {
+        "name": "prefill2k",
+        "b": 1,
+        "q": 2048,
+        "s": 2048,
+        "h": 128,
+        "k": 2048,
+        "dtype_code": 0,
+        "pattern": "public"
+      },
+      "shared_value": false,
+      "input_sha256": "0f4b3859d83423dbfba4d835367291b8c46a6a360ba78fad019e804328f57975",
+      "baseline": "public FP32, query slices of 32",
+      "config": {
+        "mode": "counts_large",
+        "wave": 63,
+        "width": 2048,
+        "scratch_bytes": 66576384,
+        "head_tile": 128,
+        "score_tile": 256,
+        "dot_tile": 512,
+        "value_tile": 256,
+        "product_k": 128,
+        "softmax_heads": 8
+      },
+      "accuracy": {
+        "elements": 134217728,
+        "finite": true,
+        "max_abs": 0.0009765625,
+        "rmse": 1.9048876469890264e-06,
+        "public_matched": 1.0,
+        "strict_matched": 1.0,
+        "atol": 0.008,
+        "rtol": 0.008,
+        "passed": true
+      },
+      "fp64": {
+        "batch": [
+          0
+        ],
+        "queries": [
+          0,
+          1,
+          1024,
+          2047
+        ],
+        "heads": [
+          0,
+          64,
+          127
+        ],
+        "elements": 6144,
+        "candidate": {
+          "mare": 0.0038426309533490318,
+          "mere": 0.0014172068846281308,
+          "rmse": 5.9541931066743274e-05,
+          "max_abs": 0.00041264104584684547
+        },
+        "public_reference": {
+          "mare": 0.011198335875646484,
+          "mere": 0.001418879906311442,
+          "rmse": 5.9541933700444e-05,
+          "max_abs": 0.00041264104584684547
+        },
+        "passed": true
+      },
+      "deterministic": true,
+      "performance": {
+        "timing": "event",
+        "capture_ops": 1,
+        "replays_per_measurement": 1,
+        "samples": [
+          {
+            "baseline_us": [
+              289371.4599609375,
+              289056.4880371094
+            ],
+            "candidate_us": [
+              19813.720703125,
+              19662.860870361328
+            ],
+            "order": [
+              "baseline",
+              "candidate",
+              "candidate",
+              "baseline"
+            ]
+          },
+          {
+            "baseline_us": [
+              289047.30224609375,
+              289560.791015625
+            ],
+            "candidate_us": [
+              19738.93928527832,
+              19815.900802612305
+            ],
+            "order": [
+              "candidate",
+              "baseline",
+              "baseline",
+              "candidate"
+            ]
+          },
+          {
+            "baseline_us": [
+              289749.1455078125,
+              289043.88427734375
+            ],
+            "candidate_us": [
+              19808.940887451172,
+              19683.54034423828
+            ],
+            "order": [
+              "baseline",
+              "candidate",
+              "candidate",
+              "baseline"
+            ]
+          }
+        ],
+        "baseline_us": 289213.97399902344,
+        "candidate_us": 19773.940086364746,
+        "speedup": 14.626016501306832,
+        "baseline_min_max_us": [
+          289043.88427734375,
+          289749.1455078125
+        ],
+        "candidate_min_max_us": [
+          19662.860870361328,
+          19815.900802612305
+        ]
+      },
+      "inputs_unchanged": true,
+      "passed": true
+    },
+    {
+      "case": {
+        "name": "decode_batch4",
+        "b": 4,
+        "q": 1,
+        "s": 1024,
+        "h": 128,
+        "k": 2048,
+        "dtype_code": 0,
+        "pattern": "public"
+      },
+      "shared_value": false,
+      "input_sha256": "641fb07226939d65ae75e0c8227a06b67e9946d3b31617a920759c27fc8f881e",
+      "baseline": "public FP32",
+      "config": {
+        "mode": "counts_large",
+        "wave": 4,
+        "width": 1024,
+        "scratch_bytes": 2113536,
+        "head_tile": 128,
+        "score_tile": 256,
+        "dot_tile": 512,
+        "value_tile": 256,
+        "product_k": 128,
+        "softmax_heads": 1
+      },
+      "accuracy": {
+        "elements": 262144,
+        "finite": true,
+        "max_abs": 0.00048828125,
+        "rmse": 2.2813244162409658e-06,
+        "public_matched": 1.0,
+        "strict_matched": 1.0,
+        "atol": 0.008,
+        "rtol": 0.008,
+        "passed": true
+      },
+      "fp64": {
+        "batch": [
+          0,
+          3
+        ],
+        "queries": [
+          0
+        ],
+        "heads": [
+          0,
+          64,
+          127
+        ],
+        "elements": 3072,
+        "candidate": {
+          "mare": 0.0038421587979338835,
+          "mere": 0.0014375380873059343,
+          "rmse": 8.124162150031995e-05,
+          "max_abs": 0.00044392018580829973
+        },
+        "public_reference": {
+          "mare": 0.0038421587979338835,
+          "mere": 0.0014380490005574344,
+          "rmse": 8.124162177292816e-05,
+          "max_abs": 0.00044392018580829973
+        },
+        "passed": true
+      },
+      "deterministic": true,
+      "performance": {
+        "timing": "graph",
+        "capture_ops": 6,
+        "replays_per_measurement": 3,
+        "samples": [
+          {
+            "baseline_us": [
+              718.1733449300131,
+              718.9255820380317
+            ],
+            "candidate_us": [
+              101.75000296698676,
+              102.30222013261583
+            ],
+            "order": [
+              "baseline",
+              "candidate",
+              "candidate",
+              "baseline"
+            ]
+          },
+          {
+            "baseline_us": [
+              720.2644348144531,
+              719.1489007737902
+            ],
+            "candidate_us": [
+              101.16333431667752,
+              102.60666741265192
+            ],
+            "order": [
+              "candidate",
+              "baseline",
+              "baseline",
+              "candidate"
+            ]
+          },
+          {
+            "baseline_us": [
+              719.865534040663,
+              718.3133231268989
+            ],
+            "candidate_us": [
+              101.83111164304945,
+              102.85000006357829
+            ],
+            "order": [
+              "baseline",
+              "candidate",
+              "candidate",
+              "baseline"
+            ]
+          },
+          {
+            "baseline_us": [
+              720.3600141737196,
+              718.969980875651
+            ],
+            "candidate_us": [
+              101.53777731789484,
+              102.42888662550185
+            ],
+            "order": [
+              "candidate",
+              "baseline",
+              "baseline",
+              "candidate"
+            ]
+          },
+          {
+            "baseline_us": [
+              719.1733254326714,
+              719.2233403523763
+            ],
+            "candidate_us": [
+              102.6222242249383,
+              102.55333450105455
+            ],
+            "order": [
+              "baseline",
+              "candidate",
+              "candidate",
+              "baseline"
+            ]
+          },
+          {
+            "baseline_us": [
+              719.5311122470432,
+              719.789981842041
+            ],
+            "candidate_us": [
+              102.55777835845947,
+              102.67666975657146
+            ],
+            "order": [
+              "candidate",
+              "baseline",
+              "baseline",
+              "candidate"
+            ]
+          },
+          {
+            "baseline_us": [
+              725.7022327846951,
+              719.3400065104166
+            ],
+            "candidate_us": [
+              102.19666692945692,
+              102.40555471844144
+            ],
+            "order": [
+              "baseline",
+              "candidate",
+              "candidate",
+              "baseline"
+            ]
+          }
+        ],
+        "baseline_us": 719.2816734313965,
+        "candidate_us": 102.41722067197165,
+        "speedup": 7.023054020721352,
+        "baseline_min_max_us": [
+          718.1733449300131,
+          725.7022327846951
+        ],
+        "candidate_min_max_us": [
+          101.16333431667752,
+          102.85000006357829
+        ]
+      },
+      "inputs_unchanged": true,
+      "passed": true
+    },
+    {
+      "case": {
+        "name": "heads8",
+        "b": 1,
+        "q": 1,
+        "s": 8192,
+        "h": 8,
+        "k": 2048,
+        "dtype_code": 0,
+        "pattern": "public"
+      },
+      "shared_value": false,
+      "input_sha256": "59aebecbfdbdb05b604a1826bb174966f9c380f6f5ddeb464c6f9b5545f5aaea",
+      "baseline": "public FP32",
+      "config": {
+        "mode": "gather_wide",
+        "wave": 1,
+        "width": 2048,
+        "scratch_bytes": 2162688,
+        "head_tile": 16,
+        "score_tile": 128,
+        "dot_tile": 512,
+        "value_tile": 128,
+        "product_k": 128,
+        "softmax_heads": 1
+      },
+      "accuracy": {
+        "elements": 4096,
+        "finite": true,
+        "max_abs": 0.0001220703125,
+        "rmse": 1.907363241515202e-06,
+        "public_matched": 1.0,
+        "strict_matched": 1.0,
+        "atol": 0.008,
+        "rtol": 0.008,
+        "passed": true
+      },
+      "fp64": {
+        "batch": [
+          0
+        ],
+        "queries": [
+          0
+        ],
+        "heads": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7
+        ],
+        "elements": 4096,
+        "candidate": {
+          "mare": 0.003830480858962021,
+          "mere": 0.0014133993236550583,
+          "rmse": 6.262460734539699e-05,
+          "max_abs": 0.00048704184887501945
+        },
+        "public_reference": {
+          "mare": 0.003830480858962021,
+          "mere": 0.0014136451593671898,
+          "rmse": 6.262460127855623e-05,
+          "max_abs": 0.00048704184887501945
+        },
+        "passed": true
+      },
+      "deterministic": true,
+      "performance": {
+        "timing": "graph",
+        "capture_ops": 6,
+        "replays_per_measurement": 3,
+        "samples": [
+          {
+            "baseline_us": [
+              428.45887607998316,
+              429.6499888102214
+            ],
+            "candidate_us": [
+              40.93888733122084,
+              40.35666584968567
+            ],
+            "order": [
+              "baseline",
+              "candidate",
+              "candidate",
+              "baseline"
+            ]
+          },
+          {
+            "baseline_us": [
+              429.4033315446642,
+              429.0355576409234
+            ],
+            "candidate_us": [
+              40.415555238723755,
+              40.63444336255392
+            ],
+            "order": [
+              "candidate",
+              "baseline",
+              "baseline",
+              "candidate"
+            ]
+          },
+          {
+            "baseline_us": [
+              429.4277826944987,
+              429.62222629123266
+            ],
+            "candidate_us": [
+              40.52999946806166,
+              41.101111306084526
+            ],
+            "order": [
+              "baseline",
+              "candidate",
+              "candidate",
+              "baseline"
+            ]
+          },
+          {
+            "baseline_us": [
+              429.68776490953235,
+              429.0744463602702
+            ],
+            "candidate_us": [
+              40.61777724160088,
+              40.725555684831406
+            ],
+            "order": [
+              "candidate",
+              "baseline",
+              "baseline",
+              "candidate"
+            ]
+          },
+          {
+            "baseline_us": [
+              429.64445220099554,
+              429.2455514272054
+            ],
+            "candidate_us": [
+              40.67666663063897,
+              40.314445892969765
+            ],
+            "order": [
+              "baseline",
+              "candidate",
+              "candidate",
+              "baseline"
+            ]
+          },
+          {
+            "baseline_us": [
+              429.047769970364,
+              430.0466643439399
+            ],
+            "candidate_us": [
+              40.29000136587355,
+              39.472222328186035
+            ],
+            "order": [
+              "candidate",
+              "baseline",
+              "baseline",
+              "candidate"
+            ]
+          },
+          {
+            "baseline_us": [
+              429.7122160593669,
+              429.25556500752765
+            ],
+            "candidate_us": [
+              40.83999991416931,
+              40.07777902815077
+            ],
+            "order": [
+              "baseline",
+              "candidate",
+              "candidate",
+              "baseline"
+            ]
+          }
+        ],
+        "baseline_us": 429.4155571195814,
+        "candidate_us": 40.57388835483127,
+        "speedup": 10.583544602977385,
+        "baseline_min_max_us": [
+          428.45887607998316,
+          430.0466643439399
+        ],
+        "candidate_min_max_us": [
+          39.472222328186035,
+          41.101111306084526
+        ]
+      },
+      "inputs_unchanged": true,
+      "passed": true
+    },
+    {
+      "case": {
+        "name": "heads32",
+        "b": 1,
+        "q": 1,
+        "s": 8192,
+        "h": 32,
+        "k": 2048,
+        "dtype_code": 0,
+        "pattern": "public"
+      },
+      "shared_value": false,
+      "input_sha256": "b5d3d487f27fdf4dd32bf2c507723b9c79b1ec651ba9197cb16d69785bf16651",
+      "baseline": "public FP32",
+      "config": {
+        "mode": "gather_wide",
+        "wave": 1,
+        "width": 2048,
+        "scratch_bytes": 2359296,
+        "head_tile": 32,
+        "score_tile": 128,
+        "dot_tile": 512,
+        "value_tile": 128,
+        "product_k": 128,
+        "softmax_heads": 1
+      },
+      "accuracy": {
+        "elements": 16384,
+        "finite": true,
+        "max_abs": 0.00048828125,
+        "rmse": 3.9345273896258315e-06,
+        "public_matched": 1.0,
+        "strict_matched": 1.0,
+        "atol": 0.008,
+        "rtol": 0.008,
+        "passed": true
+      },
+      "fp64": {
+        "batch": [
+          0
+        ],
+        "queries": [
+          0
+        ],
+        "heads": [
+          0,
+          16,
+          31
+        ],
+        "elements": 1536,
+        "candidate": {
+          "mare": 0.003874229234664709,
+          "mere": 0.001407552924114214,
+          "rmse": 5.884126580770271e-05,
+          "max_abs": 0.0002429463938937032
+        },
+        "public_reference": {
+          "mare": 0.003874229234664709,
+          "mere": 0.0014075622387871196,
+          "rmse": 5.8841265879272654e-05,
+          "max_abs": 0.0002429463938937032
+        },
+        "passed": true
+      },
+      "deterministic": true,
+      "performance": {
+        "timing": "graph",
+        "capture_ops": 6,
+        "replays_per_measurement": 3,
+        "samples": [
+          {
+            "baseline_us": [
+              456.29220538669165,
+              456.15000194973413
+            ],
+            "candidate_us": [
+              48.467778497272064,
+              37.00777888298035
+            ],
+            "order": [
+              "baseline",
+              "candidate",
+              "candidate",
+              "baseline"
+            ]
+          },
+          {
+            "baseline_us": [
+              456.3288688659668,
+              455.664422776964
+            ],
+            "candidate_us": [
+              37.2466676765018,
+              36.97666525840759
+            ],
+            "order": [
+              "candidate",
+              "baseline",
+              "baseline",
+              "candidate"
+            ]
+          },
+          {
+            "baseline_us": [
+              456.37888378567163,
+              455.82220289442273
+            ],
+            "candidate_us": [
+              36.717779106563995,
+              36.99222207069397
+            ],
+            "order": [
+              "baseline",
+              "candidate",
+              "candidate",
+              "baseline"
+            ]
+          },
+          {
+            "baseline_us": [
+              455.65112431844074,
+              456.243356068929
+            ],
+            "candidate_us": [
+              36.76777746942308,
+              37.200000551011826
+            ],
+            "order": [
+              "candidate",
+              "baseline",
+              "baseline",
+              "candidate"
+            ]
+          },
+          {
+            "baseline_us": [
+              456.27445644802515,
+              456.00001017252606
+            ],
+            "candidate_us": [
+              37.04777691099379,
+              36.74666749106513
+            ],
+            "order": [
+              "baseline",
+              "candidate",
+              "candidate",
+              "baseline"
+            ]
+          },
+          {
+            "baseline_us": [
+              456.25665452745227,
+              456.11778895060223
+            ],
+            "candidate_us": [
+              36.82111038102044,
+              37.19222214486864
+            ],
+            "order": [
+              "candidate",
+              "baseline",
+              "baseline",
+              "candidate"
+            ]
+          },
+          {
+            "baseline_us": [
+              456.4555486043294,
+              456.1022122701009
+            ],
+            "candidate_us": [
+              36.708888080384995,
+              36.61888837814331
+            ],
+            "order": [
+              "baseline",
+              "candidate",
+              "candidate",
+              "baseline"
+            ]
+          }
+        ],
+        "baseline_us": 456.19667900933155,
+        "candidate_us": 36.98444366455078,
+        "speedup": 12.334826045973255,
+        "baseline_min_max_us": [
+          455.65112431844074,
+          456.4555486043294
+        ],
+        "candidate_min_max_us": [
+          36.61888837814331,
+          48.467778497272064
+        ]
+      },
+      "inputs_unchanged": true,
+      "passed": true
+    },
+    {
+      "case": {
+        "name": "heads64",
+        "b": 1,
+        "q": 1,
+        "s": 8192,
+        "h": 64,
+        "k": 2048,
+        "dtype_code": 0,
+        "pattern": "public"
+      },
+      "shared_value": false,
+      "input_sha256": "fecd1b0631079505f1e305b3cd30b9172c7a20eeaa3f858a56b091ef0ef5dcf1",
+      "baseline": "public FP32",
+      "config": {
+        "mode": "gather_wide",
+        "wave": 1,
+        "width": 2048,
+        "scratch_bytes": 2621440,
+        "head_tile": 64,
+        "score_tile": 128,
+        "dot_tile": 512,
+        "value_tile": 128,
+        "product_k": 128,
+        "softmax_heads": 1
+      },
+      "accuracy": {
+        "elements": 32768,
+        "finite": true,
+        "max_abs": 6.103515625e-05,
+        "rmse": 4.021036235756244e-07,
+        "public_matched": 1.0,
+        "strict_matched": 1.0,
+        "atol": 0.008,
+        "rtol": 0.008,
+        "passed": true
+      },
+      "fp64": {
+        "batch": [
+          0
+        ],
+        "queries": [
+          0
+        ],
+        "heads": [
+          0,
+          32,
+          63
+        ],
+        "elements": 1536,
+        "candidate": {
+          "mare": 0.003830972876690994,
+          "mere": 0.0014389003190671608,
+          "rmse": 6.098728520034682e-05,
+          "max_abs": 0.00025222051677223356
+        },
+        "public_reference": {
+          "mare": 0.010630092921483593,
+          "mere": 0.0014440359587481707,
+          "rmse": 6.098728520084907e-05,
+          "max_abs": 0.00025222051677223356
+        },
+        "passed": true
+      },
+      "deterministic": true,
+      "performance": {
+        "timing": "graph",
+        "capture_ops": 6,
+        "replays_per_measurement": 3,
+        "samples": [
+          {
+            "baseline_us": [
+              472.41555319892035,
+              473.8499853346083
+            ],
+            "candidate_us": [
+              39.92666800816854,
+              39.28222258885702
+            ],
+            "order": [
+              "baseline",
+              "candidate",
+              "candidate",
+              "baseline"
+            ]
+          },
+          {
+            "baseline_us": [
+              474.3933147854275,
+              472.90335761176215
+            ],
+            "candidate_us": [
+              44.258889224794174,
+              41.03555613093906
+            ],
+            "order": [
+              "candidate",
+              "baseline",
+              "baseline",
+              "candidate"
+            ]
+          },
+          {
+            "baseline_us": [
+              473.7299813164605,
+              473.53553771972656
+            ],
+            "candidate_us": [
+              40.69999853769938,
+              40.95444414350722
+            ],
+            "order": [
+              "baseline",
+              "candidate",
+              "candidate",
+              "baseline"
+            ]
+          },
+          {
+            "baseline_us": [
+              473.42554728190106,
+              473.4322230021159
+            ],
+            "candidate_us": [
+              40.1144458187951,
+              39.814445707533096
+            ],
+            "order": [
+              "candidate",
+              "baseline",
+              "baseline",
+              "candidate"
+            ]
+          },
+          {
+            "baseline_us": [
+              473.7322065565321,
+              473.69999355740015
+            ],
+            "candidate_us": [
+              39.64999980396695,
+              39.823333422342934
+            ],
+            "order": [
+              "baseline",
+              "candidate",
+              "candidate",
+              "baseline"
+            ]
+          },
+          {
+            "baseline_us": [
+              473.1778038872613,
+              473.64001803927954
+            ],
+            "candidate_us": [
+              39.76110948456658,
+              39.484444591734146
+            ],
+            "order": [
+              "candidate",
+              "baseline",
+              "baseline",
+              "candidate"
+            ]
+          },
+          {
+            "baseline_us": [
+              473.4011226230198,
+              473.7955729166667
+            ],
+            "candidate_us": [
+              39.29444485240512,
+              39.661112758848404
+            ],
+            "order": [
+              "baseline",
+              "candidate",
+              "candidate",
+              "baseline"
+            ]
+          }
+        ],
+        "baseline_us": 473.58777787950305,
+        "candidate_us": 39.81888956493802,
+        "speedup": 11.893545577336097,
+        "baseline_min_max_us": [
+          472.41555319892035,
+          474.3933147854275
+        ],
+        "candidate_min_max_us": [
+          39.28222258885702,
+          44.258889224794174
+        ]
+      },
+      "inputs_unchanged": true,
+      "passed": true
+    },
+    {
+      "case": {
+        "name": "k256",
+        "b": 1,
+        "q": 1,
+        "s": 512,
+        "h": 128,
+        "k": 256,
+        "dtype_code": 0,
+        "pattern": "public"
+      },
+      "shared_value": false,
+      "input_sha256": "7fa15c6f35e8e97002c66e0085aec4dfa495d06537b34d3933edbf2b69852f64",
+      "baseline": "public FP32",
+      "config": {
+        "mode": "gather_wide",
+        "wave": 1,
+        "width": 256,
+        "scratch_bytes": 393216,
+        "head_tile": 64,
+        "score_tile": 128,
+        "dot_tile": 512,
+        "value_tile": 128,
+        "product_k": 128,
+        "softmax_heads": 1
+      },
+      "accuracy": {
+        "elements": 65536,
+        "finite": true,
+        "max_abs": 0.00048828125,
+        "rmse": 3.05360637268716e-06,
+        "public_matched": 1.0,
+        "strict_matched": 1.0,
+        "atol": 0.008,
+        "rtol": 0.008,
+        "passed": true
+      },
+      "fp64": {
+        "batch": [
+          0
+        ],
+        "queries": [
+          0
+        ],
+        "heads": [
+          0,
+          64,
+          127
+        ],
+        "elements": 1536,
+        "candidate": {
+          "mare": 0.0038656010777240028,
+          "mere": 0.0014017639184421098,
+          "rmse": 0.00015183696010766929,
+          "max_abs": 0.000884925466683617
+        },
+        "public_reference": {
+          "mare": 0.0038656010777240028,
+          "mere": 0.0014017639184421098,
+          "rmse": 0.00015183696010766929,
+          "max_abs": 0.000884925466683617
+        },
+        "passed": true
+      },
+      "deterministic": true,
+      "performance": {
+        "timing": "graph",
+        "capture_ops": 6,
+        "replays_per_measurement": 3,
+        "samples": [
+          {
+            "baseline_us": [
+              316.7044321695964,
+              316.8599870469835
+            ],
+            "candidate_us": [
+              27.207778559790718,
+              28.435554769304062
+            ],
+            "order": [
+              "baseline",
+              "candidate",
+              "candidate",
+              "baseline"
+            ]
+          },
+          {
+            "baseline_us": [
+              315.9488836924235,
+              316.6200055016412
+            ],
+            "candidate_us": [
+              27.141110764609444,
+              28.278887271881104
+            ],
+            "order": [
+              "candidate",
+              "baseline",
+              "baseline",
+              "candidate"
+            ]
+          },
+          {
+            "baseline_us": [
+              317.21888648139105,
+              315.8688810136583
+            ],
+            "candidate_us": [
+              28.17666530609131,
+              27.016666200425888
+            ],
+            "order": [
+              "baseline",
+              "candidate",
+              "candidate",
+              "baseline"
+            ]
+          },
+          {
+            "baseline_us": [
+              315.65109888712567,
+              316.06001324123804
+            ],
+            "candidate_us": [
+              26.941110690434773,
+              28.224445051617092
+            ],
+            "order": [
+              "candidate",
+              "baseline",
+              "baseline",
+              "candidate"
+            ]
+          },
+          {
+            "baseline_us": [
+              317.2499868604872,
+              316.40556123521594
+            ],
+            "candidate_us": [
+              27.435556054115295,
+              27.19111078315311
+            ],
+            "order": [
+              "baseline",
+              "candidate",
+              "candidate",
+              "baseline"
+            ]
+          },
+          {
+            "baseline_us": [
+              315.8633444044325,
+              316.53443972269696
+            ],
+            "candidate_us": [
+              27.78444356388516,
+              27.289999855889214
+            ],
+            "order": [
+              "candidate",
+              "baseline",
+              "baseline",
+              "candidate"
+            ]
+          },
+          {
+            "baseline_us": [
+              317.0277807447645,
+              315.9266577826606
+            ],
+            "candidate_us": [
+              28.166668282614815,
+              27.121111750602722
+            ],
+            "order": [
+              "baseline",
+              "candidate",
+              "candidate",
+              "baseline"
+            ]
+          }
+        ],
+        "baseline_us": 316.4700004789564,
+        "candidate_us": 27.362777955002255,
+        "speedup": 11.56571167589005,
+        "baseline_min_max_us": [
+          315.65109888712567,
+          317.2499868604872
+        ],
+        "candidate_min_max_us": [
+          26.941110690434773,
+          28.435554769304062
+        ]
+      },
+      "inputs_unchanged": true,
+      "passed": true
+    },
+    {
+      "case": {
+        "name": "k512",
+        "b": 1,
+        "q": 1,
+        "s": 8192,
+        "h": 128,
+        "k": 512,
+        "dtype_code": 0,
+        "pattern": "public"
+      },
+      "shared_value": false,
+      "input_sha256": "f166c4312af5317132844fa7608a05ee2411116077f4c52684b9cf80c32f0ded",
+      "baseline": "public FP32",
+      "config": {
+        "mode": "gather_wide",
+        "wave": 1,
+        "width": 512,
+        "scratch_bytes": 786432,
+        "head_tile": 64,
+        "score_tile": 128,
+        "dot_tile": 512,
+        "value_tile": 128,
+        "product_k": 128,
+        "softmax_heads": 1
+      },
+      "accuracy": {
+        "elements": 65536,
+        "finite": true,
+        "max_abs": 0.0009765625,
+        "rmse": 4.8296916882033455e-06,
+        "public_matched": 1.0,
+        "strict_matched": 1.0,
+        "atol": 0.008,
+        "rtol": 0.008,
+        "passed": true
+      },
+      "fp64": {
+        "batch": [
+          0
+        ],
+        "queries": [
+          0
+        ],
+        "heads": [
+          0,
+          64,
+          127
+        ],
+        "elements": 1536,
+        "candidate": {
+          "mare": 0.003830140547549588,
+          "mere": 0.0014164732275499248,
+          "rmse": 0.00011238687191493605,
+          "max_abs": 0.0004883136600870586
+        },
+        "public_reference": {
+          "mare": 0.003830140547549588,
+          "mere": 0.0014164729566194377,
+          "rmse": 0.00011238668856794124,
+          "max_abs": 0.00048824883991294143
+        },
+        "passed": true
+      },
+      "deterministic": true,
+      "performance": {
+        "timing": "graph",
+        "capture_ops": 6,
+        "replays_per_measurement": 3,
+        "samples": [
+          {
+            "baseline_us": [
+              456.6322432623969,
+              457.22113715277777
+            ],
+            "candidate_us": [
+              31.28666679064433,
+              31.48333231608073
+            ],
+            "order": [
+              "baseline",
+              "candidate",
+              "candidate",
+              "baseline"
+            ]
+          },
+          {
+            "baseline_us": [
+              457.7377637227376,
+              457.55444632636176
+            ],
+            "candidate_us": [
+              31.24222159385681,
+              35.12777884801229
+            ],
+            "order": [
+              "candidate",
+              "baseline",
+              "baseline",
+              "candidate"
+            ]
+          },
+          {
+            "baseline_us": [
+              458.49445131089954,
+              457.18998379177515
+            ],
+            "candidate_us": [
+              31.246665451261734,
+              31.331111987431843
+            ],
+            "order": [
+              "baseline",
+              "candidate",
+              "candidate",
+              "baseline"
+            ]
+          },
+          {
+            "baseline_us": [
+              458.1344392564562,
+              457.28111267089844
+            ],
+            "candidate_us": [
+              31.207776731914944,
+              31.25777840614319
+            ],
+            "order": [
+              "candidate",
+              "baseline",
+              "baseline",
+              "candidate"
+            ]
+          },
+          {
+            "baseline_us": [
+              456.4333491855198,
+              457.7488899230957
+            ],
+            "candidate_us": [
+              34.95666715833876,
+              31.263334883583916
+            ],
+            "order": [
+              "baseline",
+              "candidate",
+              "candidate",
+              "baseline"
+            ]
+          },
+          {
+            "baseline_us": [
+              457.8588803609212,
+              457.7433268229167
+            ],
+            "candidate_us": [
+              31.141112248102825,
+              31.24333421389262
+            ],
+            "order": [
+              "candidate",
+              "baseline",
+              "baseline",
+              "candidate"
+            ]
+          },
+          {
+            "baseline_us": [
+              458.4877755906847,
+              457.5477706061469
+            ],
+            "candidate_us": [
+              30.11888927883572,
+              31.42777747578091
+            ],
+            "order": [
+              "baseline",
+              "candidate",
+              "candidate",
+              "baseline"
+            ]
+          }
+        ],
+        "baseline_us": 457.6461050245497,
+        "candidate_us": 31.260556644863552,
+        "speedup": 14.639729875051534,
+        "baseline_min_max_us": [
+          456.4333491855198,
+          458.49445131089954
+        ],
+        "candidate_min_max_us": [
+          30.11888927883572,
+          35.12777884801229
+        ]
+      },
+      "inputs_unchanged": true,
+      "passed": true
+    },
+    {
+      "case": {
+        "name": "odd_q37",
+        "b": 1,
+        "q": 37,
+        "s": 1000,
+        "h": 16,
+        "k": 128,
+        "dtype_code": 0,
+        "pattern": "public"
+      },
+      "shared_value": false,
+      "input_sha256": "33a7be036b8a021e0804edb0ab78b942254e1c30df43a4e2b286519495bf3c20",
+      "baseline": "public FP32",
+      "config": {
+        "mode": "one_tile",
+        "head_tile": 16,
+        "score_tile": 128,
+        "value_tile": 128,
+        "scratch_bytes": 0
+      },
+      "accuracy": {
+        "elements": 303104,
+        "finite": true,
+        "max_abs": 0.001953125,
+        "rmse": 4.7827851980430505e-06,
+        "public_matched": 1.0,
+        "strict_matched": 1.0,
+        "atol": 0.008,
+        "rtol": 0.008,
+        "passed": true
+      },
+      "fp64": {
+        "batch": [
+          0
+        ],
+        "queries": [
+          0,
+          1,
+          18,
+          36
+        ],
+        "heads": [
+          0,
+          8,
+          15
+        ],
+        "elements": 6144,
+        "candidate": {
+          "mare": 0.0038402827620891114,
+          "mere": 0.0014080881263502157,
+          "rmse": 0.00023146702043531385,
+          "max_abs": 0.00154634022048028
+        },
+        "public_reference": {
+          "mare": 0.0038402827620891114,
+          "mere": 0.0014077093062824135,
+          "rmse": 0.000231467024542698,
+          "max_abs": 0.00154634022048028
+        },
+        "passed": true
+      },
+      "deterministic": true,
+      "performance": {
+        "timing": "graph",
+        "capture_ops": 6,
+        "replays_per_measurement": 3,
+        "samples": [
+          {
+            "baseline_us": [
+              1044.076707628038,
+              1047.7466583251953
+            ],
+            "candidate_us": [
+              33.402221070395576,
+              33.47666727172004
+            ],
+            "order": [
+              "baseline",
+              "candidate",
+              "candidate",
+              "baseline"
+            ]
+          },
+          {
+            "baseline_us": [
+              1046.8055937025283,
+              1043.8044865926106
+            ],
+            "candidate_us": [
+              33.20111168755425,
+              33.503333727518715
+            ],
+            "order": [
+              "candidate",
+              "baseline",
+              "baseline",
+              "candidate"
+            ]
+          },
+          {
+            "baseline_us": [
+              1046.2844636705186,
+              1045.9632873535156
+            ],
+            "candidate_us": [
+              33.32777818044027,
+              33.67888927459717
+            ],
+            "order": [
+              "baseline",
+              "candidate",
+              "candidate",
+              "baseline"
+            ]
+          },
+          {
+            "baseline_us": [
+              1044.7155634562175,
+              1045.2488793267144
+            ],
+            "candidate_us": [
+              33.227778143352936,
+              33.11555584271749
+            ],
+            "order": [
+              "candidate",
+              "baseline",
+              "baseline",
+              "candidate"
+            ]
+          },
+          {
+            "baseline_us": [
+              1045.2133814493816,
+              1045.1655917697483
+            ],
+            "candidate_us": [
+              33.23666585816277,
+              33.46888886557685
+            ],
+            "order": [
+              "baseline",
+              "candidate",
+              "candidate",
+              "baseline"
+            ]
+          },
+          {
+            "baseline_us": [
+              1046.8544430202908,
+              1044.9655320909287
+            ],
+            "candidate_us": [
+              34.66444545321994,
+              33.248888121710884
+            ],
+            "order": [
+              "candidate",
+              "baseline",
+              "baseline",
+              "candidate"
+            ]
+          },
+          {
+            "baseline_us": [
+              1046.5077294243706,
+              1045.3544192843967
+            ],
+            "candidate_us": [
+              33.42444366878934,
+              33.40555561913384
+            ],
+            "order": [
+              "baseline",
+              "candidate",
+              "candidate",
+              "baseline"
+            ]
+          }
+        ],
+        "baseline_us": 1045.3016493055557,
+        "candidate_us": 33.40388834476471,
+        "speedup": 31.29281353466692,
+        "baseline_min_max_us": [
+          1043.8044865926106,
+          1047.7466583251953
+        ],
+        "candidate_min_max_us": [
+          33.11555584271749,
+          34.66444545321994
+        ]
+      },
+      "inputs_unchanged": true,
+      "passed": true
+    },
+    {
+      "case": {
+        "name": "batch5",
+        "b": 5,
+        "q": 1,
+        "s": 1024,
+        "h": 128,
+        "k": 2048,
+        "dtype_code": 0,
+        "pattern": "public"
+      },
+      "shared_value": false,
+      "input_sha256": "d25fb9a3d57ee44d4c4b534794718dba5bc21cbffc799d9edd463aa6aea49d7e",
+      "baseline": "public FP32",
+      "config": {
+        "mode": "counts_large",
+        "wave": 5,
+        "width": 1024,
+        "scratch_bytes": 2641920,
+        "head_tile": 128,
+        "score_tile": 256,
+        "dot_tile": 512,
+        "value_tile": 256,
+        "product_k": 128,
+        "softmax_heads": 1
+      },
+      "accuracy": {
+        "elements": 327680,
+        "finite": true,
+        "max_abs": 0.00048828125,
+        "rmse": 2.07720820796601e-06,
+        "public_matched": 1.0,
+        "strict_matched": 1.0,
+        "atol": 0.008,
+        "rtol": 0.008,
+        "passed": true
+      },
+      "fp64": {
+        "batch": [
+          0,
+          4
+        ],
+        "queries": [
+          0
+        ],
+        "heads": [
+          0,
+          64,
+          127
+        ],
+        "elements": 3072,
+        "candidate": {
+          "mare": 0.00388057865278482,
+          "mere": 0.0013832909599532557,
+          "rmse": 7.70485028091448e-05,
+          "max_abs": 0.00047208377721610906
+        },
+        "public_reference": {
+          "mare": 0.00388057865278482,
+          "mere": 0.0013832909599532557,
+          "rmse": 7.70485028091448e-05,
+          "max_abs": 0.00047208377721610906
+        },
+        "passed": true
+      },
+      "deterministic": true,
+      "performance": {
+        "timing": "graph",
+        "capture_ops": 6,
+        "replays_per_measurement": 3,
+        "samples": [
+          {
+            "baseline_us": [
+              856.6499816046821,
+              856.835577223036
+            ],
+            "candidate_us": [
+              106.4855522579617,
+              105.94777928458319
+            ],
+            "order": [
+              "baseline",
+              "candidate",
+              "candidate",
+              "baseline"
+            ]
+          },
+          {
+            "baseline_us": [
+              855.1288710700142,
+              856.5500047471788
+            ],
+            "candidate_us": [
+              106.08555873235066,
+              106.28889004389445
+            ],
+            "order": [
+              "candidate",
+              "baseline",
+              "baseline",
+              "candidate"
+            ]
+          },
+          {
+            "baseline_us": [
+              857.0344183180067,
+              856.5310902065701
+            ],
+            "candidate_us": [
+              106.42777548895941,
+              106.08000225490994
+            ],
+            "order": [
+              "baseline",
+              "candidate",
+              "candidate",
+              "baseline"
+            ]
+          },
+          {
+            "baseline_us": [
+              857.5288984510634,
+              856.9955295986599
+            ],
+            "candidate_us": [
+              106.58222436904907,
+              106.52222235997517
+            ],
+            "order": [
+              "candidate",
+              "baseline",
+              "baseline",
+              "candidate"
+            ]
+          },
+          {
+            "baseline_us": [
+              857.1633232964409,
+              856.0811148749458
+            ],
+            "candidate_us": [
+              106.7344413863288,
+              106.04666339026556
+            ],
+            "order": [
+              "baseline",
+              "candidate",
+              "candidate",
+              "baseline"
+            ]
+          },
+          {
+            "baseline_us": [
+              856.3833236694336,
+              857.9655753241645
+            ],
+            "candidate_us": [
+              107.48555262883504,
+              106.61555661095514
+            ],
+            "order": [
+              "candidate",
+              "baseline",
+              "baseline",
+              "candidate"
+            ]
+          },
+          {
+            "baseline_us": [
+              858.0255508422852,
+              857.3122024536133
+            ],
+            "candidate_us": [
+              111.28444141811795,
+              105.73222239812215
+            ],
+            "order": [
+              "baseline",
+              "candidate",
+              "candidate",
+              "baseline"
+            ]
+          }
+        ],
+        "baseline_us": 856.9155534108479,
+        "candidate_us": 106.45666387346056,
+        "speedup": 8.049430840979747,
+        "baseline_min_max_us": [
+          855.1288710700142,
+          858.0255508422852
+        ],
+        "candidate_min_max_us": [
+          105.73222239812215,
+          111.28444141811795
+        ]
+      },
+      "inputs_unchanged": true,
+      "passed": true
+    },
+    {
+      "case": {
+        "name": "fp16_8k",
+        "b": 1,
+        "q": 1,
+        "s": 8192,
+        "h": 128,
+        "k": 2048,
+        "dtype_code": 1,
+        "pattern": "public"
+      },
+      "shared_value": false,
+      "input_sha256": "36adb8d163a44325c20e991470e5f8e3357d47523efe9eede1f1bc45279a5fb5",
+      "baseline": "public FP32",
+      "config": {
+        "mode": "gather_wide",
+        "wave": 1,
+        "width": 2048,
+        "scratch_bytes": 3145728,
+        "head_tile": 64,
+        "score_tile": 128,
+        "dot_tile": 512,
+        "value_tile": 128,
+        "product_k": 128,
+        "softmax_heads": 1
+      },
+      "accuracy": {
+        "elements": 65536,
+        "finite": true,
+        "max_abs": 6.103515625e-05,
+        "rmse": 7.384837482364342e-07,
+        "public_matched": 1.0,
+        "strict_matched": 1.0,
+        "atol": 0.002,
+        "rtol": 0.002,
+        "passed": true
+      },
+      "fp64": {
+        "batch": [
+          0
+        ],
+        "queries": [
+          0
+        ],
+        "heads": [
+          0,
+          64,
+          127
+        ],
+        "elements": 1536,
+        "candidate": {
+          "mare": 0.00047245153221046903,
+          "mere": 0.00017444447171149584,
+          "rmse": 7.260772697644056e-06,
+          "max_abs": 3.0405239343223034e-05
+        },
+        "public_reference": {
+          "mare": 0.0006577226536596516,
+          "mere": 0.000174822950472844,
+          "rmse": 7.260806074358942e-06,
+          "max_abs": 3.0405239343223034e-05
+        },
+        "passed": true
+      },
+      "deterministic": true,
+      "performance": {
+        "timing": "graph",
+        "capture_ops": 6,
+        "replays_per_measurement": 3,
+        "samples": [
+          {
+            "baseline_us": [
+              477.8922398885091,
+              478.7933561537001
+            ],
+            "candidate_us": [
+              46.7088884777493,
+              48.25444353951348
+            ],
+            "order": [
+              "baseline",
+              "candidate",
+              "candidate",
+              "baseline"
+            ]
+          },
+          {
+            "baseline_us": [
+              478.59446207682294,
+              477.9144393073188
+            ],
+            "candidate_us": [
+              50.638887617323135,
+              48.02222384346856
+            ],
+            "order": [
+              "candidate",
+              "baseline",
+              "baseline",
+              "candidate"
+            ]
+          },
+          {
+            "baseline_us": [
+              478.7889056735569,
+              479.75556055704754
+            ],
+            "candidate_us": [
+              49.21555519104004,
+              49.86777901649475
+            ],
+            "order": [
+              "baseline",
+              "candidate",
+              "candidate",
+              "baseline"
+            ]
+          },
+          {
+            "baseline_us": [
+              479.9422158135308,
+              479.6722200181749
+            ],
+            "candidate_us": [
+              49.6411124865214,
+              49.94222190645006
+            ],
+            "order": [
+              "candidate",
+              "baseline",
+              "baseline",
+              "candidate"
+            ]
+          },
+          {
+            "baseline_us": [
+              479.22335730658637,
+              479.17334238688153
+            ],
+            "candidate_us": [
+              48.556665579477944,
+              48.54999979337057
+            ],
+            "order": [
+              "baseline",
+              "candidate",
+              "candidate",
+              "baseline"
+            ]
+          },
+          {
+            "baseline_us": [
+              479.20444276597766,
+              479.1088634067112
+            ],
+            "candidate_us": [
+              49.741112523608734,
+              47.991110218895805
+            ],
+            "order": [
+              "candidate",
+              "baseline",
+              "baseline",
+              "candidate"
+            ]
+          },
+          {
+            "baseline_us": [
+              479.2144563462999,
+              479.70220777723523
+            ],
+            "candidate_us": [
+              47.317776415083145,
+              49.1866668065389
+            ],
+            "order": [
+              "baseline",
+              "candidate",
+              "candidate",
+              "baseline"
+            ]
+          }
+        ],
+        "baseline_us": 479.18889257642957,
+        "candidate_us": 48.87166619300842,
+        "speedup": 9.805045129502506,
+        "baseline_min_max_us": [
+          477.8922398885091,
+          479.9422158135308
+        ],
+        "candidate_min_max_us": [
+          46.7088884777493,
+          50.638887617323135
+        ]
+      },
+      "inputs_unchanged": true,
+      "passed": true
+    },
+    {
+      "case": {
+        "name": "mixed_indices",
+        "b": 2,
+        "q": 7,
+        "s": 193,
+        "h": 8,
+        "k": 97,
+        "dtype_code": 0,
+        "pattern": "mixed"
+      },
+      "shared_value": false,
+      "input_sha256": "5244e807781d6b64b24cd7bc1f26bcd9dc296689169a981541bec35c0494e3ad",
+      "baseline": "public FP32",
+      "config": {
+        "mode": "gather_wide",
+        "wave": 14,
+        "width": 97,
+        "scratch_bytes": 1434048,
+        "head_tile": 16,
+        "score_tile": 128,
+        "dot_tile": 512,
+        "value_tile": 128,
+        "product_k": 128,
+        "softmax_heads": 1
+      },
+      "accuracy": {
+        "elements": 57344,
+        "finite": true,
+        "max_abs": 0.001953125,
+        "rmse": 8.2396360403801e-06,
+        "public_matched": 1.0,
+        "strict_matched": 1.0,
+        "atol": 0.008,
+        "rtol": 0.008,
+        "passed": true
+      },
+      "fp64": {
+        "batch": [
+          0,
+          1
+        ],
+        "queries": [
+          0,
+          1,
+          3,
+          6
+        ],
+        "heads": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7
+        ],
+        "elements": 32768,
+        "candidate": {
+          "mare": 0.003885178106687294,
+          "mere": 0.0007104725099647067,
+          "rmse": 0.0004539284486217763,
+          "max_abs": 0.004569736353085219
+        },
+        "public_reference": {
+          "mare": 0.004547645992272417,
+          "mere": 0.0007105289825470486,
+          "rmse": 0.00045392844918742335,
+          "max_abs": 0.004569736353085219
+        },
+        "passed": true
+      },
+      "deterministic": true,
+      "performance": {
+        "timing": "graph",
+        "capture_ops": 6,
+        "replays_per_measurement": 3,
+        "samples": [
+          {
+            "baseline_us": [
+              606.0877905951606,
+              607.16888639662
+            ],
+            "candidate_us": [
+              57.247777779897056,
+              57.13111162185669
+            ],
+            "order": [
+              "baseline",
+              "candidate",
+              "candidate",
+              "baseline"
+            ]
+          },
+          {
+            "baseline_us": [
+              606.9433424207899,
+              607.5910992092556
+            ],
+            "candidate_us": [
+              57.51666757795546,
+              57.266665829552544
+            ],
+            "order": [
+              "candidate",
+              "baseline",
+              "baseline",
+              "candidate"
+            ]
+          },
+          {
+            "baseline_us": [
+              607.4477831522623,
+              607.2200139363607
+            ],
+            "candidate_us": [
+              57.81110790040758,
+              57.56444401211209
+            ],
+            "order": [
+              "baseline",
+              "candidate",
+              "candidate",
+              "baseline"
+            ]
+          },
+          {
+            "baseline_us": [
+              607.5400246514214,
+              606.9744427998861
+            ],
+            "candidate_us": [
+              57.69333574506972,
+              57.39333232243856
+            ],
+            "order": [
+              "candidate",
+              "baseline",
+              "baseline",
+              "candidate"
+            ]
+          },
+          {
+            "baseline_us": [
+              607.1133083767361,
+              606.8933275010851
+            ],
+            "candidate_us": [
+              56.998888651529946,
+              57.48222271601359
+            ],
+            "order": [
+              "baseline",
+              "candidate",
+              "candidate",
+              "baseline"
+            ]
+          },
+          {
+            "baseline_us": [
+              606.6844198438856,
+              607.2189013163248
+            ],
+            "candidate_us": [
+              57.59333239661323,
+              56.99221955405341
+            ],
+            "order": [
+              "candidate",
+              "baseline",
+              "baseline",
+              "candidate"
+            ]
+          },
+          {
+            "baseline_us": [
+              607.6244248284233,
+              607.7855428059896
+            ],
+            "candidate_us": [
+              57.23444620768229,
+              57.926668061150444
+            ],
+            "order": [
+              "baseline",
+              "candidate",
+              "candidate",
+              "baseline"
+            ]
+          }
+        ],
+        "baseline_us": 607.1938938564724,
+        "candidate_us": 57.437777519226074,
+        "speedup": 10.57133336423449,
+        "baseline_min_max_us": [
+          606.0877905951606,
+          607.7855428059896
+        ],
+        "candidate_min_max_us": [
+          56.99221955405341,
+          57.926668061150444
+        ]
+      },
+      "inputs_unchanged": true,
+      "passed": true
+    }
+  ],
+  "summary": {
+    "geomean": 11.83737771060082,
+    "ratio_of_sums": 15.647639424795543,
+    "measured_cases": 17,
+    "all_passed": true
+  }
+}

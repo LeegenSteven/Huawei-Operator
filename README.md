@@ -7,3 +7,5 @@
 Lightning 块内对角注意力的昇腾优化实现、原版 vLLM baseline、精度测试和性能报告见 [Lightning 算子](operators/lightning_diag/README.md)。
 
 Mamba-2 分块状态前向的昇腾实现、上游配置调优和单卡对比结果见 [Mamba-2 算子](operators/mamba2_chunk_state/README.md)。
+
+稀疏 Flash 注意力前向的 Triton-Ascend 实现、公开 FP32 基线和四组 CANN 原生对照见 [稀疏 Flash 注意力](operators/sparse_flash/README.md)。

@@ -1,0 +1,17 @@
+{
+  "public_two_geomean": 8.44215963526199,
+  "task_full_reference_geomean": 11.759960174538538,
+  "whole_reference_shapes": 15,
+  "native_geomean": 1.0261180701861812,
+  "native_summed_latency_ratio": 0.4214369320217047,
+  "native_above_half": 3,
+  "hardware_tests": 14,
+  "public_accuracy_rows": 17,
+  "worst_absolute_error": 0.001953125,
+  "checked_output_elements": 203313152,
+  "sampled_fp64_max_error_ratios": {
+    "mare": 1.0,
+    "mere": 1.000269103902426,
+    "rmse": 1.000001631394226
+  }
+}

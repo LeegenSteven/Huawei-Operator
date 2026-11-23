@@ -1,0 +1,14 @@
+{
+  "repository": "https://gitcode.com/linjianyong00111/Triton-1",
+  "commit": "78d27fb86f9f172d58e5d86f6e7adc20acbe89f0",
+  "path": "公开案例题/稀疏 Flash 注意力算子",
+  "task_path": "任务说明书/任务书说明/（高级 稀疏 Flash 注意力算子）sparse_flash_attention_算子大赛任务书.md",
+  "license": "Apache-2.0",
+  "sha256": {
+    "definition.json": "82f189efad95af64a3533ee41782736f983ef63672e714bca24ef0450e29cd61",
+    "workload.jsonl": "c0040a8dce8af7fa3a5c3cc1bb8d1e48c3e3f4957727cabd24918cee31a2859b",
+    "LICENSE": "c5accbbd8546e94c34aed24afe689a617627d18eed5a6c48277e48db57c23851",
+    "task.md": "6a8cc4877473e38d3c66639f91af18eb629a354c136d58274319d29d7e8ec953"
+  },
+  "cann_contract": "https://github.com/hicann/ops-transformer/blob/e32b1329d9e4e22bc4b478ada2b70951b08efbf8/attention/sparse_flash_attention/docs/torchapi_sparse_flash_attention.md"
+}

@@ -1,0 +1,26 @@
+/usr/local/python3.11/lib/python3.11/site-packages/triton/language/extra/cann/extension/math_ops.py:13: FutureWarning: triton.language.extra.cann.extension.atan2 is deprecated and will be removed in the next release; use triton.language.extra.cann.libdevice.atan2 instead.
+  @_deprecated(replacement="triton.language.extra.cann.libdevice.atan2")
+/usr/local/python3.11/lib/python3.11/site-packages/triton/language/extra/cann/extension/math_ops.py:35: FutureWarning: triton.language.extra.cann.extension.isfinited is deprecated and will be removed in the next release; use triton.language.extra.cann.libdevice.isfinited instead.
+  @_deprecated(replacement="triton.language.extra.cann.libdevice.isfinited")
+/usr/local/python3.11/lib/python3.11/site-packages/triton/language/extra/cann/extension/math_ops.py:49: FutureWarning: triton.language.extra.cann.extension.finitef is deprecated and will be removed in the next release; use triton.language.extra.cann.libdevice.finitef instead.
+  @_deprecated(replacement="triton.language.extra.cann.libdevice.finitef")
+test_all_invalid_and_repeated_token (test_hardware.HardwareTests.test_all_invalid_and_repeated_token) ... [W1123 04:05:08.711675740 NPUCachingAllocator.cpp:204] Warning: The current CANN and Soc versions require processing for 32 padding size, with memory allocation. (function operator())
+ok
+test_equal_density_with_holes_and_repeats (test_hardware.HardwareTests.test_equal_density_with_holes_and_repeats) ... ok
+test_extreme_logits_and_empty_tiles (test_hardware.HardwareTests.test_extreme_logits_and_empty_tiles) ... ok
+test_graph_replay_reads_current_indices (test_hardware.HardwareTests.test_graph_replay_reads_current_indices) ... ok
+test_independent_and_shared_value (test_hardware.HardwareTests.test_independent_and_shared_value) ... ok
+test_large_finite_values_on_short_path (test_hardware.HardwareTests.test_large_finite_values_on_short_path) ... ok
+test_multiplicity_and_order (test_hardware.HardwareTests.test_multiplicity_and_order) ... ok
+test_rope_only_with_negative_scale (test_hardware.HardwareTests.test_rope_only_with_negative_scale) ... ok
+test_shape_dtype_and_layout_rejection (test_hardware.HardwareTests.test_shape_dtype_and_layout_rejection) ... ok
+test_small_heads_and_fp16 (test_hardware.HardwareTests.test_small_heads_and_fp16) ... ok
+test_storage_offsets (test_hardware.HardwareTests.test_storage_offsets) ... ok
+test_pinned_bytes (test_sources.SourceTests.test_pinned_bytes) ... ok
+test_public_reference_is_exact (test_sources.SourceTests.test_public_reference_is_exact) ... ok
+test_public_workloads (test_sources.SourceTests.test_public_workloads) ... ok
+
+----------------------------------------------------------------------
+Ran 14 tests in 52.101s
+
+OK

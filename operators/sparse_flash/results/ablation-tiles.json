@@ -1,0 +1,266 @@
+{
+  "environment": {
+    "timestamp": "2026-11-23T04:09:45.912348+00:00",
+    "architecture": "aarch64",
+    "python": "3.11.15",
+    "device": "npu:0",
+    "visible_devices": "1",
+    "hardware": {
+      "name": "Ascend910B3",
+      "total_memory": 65452113920,
+      "cube_core_num": 20,
+      "vector_core_num": 40
+    },
+    "driver": "Version=25.5.0",
+    "cann": "/usr/local/Ascend/cann-9.2.0-beta.2",
+    "versions": {
+      "torch": "2.9.0+cpu",
+      "torch-npu": "2.9.0.post9",
+      "triton": "3.6.0",
+      "triton-ascend": "3.6.0",
+      "numpy": "1.26.4"
+    },
+    "source_sha256": {
+      "kernel.py": "674f11f3fdcf0ab2de30fb413d1e4e57a37b5c07d013594fe2d51cd1d322baf9",
+      "inputs.py": "d3fac74b44696230f3ca1a782319f7561ffa843dd7640454f4f2ffb027194e75",
+      "reference.py": "90950b1bcd3ac62a2fddec9cd9bcf169fe86ec0a5c74c54319860c6028d3053c",
+      "benchmark.py": "14b75041b52090ad3994caed3135ae04d7526fcd0fb553bbc78d88ad6e0d9720",
+      "baseline.py": "3d76e1d431b121d948cfc9409d5e61246104204a12a0963bb21364c6f7dcf881",
+      "../lightning_diag/benchmark.py": "9eee6cd22992adbeb2984cba82be563e1023b0315d118daa49064215cf7b770b"
+    },
+    "upstream": {
+      "repository": "https://gitcode.com/linjianyong00111/Triton-1",
+      "commit": "78d27fb86f9f172d58e5d86f6e7adc20acbe89f0",
+      "path": "\u516c\u5f00\u6848\u4f8b\u9898/\u7a00\u758f Flash \u6ce8\u610f\u529b\u7b97\u5b50",
+      "task_path": "\u4efb\u52a1\u8bf4\u660e\u4e66/\u4efb\u52a1\u4e66\u8bf4\u660e/\uff08\u9ad8\u7ea7 \u7a00\u758f Flash \u6ce8\u610f\u529b\u7b97\u5b50\uff09sparse_flash_attention_\u7b97\u5b50\u5927\u8d5b\u4efb\u52a1\u4e66.md",
+      "license": "Apache-2.0",
+      "sha256": {
+        "definition.json": "82f189efad95af64a3533ee41782736f983ef63672e714bca24ef0450e29cd61",
+        "workload.jsonl": "c0040a8dce8af7fa3a5c3cc1bb8d1e48c3e3f4957727cabd24918cee31a2859b",
+        "LICENSE": "c5accbbd8546e94c34aed24afe689a617627d18eed5a6c48277e48db57c23851",
+        "task.md": "6a8cc4877473e38d3c66639f91af18eb629a354c136d58274319d29d7e8ec953"
+      },
+      "cann_contract": "https://github.com/hicann/ops-transformer/blob/e32b1329d9e4e22bc4b478ada2b70951b08efbf8/attention/sparse_flash_attention/docs/torchapi_sparse_flash_attention.md"
+    }
+  },
+  "suite": "ablation",
+  "control": "pack_narrow",
+  "cases": [
+    {
+      "case": {
+        "name": "decode_batch8",
+        "b": 8,
+        "q": 1,
+        "s": 8192,
+        "h": 128,
+        "k": 2048,
+        "dtype_code": 0,
+        "pattern": "public"
+      },
+      "shared_value": false,
+      "input_sha256": "ffc1c5c2a383b89365d82a2d7369e6684f5fbf5f758b070eab9f972f8a691387",
+      "baseline": "pack_narrow",
+      "config": {
+        "mode": "pack_large",
+        "wave": 8,
+        "width": 2048,
+        "scratch_bytes": 44040192,
+        "head_tile": 128,
+        "score_tile": 256,
+        "dot_tile": 512,
+        "value_tile": 256,
+        "product_k": 128,
+        "softmax_heads": 1
+      },
+      "accuracy": {
+        "elements": 524288,
+        "finite": true,
+        "max_abs": 0.00048828125,
+        "rmse": 1.5157006720364714e-06,
+        "public_matched": 1.0,
+        "strict_matched": 1.0,
+        "atol": 0.008,
+        "rtol": 0.008,
+        "passed": true
+      },
+      "fp64": {
+        "batch": [
+          0,
+          7
+        ],
+        "queries": [
+          0
+        ],
+        "heads": [
+          0,
+          64,
+          127
+        ],
+        "elements": 3072,
+        "candidate": {
+          "mare": 0.006378150354667517,
+          "mere": 0.0014294148704111689,
+          "rmse": 5.797519338455284e-05,
+          "max_abs": 0.00028478671873927164
+        },
+        "public_reference": {
+          "mare": 0.02570407995021369,
+          "mere": 0.0014357058631180525,
+          "rmse": 5.7975193385139573e-05,
+          "max_abs": 0.00028478671873927164
+        },
+        "passed": true
+      },
+      "deterministic": true,
+      "control_accuracy": {
+        "elements": 524288,
+        "finite": true,
+        "max_abs": 0.00048828125,
+        "rmse": 1.5157006720364714e-06,
+        "public_matched": 1.0,
+        "strict_matched": 1.0,
+        "atol": 0.008,
+        "rtol": 0.008,
+        "passed": true
+      },
+      "performance": {
+        "timing": "graph",
+        "capture_ops": 6,
+        "replays_per_measurement": 3,
+        "samples": [
+          {
+            "baseline_us": [
+              634.2399915059408,
+              631.8411297268337
+            ],
+            "candidate_us": [
+              146.97333176930746,
+              146.47889137268066
+            ],
+            "order": [
+              "baseline",
+              "candidate",
+              "candidate",
+              "baseline"
+            ]
+          },
+          {
+            "baseline_us": [
+              630.0500233968099,
+              632.204426659478
+            ],
+            "candidate_us": [
+              146.32666110992432,
+              148.5333310233222
+            ],
+            "order": [
+              "candidate",
+              "baseline",
+              "baseline",
+              "candidate"
+            ]
+          },
+          {
+            "baseline_us": [
+              631.9589085049099,
+              630.6222279866537
+            ],
+            "candidate_us": [
+              146.3011105855306,
+              146.3411119249132
+            ],
+            "order": [
+              "baseline",
+              "candidate",
+              "candidate",
+              "baseline"
+            ]
+          },
+          {
+            "baseline_us": [
+              632.0177714029948,
+              632.3877970377604
+            ],
+            "candidate_us": [
+              146.31666077507867,
+              146.05666531456842
+            ],
+            "order": [
+              "candidate",
+              "baseline",
+              "baseline",
+              "candidate"
+            ]
+          },
+          {
+            "baseline_us": [
+              631.3177744547526,
+              631.6866874694824
+            ],
+            "candidate_us": [
+              146.75222502814398,
+              146.83555232153998
+            ],
+            "order": [
+              "baseline",
+              "candidate",
+              "candidate",
+              "baseline"
+            ]
+          },
+          {
+            "baseline_us": [
+              631.7766507466634,
+              632.8855620490181
+            ],
+            "candidate_us": [
+              145.8255582385593,
+              146.06444040934244
+            ],
+            "order": [
+              "candidate",
+              "baseline",
+              "baseline",
+              "candidate"
+            ]
+          },
+          {
+            "baseline_us": [
+              632.308906979031,
+              630.6533283657498
+            ],
+            "candidate_us": [
+              146.50111728244357,
+              146.02111445532904
+            ],
+            "order": [
+              "baseline",
+              "candidate",
+              "candidate",
+              "baseline"
+            ]
+          }
+        ],
+        "baseline_us": 631.9000191158718,
+        "candidate_us": 146.33388651741876,
+        "speedup": 4.318207041132978,
+        "baseline_min_max_us": [
+          630.0500233968099,
+          634.2399915059408
+        ],
+        "candidate_min_max_us": [
+          145.8255582385593,
+          148.5333310233222
+        ]
+      },
+      "inputs_unchanged": true,
+      "passed": true
+    }
+  ],
+  "summary": {
+    "geomean": 4.318207041132978,
+    "ratio_of_sums": 4.318207041132978,
+    "measured_cases": 1,
+    "all_passed": true
+  }
+}

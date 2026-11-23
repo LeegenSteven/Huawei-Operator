@@ -1,0 +1,416 @@
+{
+  "environment": {
+    "timestamp": "2026-11-23T04:09:57.020834+00:00",
+    "architecture": "aarch64",
+    "python": "3.11.15",
+    "device": "npu:0",
+    "visible_devices": "1",
+    "hardware": {
+      "name": "Ascend910B3",
+      "total_memory": 65452113920,
+      "cube_core_num": 20,
+      "vector_core_num": 40
+    },
+    "driver": "Version=25.5.0",
+    "cann": "/usr/local/Ascend/cann-9.2.0-beta.2",
+    "versions": {
+      "torch": "2.9.0+cpu",
+      "torch-npu": "2.9.0.post9",
+      "triton": "3.6.0",
+      "triton-ascend": "3.6.0",
+      "numpy": "1.26.4"
+    },
+    "source_sha256": {
+      "kernel.py": "674f11f3fdcf0ab2de30fb413d1e4e57a37b5c07d013594fe2d51cd1d322baf9",
+      "inputs.py": "d3fac74b44696230f3ca1a782319f7561ffa843dd7640454f4f2ffb027194e75",
+      "reference.py": "90950b1bcd3ac62a2fddec9cd9bcf169fe86ec0a5c74c54319860c6028d3053c",
+      "benchmark.py": "14b75041b52090ad3994caed3135ae04d7526fcd0fb553bbc78d88ad6e0d9720",
+      "baseline.py": "3d76e1d431b121d948cfc9409d5e61246104204a12a0963bb21364c6f7dcf881",
+      "../lightning_diag/benchmark.py": "9eee6cd22992adbeb2984cba82be563e1023b0315d118daa49064215cf7b770b"
+    },
+    "upstream": {
+      "repository": "https://gitcode.com/linjianyong00111/Triton-1",
+      "commit": "78d27fb86f9f172d58e5d86f6e7adc20acbe89f0",
+      "path": "\u516c\u5f00\u6848\u4f8b\u9898/\u7a00\u758f Flash \u6ce8\u610f\u529b\u7b97\u5b50",
+      "task_path": "\u4efb\u52a1\u8bf4\u660e\u4e66/\u4efb\u52a1\u4e66\u8bf4\u660e/\uff08\u9ad8\u7ea7 \u7a00\u758f Flash \u6ce8\u610f\u529b\u7b97\u5b50\uff09sparse_flash_attention_\u7b97\u5b50\u5927\u8d5b\u4efb\u52a1\u4e66.md",
+      "license": "Apache-2.0",
+      "sha256": {
+        "definition.json": "82f189efad95af64a3533ee41782736f983ef63672e714bca24ef0450e29cd61",
+        "workload.jsonl": "c0040a8dce8af7fa3a5c3cc1bb8d1e48c3e3f4957727cabd24918cee31a2859b",
+        "LICENSE": "c5accbbd8546e94c34aed24afe689a617627d18eed5a6c48277e48db57c23851",
+        "task.md": "6a8cc4877473e38d3c66639f91af18eb629a354c136d58274319d29d7e8ec953"
+      },
+      "cann_contract": "https://github.com/hicann/ops-transformer/blob/e32b1329d9e4e22bc4b478ada2b70951b08efbf8/attention/sparse_flash_attention/docs/torchapi_sparse_flash_attention.md"
+    }
+  },
+  "suite": "ablation",
+  "control": "counts_single",
+  "cases": [
+    {
+      "case": {
+        "name": "prefill1k",
+        "b": 1,
+        "q": 1024,
+        "s": 1024,
+        "h": 128,
+        "k": 2048,
+        "dtype_code": 0,
+        "pattern": "public"
+      },
+      "shared_value": false,
+      "input_sha256": "fa12aeb8690755051340902997a5400ec360f0d6292ae69d79dae395341909f8",
+      "baseline": "counts_single",
+      "config": {
+        "mode": "counts_large",
+        "wave": 127,
+        "width": 1024,
+        "scratch_bytes": 67104768,
+        "head_tile": 128,
+        "score_tile": 256,
+        "dot_tile": 512,
+        "value_tile": 256,
+        "product_k": 128,
+        "softmax_heads": 8
+      },
+      "accuracy": {
+        "elements": 67108864,
+        "finite": true,
+        "max_abs": 0.0009765625,
+        "rmse": 2.3258754792606724e-06,
+        "public_matched": 1.0,
+        "strict_matched": 1.0,
+        "atol": 0.008,
+        "rtol": 0.008,
+        "passed": true
+      },
+      "fp64": {
+        "batch": [
+          0
+        ],
+        "queries": [
+          0,
+          1,
+          512,
+          1023
+        ],
+        "heads": [
+          0,
+          64,
+          127
+        ],
+        "elements": 6144,
+        "candidate": {
+          "mare": 0.005428100767536504,
+          "mere": 0.001413133513241115,
+          "rmse": 8.063624625068748e-05,
+          "max_abs": 0.0004586930977555359
+        },
+        "public_reference": {
+          "mare": 0.005428100767536504,
+          "mere": 0.0014136153312587297,
+          "rmse": 8.063625226301735e-05,
+          "max_abs": 0.0004586930977555359
+        },
+        "passed": true
+      },
+      "deterministic": true,
+      "control_accuracy": {
+        "elements": 67108864,
+        "finite": true,
+        "max_abs": 0.0009765625,
+        "rmse": 2.3258754792606724e-06,
+        "public_matched": 1.0,
+        "strict_matched": 1.0,
+        "atol": 0.008,
+        "rtol": 0.008,
+        "passed": true
+      },
+      "performance": {
+        "timing": "graph",
+        "capture_ops": 1,
+        "replays_per_measurement": 1,
+        "samples": [
+          {
+            "baseline_us": [
+              7457.399845123291,
+              7455.160140991211
+            ],
+            "candidate_us": [
+              5505.000114440918,
+              5459.499835968018
+            ],
+            "order": [
+              "baseline",
+              "candidate",
+              "candidate",
+              "baseline"
+            ]
+          },
+          {
+            "baseline_us": [
+              7461.339950561523,
+              7425.020217895508
+            ],
+            "candidate_us": [
+              5483.30020904541,
+              5473.380088806152
+            ],
+            "order": [
+              "candidate",
+              "baseline",
+              "baseline",
+              "candidate"
+            ]
+          },
+          {
+            "baseline_us": [
+              7437.099933624268,
+              7410.679817199707
+            ],
+            "candidate_us": [
+              5489.860057830811,
+              5460.319995880127
+            ],
+            "order": [
+              "baseline",
+              "candidate",
+              "candidate",
+              "baseline"
+            ]
+          },
+          {
+            "baseline_us": [
+              7435.379981994629,
+              7417.200088500977
+            ],
+            "candidate_us": [
+              5503.580093383789,
+              5464.099884033203
+            ],
+            "order": [
+              "candidate",
+              "baseline",
+              "baseline",
+              "candidate"
+            ]
+          },
+          {
+            "baseline_us": [
+              7448.019981384277,
+              7432.539939880371
+            ],
+            "candidate_us": [
+              5481.400012969971,
+              5460.939884185791
+            ],
+            "order": [
+              "baseline",
+              "candidate",
+              "candidate",
+              "baseline"
+            ]
+          }
+        ],
+        "baseline_us": 7436.239957809448,
+        "candidate_us": 5477.3900508880615,
+        "speedup": 1.3576246878025044,
+        "baseline_min_max_us": [
+          7410.679817199707,
+          7461.339950561523
+        ],
+        "candidate_min_max_us": [
+          5459.499835968018,
+          5505.000114440918
+        ]
+      },
+      "inputs_unchanged": true,
+      "passed": true
+    },
+    {
+      "case": {
+        "name": "prefill2k",
+        "b": 1,
+        "q": 2048,
+        "s": 2048,
+        "h": 128,
+        "k": 2048,
+        "dtype_code": 0,
+        "pattern": "public"
+      },
+      "shared_value": false,
+      "input_sha256": "0f4b3859d83423dbfba4d835367291b8c46a6a360ba78fad019e804328f57975",
+      "baseline": "counts_single",
+      "config": {
+        "mode": "counts_large",
+        "wave": 63,
+        "width": 2048,
+        "scratch_bytes": 66576384,
+        "head_tile": 128,
+        "score_tile": 256,
+        "dot_tile": 512,
+        "value_tile": 256,
+        "product_k": 128,
+        "softmax_heads": 8
+      },
+      "accuracy": {
+        "elements": 134217728,
+        "finite": true,
+        "max_abs": 0.0009765625,
+        "rmse": 1.9048876469890264e-06,
+        "public_matched": 1.0,
+        "strict_matched": 1.0,
+        "atol": 0.008,
+        "rtol": 0.008,
+        "passed": true
+      },
+      "fp64": {
+        "batch": [
+          0
+        ],
+        "queries": [
+          0,
+          1,
+          1024,
+          2047
+        ],
+        "heads": [
+          0,
+          64,
+          127
+        ],
+        "elements": 6144,
+        "candidate": {
+          "mare": 0.0038426309533490318,
+          "mere": 0.0014172068846281308,
+          "rmse": 5.9541931066743274e-05,
+          "max_abs": 0.00041264104584684547
+        },
+        "public_reference": {
+          "mare": 0.011198335875646484,
+          "mere": 0.001418879906311442,
+          "rmse": 5.9541933700444e-05,
+          "max_abs": 0.00041264104584684547
+        },
+        "passed": true
+      },
+      "deterministic": true,
+      "control_accuracy": {
+        "elements": 134217728,
+        "finite": true,
+        "max_abs": 0.0009765625,
+        "rmse": 1.9048876469890264e-06,
+        "public_matched": 1.0,
+        "strict_matched": 1.0,
+        "atol": 0.008,
+        "rtol": 0.008,
+        "passed": true
+      },
+      "performance": {
+        "timing": "graph",
+        "capture_ops": 1,
+        "replays_per_measurement": 1,
+        "samples": [
+          {
+            "baseline_us": [
+              24601.179122924805,
+              23968.839645385742
+            ],
+            "candidate_us": [
+              19823.05908203125,
+              19753.459930419922
+            ],
+            "order": [
+              "baseline",
+              "candidate",
+              "candidate",
+              "baseline"
+            ]
+          },
+          {
+            "baseline_us": [
+              23906.620025634766,
+              23933.679580688477
+            ],
+            "candidate_us": [
+              19570.819854736328,
+              19702.84080505371
+            ],
+            "order": [
+              "candidate",
+              "baseline",
+              "baseline",
+              "candidate"
+            ]
+          },
+          {
+            "baseline_us": [
+              24156.75926208496,
+              23939.50080871582
+            ],
+            "candidate_us": [
+              19717.140197753906,
+              19652.219772338867
+            ],
+            "order": [
+              "baseline",
+              "candidate",
+              "candidate",
+              "baseline"
+            ]
+          },
+          {
+            "baseline_us": [
+              23962.820053100586,
+              24118.419647216797
+            ],
+            "candidate_us": [
+              19523.000717163086,
+              19760.2596282959
+            ],
+            "order": [
+              "candidate",
+              "baseline",
+              "baseline",
+              "candidate"
+            ]
+          },
+          {
+            "baseline_us": [
+              24039.100646972656,
+              23911.319732666016
+            ],
+            "candidate_us": [
+              19609.039306640625,
+              19526.039123535156
+            ],
+            "order": [
+              "baseline",
+              "candidate",
+              "candidate",
+              "baseline"
+            ]
+          }
+        ],
+        "baseline_us": 23965.829849243164,
+        "candidate_us": 19677.53028869629,
+        "speedup": 1.217928749067167,
+        "baseline_min_max_us": [
+          23906.620025634766,
+          24601.179122924805
+        ],
+        "candidate_min_max_us": [
+          19523.000717163086,
+          19823.05908203125
+        ]
+      },
+      "inputs_unchanged": true,
+      "passed": true
+    }
+  ],
+  "summary": {
+    "geomean": 1.2858810744847315,
+    "ratio_of_sums": 1.2483470185209693,
+    "measured_cases": 2,
+    "all_passed": true
+  }
+}
