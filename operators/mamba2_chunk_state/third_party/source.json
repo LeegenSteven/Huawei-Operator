@@ -1,0 +1,82 @@
+{
+  "repository": "https://github.com/state-spaces/mamba",
+  "release": "v2.3.2.post1",
+  "commit": "a14b1dff0454a3bc27d9eb31355dc01e4b2490ec",
+  "source_path": "mamba_ssm/ops/triton/ssd_chunk_state.py",
+  "license": "Apache-2.0",
+  "source_sha256": "6d82771b2f62a7bf84c381c8ef8e4b579a95e0352021d117507a1072e4d71dcd",
+  "license_sha256": "760939b000194d04548ede6a857bbe735d1695d8422ec85955c8e2bd7f4b95c5",
+  "function_sha256": "8ebf2b29e1a692183edd4fa7bb645b2b38c73c6bc40f749b52131f38260ae538",
+  "config_columns": [
+    "M",
+    "N",
+    "K",
+    "num_stages",
+    "num_warps"
+  ],
+  "configs": [
+    [
+      128,
+      256,
+      64,
+      3,
+      8
+    ],
+    [
+      64,
+      256,
+      32,
+      4,
+      4
+    ],
+    [
+      128,
+      128,
+      32,
+      4,
+      4
+    ],
+    [
+      128,
+      64,
+      32,
+      4,
+      4
+    ],
+    [
+      64,
+      128,
+      32,
+      4,
+      4
+    ],
+    [
+      128,
+      32,
+      32,
+      4,
+      4
+    ],
+    [
+      64,
+      32,
+      32,
+      5,
+      2
+    ],
+    [
+      32,
+      64,
+      32,
+      5,
+      2
+    ],
+    [
+      64,
+      64,
+      32,
+      4,
+      2
+    ]
+  ]
+}

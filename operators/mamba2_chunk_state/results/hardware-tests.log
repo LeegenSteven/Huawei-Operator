@@ -1,0 +1,24 @@
+/usr/local/python3.11/lib/python3.11/site-packages/triton/language/extra/cann/extension/math_ops.py:13: FutureWarning: triton.language.extra.cann.extension.atan2 is deprecated and will be removed in the next release; use triton.language.extra.cann.libdevice.atan2 instead.
+  @_deprecated(replacement="triton.language.extra.cann.libdevice.atan2")
+/usr/local/python3.11/lib/python3.11/site-packages/triton/language/extra/cann/extension/math_ops.py:35: FutureWarning: triton.language.extra.cann.extension.isfinited is deprecated and will be removed in the next release; use triton.language.extra.cann.libdevice.isfinited instead.
+  @_deprecated(replacement="triton.language.extra.cann.libdevice.isfinited")
+/usr/local/python3.11/lib/python3.11/site-packages/triton/language/extra/cann/extension/math_ops.py:49: FutureWarning: triton.language.extra.cann.extension.finitef is deprecated and will be removed in the next release; use triton.language.extra.cann.libdevice.finitef instead.
+  @_deprecated(replacement="triton.language.extra.cann.libdevice.finitef")
+test_graph_replay_observes_new_inputs (test_hardware.HardwareTests.test_graph_replay_observes_new_inputs) ... [W1123 03:03:13.357160670 NPUCachingAllocator.cpp:204] Warning: The current CANN and Soc versions require processing for 32 padding size, with memory allocation. (function operator())
+ok
+test_packed_repeated_ids_and_negative_last (test_hardware.HardwareTests.test_packed_repeated_ids_and_negative_last) ... ok
+test_strided_views_and_output (test_hardware.HardwareTests.test_strided_views_and_output) ... /opt/lightning-diag-lab/mamba2/runs/release/operators/mamba2_chunk_state/interface.py:52: UserWarning: Cannot create tensor with interal format while allow_internel_format=False, tensor will be created with base format. (Triggered internally at ../torch_npu/csrc/aten/common/TensorFactories.cpp:437.)
+  states = torch.empty_like(states, memory_format=torch.contiguous_format)
+ok
+test_tail_endpoint_clamp_and_mixed_types (test_hardware.HardwareTests.test_tail_endpoint_clamp_and_mixed_types) ... ok
+test_unseen_shapes_and_chunk_sizes (test_hardware.HardwareTests.test_unseen_shapes_and_chunk_sizes) ... ok
+test_zero_length_and_invalid_shapes (test_hardware.HardwareTests.test_zero_length_and_invalid_shapes) ... ok
+test_group_and_chunk_boundaries (test_reference.ReferenceTests.test_group_and_chunk_boundaries) ... ok
+test_padded_endpoint_repeated_and_negative_ids (test_reference.ReferenceTests.test_padded_endpoint_repeated_and_negative_ids) ... ok
+test_pinned_function_and_all_launch_configs (test_reference.ReferenceTests.test_pinned_function_and_all_launch_configs) ... ok
+test_weighted_operand_rounds_before_reduction (test_reference.ReferenceTests.test_weighted_operand_rounds_before_reduction) ... ok
+
+----------------------------------------------------------------------
+Ran 10 tests in 27.566s
+
+OK

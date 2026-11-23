@@ -1,0 +1,3394 @@
+{
+  "environment": {
+    "timestamp_utc": "2026-11-23T03:03:44.206135+00:00",
+    "python": "3.11.15",
+    "device": "npu:0",
+    "properties": {
+      "name": "Ascend910B3",
+      "cube_core_num": 20,
+      "vector_core_num": 40,
+      "total_memory": 65452113920
+    },
+    "visible_devices": "0",
+    "cann": "/usr/local/Ascend/cann-9.2.0-beta.2",
+    "driver": "Version=25.5.0",
+    "versions": {
+      "torch": "2.9.0+cpu",
+      "torch-npu": "2.9.0.post9",
+      "triton": "3.6.0",
+      "triton-ascend": "3.6.0",
+      "numpy": "1.26.4"
+    },
+    "source_sha256": {
+      "mamba2_chunk_state/baseline_kernel.py": "2d79534e847148df6f9d34b3b09e7561bc87795551a87b13a916d5e41e555109",
+      "mamba2_chunk_state/interface.py": "e9f8a0a3eef24188c44d27e318f76a3729f0bfe25572a99b25efe640316560d4",
+      "mamba2_chunk_state/kernel.py": "6355f073c5f194f6b52d117fcbf75636b87b8314ea4c5e3c913778596c412ae6",
+      "mamba2_chunk_state/inputs.py": "6d27b9b81b17aa61ea592fa5bc4d2e18d41ecc01a87c16c14e2f4dd3b513b6b2",
+      "mamba2_chunk_state/reference.py": "d999208140bf225f1351d815867c7551c8e49d3c16e739cb2347d15b0d753421",
+      "mamba2_chunk_state/benchmark.py": "cc95d7f4c1d389f2b365cfc61a48bb019222ed2370e21700ee2b8a6709abf376",
+      "mamba2_chunk_state/tune_baseline.py": "ca345ee9945b8abbcf2e4aeadaa2637fe8fffabe6da6bc5aa7673589fc08209d",
+      "mamba2_chunk_state/third_party/source.json": "99d2e40b6542a73114a64b79057c92b94fde938eee6134460d5f2ecb712e85dd",
+      "lightning_diag/benchmark.py": "9eee6cd22992adbeb2984cba82be563e1023b0315d118daa49064215cf7b770b",
+      "lightning_diag/reference.py": "7bff44ebce8105799f535f9d8c683f90477d6cd8ad9cb8ec120f383152fc39a4"
+    }
+  },
+  "all_passed": true,
+  "cases": [
+    {
+      "case": {
+        "name": "one_chunk",
+        "batch": 1,
+        "length": 64,
+        "heads": 8,
+        "groups": 2,
+        "headdim": 64,
+        "dstate": 64,
+        "chunk": 64,
+        "dtype": "bfloat16",
+        "labels": "none",
+        "states_in_fp32": true
+      },
+      "input_seed": 20261123,
+      "input_sha256": [
+        "ac5d32cd92dcc24623b3c4f916b6cec05322b7c35d3508debf2821bdc448fa74",
+        "5059e38480a92275b084face64c1ebf3a0f8e5a5bd0caa4a35282330bfdf94cf",
+        "671328464693f7baca8276b86406da6aee2d3f5d8191c2a2985ce043bcd24665",
+        "073f196392ae075072d7cd045656651ab3f3c07c9979ba53dfc15895cab76d82",
+        null
+      ],
+      "upstream_config": [
+        128,
+        64,
+        32,
+        4,
+        4
+      ],
+      "default_configuration": {
+        "m": 64,
+        "col": 64,
+        "k": 64,
+        "pair": false,
+        "rank_one_tail": false,
+        "full_tiles": true
+      },
+      "output_dtype": "float32",
+      "variants": {
+        "optimized": {
+          "correctness": {
+            "passed": true,
+            "finite": true,
+            "max_abs": 3.743171691894531e-05,
+            "relative_l2": 1.6855396129022702e-06,
+            "max_tolerance_ratio": 0.0056926179476559525,
+            "matched_ratio": 1.0,
+            "atol": 0.006,
+            "rtol": 0.003,
+            "deterministic": true,
+            "output_contract": true,
+            "inputs_unchanged": true
+          },
+          "vs_control": {
+            "passed": true,
+            "finite": true,
+            "max_abs": 0.0,
+            "relative_l2": 0.0,
+            "max_tolerance_ratio": 0.0,
+            "matched_ratio": 1.0,
+            "atol": 0.006,
+            "rtol": 0.003
+          },
+          "performance": {
+            "timing": "graph",
+            "capture_ops": 16,
+            "replays_per_measurement": 4,
+            "samples": [
+              {
+                "baseline_us": [
+                  9.046250022947788,
+                  9.228437207639217
+                ],
+                "candidate_us": [
+                  9.856250137090683,
+                  8.522812277078629
+                ],
+                "order": [
+                  "baseline",
+                  "candidate",
+                  "candidate",
+                  "baseline"
+                ]
+              },
+              {
+                "baseline_us": [
+                  9.169687516987324,
+                  9.191250428557396
+                ],
+                "candidate_us": [
+                  8.43687541782856,
+                  8.478749543428421
+                ],
+                "order": [
+                  "candidate",
+                  "baseline",
+                  "baseline",
+                  "candidate"
+                ]
+              },
+              {
+                "baseline_us": [
+                  9.10781230777502,
+                  9.168124757707119
+                ],
+                "candidate_us": [
+                  8.485624566674232,
+                  8.509687148034573
+                ],
+                "order": [
+                  "baseline",
+                  "candidate",
+                  "candidate",
+                  "baseline"
+                ]
+              },
+              {
+                "baseline_us": [
+                  9.154374711215496,
+                  9.148750454187393
+                ],
+                "candidate_us": [
+                  8.454062044620514,
+                  8.412187919020653
+                ],
+                "order": [
+                  "candidate",
+                  "baseline",
+                  "baseline",
+                  "candidate"
+                ]
+              },
+              {
+                "baseline_us": [
+                  9.170625358819962,
+                  9.171875193715096
+                ],
+                "candidate_us": [
+                  8.442499674856663,
+                  8.444687351584435
+                ],
+                "order": [
+                  "baseline",
+                  "candidate",
+                  "candidate",
+                  "baseline"
+                ]
+              },
+              {
+                "baseline_us": [
+                  9.171875193715096,
+                  9.158437140285969
+                ],
+                "candidate_us": [
+                  8.439375087618828,
+                  8.502500131726265
+                ],
+                "order": [
+                  "candidate",
+                  "baseline",
+                  "baseline",
+                  "candidate"
+                ]
+              },
+              {
+                "baseline_us": [
+                  9.180000051856041,
+                  9.200000204145908
+                ],
+                "candidate_us": [
+                  8.528124541044235,
+                  8.477812632918358
+                ],
+                "order": [
+                  "baseline",
+                  "candidate",
+                  "candidate",
+                  "baseline"
+                ]
+              }
+            ],
+            "baseline_us": 9.170156437903643,
+            "candidate_us": 8.47828108817339,
+            "speedup": 1.0816056158712846,
+            "baseline_min_max_us": [
+              9.046250022947788,
+              9.228437207639217
+            ],
+            "candidate_min_max_us": [
+              8.412187919020653,
+              9.856250137090683
+            ]
+          }
+        }
+      },
+      "baseline_correctness": {
+        "passed": true,
+        "finite": true,
+        "max_abs": 3.743171691894531e-05,
+        "relative_l2": 1.6855396129022702e-06,
+        "max_tolerance_ratio": 0.0056926179476559525,
+        "matched_ratio": 1.0,
+        "atol": 0.006,
+        "rtol": 0.003,
+        "deterministic": true,
+        "output_contract": true,
+        "inputs_unchanged": true
+      }
+    },
+    {
+      "case": {
+        "name": "many_heads",
+        "batch": 1,
+        "length": 256,
+        "heads": 32,
+        "groups": 4,
+        "headdim": 64,
+        "dstate": 64,
+        "chunk": 64,
+        "dtype": "bfloat16",
+        "labels": "none",
+        "states_in_fp32": true
+      },
+      "input_seed": 20261124,
+      "input_sha256": [
+        "c821b8fb91a6b926c38161d147d25ae6a5f9a2bb7ef2dc0f16d18c8e2853f15c",
+        "e6c1f8fc790b37dccba1dc45de257923d970296dea21c672524f286d7888bf0e",
+        "4bd87d2a3e89b12b74bd5ec22745cbf3b28414f61ffd7865c60baa096e2068a9",
+        "f83436073e4b5a5d0203fd6bacba1800f9ebf4cafaa2588ddf2392696e371252",
+        null
+      ],
+      "upstream_config": [
+        128,
+        64,
+        32,
+        4,
+        4
+      ],
+      "default_configuration": {
+        "m": 64,
+        "col": 64,
+        "k": 64,
+        "pair": true,
+        "rank_one_tail": false,
+        "full_tiles": true
+      },
+      "output_dtype": "float32",
+      "variants": {
+        "optimized": {
+          "correctness": {
+            "passed": true,
+            "finite": true,
+            "max_abs": 9.012222290039062e-05,
+            "relative_l2": 1.2355734305120715e-06,
+            "max_tolerance_ratio": 0.013954249913333099,
+            "matched_ratio": 1.0,
+            "atol": 0.006,
+            "rtol": 0.003,
+            "deterministic": true,
+            "output_contract": true,
+            "inputs_unchanged": true
+          },
+          "vs_control": {
+            "passed": true,
+            "finite": true,
+            "max_abs": 0.0,
+            "relative_l2": 0.0,
+            "max_tolerance_ratio": 0.0,
+            "matched_ratio": 1.0,
+            "atol": 0.006,
+            "rtol": 0.003
+          },
+          "performance": {
+            "timing": "graph",
+            "capture_ops": 16,
+            "replays_per_measurement": 4,
+            "samples": [
+              {
+                "baseline_us": [
+                  28.690937906503677,
+                  28.55437435209751
+                ],
+                "candidate_us": [
+                  17.076250165700912,
+                  17.128437757492065
+                ],
+                "order": [
+                  "baseline",
+                  "candidate",
+                  "candidate",
+                  "baseline"
+                ]
+              },
+              {
+                "baseline_us": [
+                  28.597187250852585,
+                  28.716249391436577
+                ],
+                "candidate_us": [
+                  17.18687452375889,
+                  17.08156242966652
+                ],
+                "order": [
+                  "candidate",
+                  "baseline",
+                  "baseline",
+                  "candidate"
+                ]
+              },
+              {
+                "baseline_us": [
+                  28.494061902165413,
+                  29.48218770325184
+                ],
+                "candidate_us": [
+                  17.221249639987946,
+                  17.733750864863396
+                ],
+                "order": [
+                  "baseline",
+                  "candidate",
+                  "candidate",
+                  "baseline"
+                ]
+              },
+              {
+                "baseline_us": [
+                  28.41343730688095,
+                  28.44781242311001
+                ],
+                "candidate_us": [
+                  17.000311985611916,
+                  17.761249095201492
+                ],
+                "order": [
+                  "candidate",
+                  "baseline",
+                  "baseline",
+                  "candidate"
+                ]
+              },
+              {
+                "baseline_us": [
+                  28.55031192302704,
+                  28.277812525629997
+                ],
+                "candidate_us": [
+                  16.972187906503677,
+                  16.981562599539757
+                ],
+                "order": [
+                  "baseline",
+                  "candidate",
+                  "candidate",
+                  "baseline"
+                ]
+              },
+              {
+                "baseline_us": [
+                  28.510937467217445,
+                  28.42281199991703
+                ],
+                "candidate_us": [
+                  17.156561836600304,
+                  17.029061913490295
+                ],
+                "order": [
+                  "candidate",
+                  "baseline",
+                  "baseline",
+                  "candidate"
+                ]
+              },
+              {
+                "baseline_us": [
+                  28.45156192779541,
+                  33.96781161427498
+                ],
+                "candidate_us": [
+                  17.170000821352005,
+                  17.77937449514866
+                ],
+                "order": [
+                  "baseline",
+                  "candidate",
+                  "candidate",
+                  "baseline"
+                ]
+              }
+            ],
+            "baseline_us": 28.530624695122242,
+            "candidate_us": 17.142499797046185,
+            "speedup": 1.6643211336096,
+            "baseline_min_max_us": [
+              28.277812525629997,
+              33.96781161427498
+            ],
+            "candidate_min_max_us": [
+              16.972187906503677,
+              17.77937449514866
+            ]
+          }
+        }
+      },
+      "baseline_correctness": {
+        "passed": true,
+        "finite": true,
+        "max_abs": 9.012222290039062e-05,
+        "relative_l2": 1.2355734305120715e-06,
+        "max_tolerance_ratio": 0.013954249913333099,
+        "matched_ratio": 1.0,
+        "atol": 0.006,
+        "rtol": 0.003,
+        "deterministic": true,
+        "output_contract": true,
+        "inputs_unchanged": true
+      }
+    },
+    {
+      "case": {
+        "name": "prefill1k",
+        "batch": 1,
+        "length": 1024,
+        "heads": 16,
+        "groups": 4,
+        "headdim": 64,
+        "dstate": 128,
+        "chunk": 128,
+        "dtype": "bfloat16",
+        "labels": "none",
+        "states_in_fp32": true
+      },
+      "input_seed": 20261125,
+      "input_sha256": [
+        "f40c495ae8727d5ff4e093cbb599add373d438324c2e917facfa7c8eadb2aa5b",
+        "dd85754bff7fcbf35442814743bfdc23f6dabbf4c9f48320b8cfd96671b8d547",
+        "15f6a382b6fdaa0c03288686a81e10c078a724e1fb767202b9ebf0dd1b485882",
+        "5c345c13b014f4378bd01c72fd6376984a5d7de8d29c6988223fa0116b7acf4c",
+        null
+      ],
+      "upstream_config": [
+        128,
+        256,
+        64,
+        3,
+        8
+      ],
+      "default_configuration": {
+        "m": 64,
+        "col": 128,
+        "k": 128,
+        "pair": false,
+        "rank_one_tail": false,
+        "full_tiles": true
+      },
+      "output_dtype": "float32",
+      "variants": {
+        "optimized": {
+          "correctness": {
+            "passed": true,
+            "finite": true,
+            "max_abs": 0.00010633468627929688,
+            "relative_l2": 6.332687855183305e-07,
+            "max_tolerance_ratio": 0.016459531671889384,
+            "matched_ratio": 1.0,
+            "atol": 0.006,
+            "rtol": 0.003,
+            "deterministic": true,
+            "output_contract": true,
+            "inputs_unchanged": true
+          },
+          "vs_control": {
+            "passed": true,
+            "finite": true,
+            "max_abs": 0.0,
+            "relative_l2": 0.0,
+            "max_tolerance_ratio": 0.0,
+            "matched_ratio": 1.0,
+            "atol": 0.006,
+            "rtol": 0.003
+          },
+          "performance": {
+            "timing": "graph",
+            "capture_ops": 16,
+            "replays_per_measurement": 4,
+            "samples": [
+              {
+                "baseline_us": [
+                  35.67812591791153,
+                  35.791873931884766
+                ],
+                "candidate_us": [
+                  18.421562388539314,
+                  18.431562930345535
+                ],
+                "order": [
+                  "baseline",
+                  "candidate",
+                  "candidate",
+                  "baseline"
+                ]
+              },
+              {
+                "baseline_us": [
+                  35.87906435132027,
+                  35.98906099796295
+                ],
+                "candidate_us": [
+                  18.40999908745289,
+                  18.504999577999115
+                ],
+                "order": [
+                  "candidate",
+                  "baseline",
+                  "baseline",
+                  "candidate"
+                ]
+              },
+              {
+                "baseline_us": [
+                  35.78062355518341,
+                  36.111876368522644
+                ],
+                "candidate_us": [
+                  18.418436869978905,
+                  18.449999392032623
+                ],
+                "order": [
+                  "baseline",
+                  "candidate",
+                  "candidate",
+                  "baseline"
+                ]
+              },
+              {
+                "baseline_us": [
+                  36.33187338709831,
+                  35.570625215768814
+                ],
+                "candidate_us": [
+                  18.627500161528587,
+                  18.473124131560326
+                ],
+                "order": [
+                  "candidate",
+                  "baseline",
+                  "baseline",
+                  "candidate"
+                ]
+              },
+              {
+                "baseline_us": [
+                  35.90437397360802,
+                  35.59187427163124
+                ],
+                "candidate_us": [
+                  18.454061821103096,
+                  18.38187500834465
+                ],
+                "order": [
+                  "baseline",
+                  "candidate",
+                  "candidate",
+                  "baseline"
+                ]
+              },
+              {
+                "baseline_us": [
+                  36.03687509894371,
+                  36.128126084804535
+                ],
+                "candidate_us": [
+                  18.434686586260796,
+                  18.395937979221344
+                ],
+                "order": [
+                  "candidate",
+                  "baseline",
+                  "baseline",
+                  "candidate"
+                ]
+              },
+              {
+                "baseline_us": [
+                  35.625312477350235,
+                  36.13656386733055
+                ],
+                "candidate_us": [
+                  18.387187272310257,
+                  18.470624461770058
+                ],
+                "order": [
+                  "baseline",
+                  "candidate",
+                  "candidate",
+                  "baseline"
+                ]
+              }
+            ],
+            "baseline_us": 35.89171916246414,
+            "candidate_us": 18.433124758303165,
+            "speedup": 1.947131570641423,
+            "baseline_min_max_us": [
+              35.570625215768814,
+              36.33187338709831
+            ],
+            "candidate_min_max_us": [
+              18.38187500834465,
+              18.627500161528587
+            ]
+          }
+        }
+      },
+      "baseline_correctness": {
+        "passed": true,
+        "finite": true,
+        "max_abs": 0.00010633468627929688,
+        "relative_l2": 6.332687855183305e-07,
+        "max_tolerance_ratio": 0.016459531671889384,
+        "matched_ratio": 1.0,
+        "atol": 0.006,
+        "rtol": 0.003,
+        "deterministic": true,
+        "output_contract": true,
+        "inputs_unchanged": true
+      }
+    },
+    {
+      "case": {
+        "name": "prefill4k",
+        "batch": 1,
+        "length": 4096,
+        "heads": 16,
+        "groups": 4,
+        "headdim": 64,
+        "dstate": 128,
+        "chunk": 256,
+        "dtype": "bfloat16",
+        "labels": "none",
+        "states_in_fp32": true
+      },
+      "input_seed": 20261126,
+      "input_sha256": [
+        "102af02e4322912d1a4e878e0690e7566b823eb84a3a36804c48840ae5916774",
+        "4628e5b66540b250422cfb83dca8fbe6dab59f6d177fbb93d44d98b795a0615f",
+        "d0213dae52ae3a95f72ecf15a88d64d5dde05c209f0e7ca025ba335072098f1e",
+        "5429bdb651ec063c549b8210c95e72180b82907f83d46f9de14d434a78396c21",
+        null
+      ],
+      "upstream_config": [
+        128,
+        256,
+        64,
+        3,
+        8
+      ],
+      "default_configuration": {
+        "m": 64,
+        "col": 128,
+        "k": 128,
+        "pair": false,
+        "rank_one_tail": false,
+        "full_tiles": true
+      },
+      "output_dtype": "float32",
+      "variants": {
+        "optimized": {
+          "correctness": {
+            "passed": true,
+            "finite": true,
+            "max_abs": 0.0006103515625,
+            "relative_l2": 3.842600988224026e-06,
+            "max_tolerance_ratio": 0.09164633929157823,
+            "matched_ratio": 1.0,
+            "atol": 0.006,
+            "rtol": 0.003,
+            "deterministic": true,
+            "output_contract": true,
+            "inputs_unchanged": true
+          },
+          "vs_control": {
+            "passed": true,
+            "finite": true,
+            "max_abs": 0.0,
+            "relative_l2": 0.0,
+            "max_tolerance_ratio": 0.0,
+            "matched_ratio": 1.0,
+            "atol": 0.006,
+            "rtol": 0.003
+          },
+          "performance": {
+            "timing": "graph",
+            "capture_ops": 16,
+            "replays_per_measurement": 4,
+            "samples": [
+              {
+                "baseline_us": [
+                  86.25468611717224,
+                  85.63219010829926
+                ],
+                "candidate_us": [
+                  54.675936698913574,
+                  54.08250167965889
+                ],
+                "order": [
+                  "baseline",
+                  "candidate",
+                  "candidate",
+                  "baseline"
+                ]
+              },
+              {
+                "baseline_us": [
+                  85.48437803983688,
+                  85.83249896764755
+                ],
+                "candidate_us": [
+                  54.17843908071518,
+                  55.028438568115234
+                ],
+                "order": [
+                  "candidate",
+                  "baseline",
+                  "baseline",
+                  "candidate"
+                ]
+              },
+              {
+                "baseline_us": [
+                  85.54437756538391,
+                  85.51562577486038
+                ],
+                "candidate_us": [
+                  54.26781252026558,
+                  54.28687483072281
+                ],
+                "order": [
+                  "baseline",
+                  "candidate",
+                  "candidate",
+                  "baseline"
+                ]
+              },
+              {
+                "baseline_us": [
+                  86.35156601667404,
+                  85.76031029224396
+                ],
+                "candidate_us": [
+                  54.148439317941666,
+                  54.41749840974808
+                ],
+                "order": [
+                  "candidate",
+                  "baseline",
+                  "baseline",
+                  "candidate"
+                ]
+              },
+              {
+                "baseline_us": [
+                  85.7921838760376,
+                  85.71218699216843
+                ],
+                "candidate_us": [
+                  54.05062437057495,
+                  53.984686732292175
+                ],
+                "order": [
+                  "baseline",
+                  "candidate",
+                  "candidate",
+                  "baseline"
+                ]
+              },
+              {
+                "baseline_us": [
+                  85.79468727111816,
+                  85.62656491994858
+                ],
+                "candidate_us": [
+                  54.11500111222267,
+                  54.11968752741814
+                ],
+                "order": [
+                  "candidate",
+                  "baseline",
+                  "baseline",
+                  "candidate"
+                ]
+              },
+              {
+                "baseline_us": [
+                  85.64499765634537,
+                  85.40406078100204
+                ],
+                "candidate_us": [
+                  54.23562601208687,
+                  54.179687052965164
+                ],
+                "order": [
+                  "baseline",
+                  "candidate",
+                  "candidate",
+                  "baseline"
+                ]
+              }
+            ],
+            "baseline_us": 85.6785923242569,
+            "candidate_us": 54.17906306684017,
+            "speedup": 1.5813967144200347,
+            "baseline_min_max_us": [
+              85.40406078100204,
+              86.35156601667404
+            ],
+            "candidate_min_max_us": [
+              53.984686732292175,
+              55.028438568115234
+            ]
+          }
+        }
+      },
+      "baseline_correctness": {
+        "passed": true,
+        "finite": true,
+        "max_abs": 0.0006103515625,
+        "relative_l2": 3.842600988224026e-06,
+        "max_tolerance_ratio": 0.09164633929157823,
+        "matched_ratio": 1.0,
+        "atol": 0.006,
+        "rtol": 0.003,
+        "deterministic": true,
+        "output_contract": true,
+        "inputs_unchanged": true
+      }
+    },
+    {
+      "case": {
+        "name": "batch2",
+        "batch": 2,
+        "length": 512,
+        "heads": 8,
+        "groups": 2,
+        "headdim": 64,
+        "dstate": 128,
+        "chunk": 128,
+        "dtype": "bfloat16",
+        "labels": "none",
+        "states_in_fp32": true
+      },
+      "input_seed": 20261127,
+      "input_sha256": [
+        "841588feb56a1ca905e5cdb9b796797e872004c05ffeb394df4cd5cb86d43a3f",
+        "26919feeedb99bcc22054a9a5460243b520bddb4bc9c3c3299c9e90cd73df4ab",
+        "24ed25da03ecc3d024155b4fc8547706258a6aa3887f3886a122298de5822e1a",
+        "819ce041aee8f52a71bec33203e011ebf41fe3b210a9eb538c29284cc90cce78",
+        null
+      ],
+      "upstream_config": [
+        128,
+        256,
+        64,
+        3,
+        8
+      ],
+      "default_configuration": {
+        "m": 64,
+        "col": 128,
+        "k": 128,
+        "pair": false,
+        "rank_one_tail": false,
+        "full_tiles": true
+      },
+      "output_dtype": "float32",
+      "variants": {
+        "optimized": {
+          "correctness": {
+            "passed": true,
+            "finite": true,
+            "max_abs": 2.9802322387695312e-06,
+            "relative_l2": 4.874853309186824e-08,
+            "max_tolerance_ratio": 0.0003719758346047839,
+            "matched_ratio": 1.0,
+            "atol": 0.006,
+            "rtol": 0.003,
+            "deterministic": true,
+            "output_contract": true,
+            "inputs_unchanged": true
+          },
+          "vs_control": {
+            "passed": true,
+            "finite": true,
+            "max_abs": 0.0,
+            "relative_l2": 0.0,
+            "max_tolerance_ratio": 0.0,
+            "matched_ratio": 1.0,
+            "atol": 0.006,
+            "rtol": 0.003
+          },
+          "performance": {
+            "timing": "graph",
+            "capture_ops": 16,
+            "replays_per_measurement": 4,
+            "samples": [
+              {
+                "baseline_us": [
+                  24.88437481224537,
+                  24.47187528014183
+                ],
+                "candidate_us": [
+                  14.537500217556953,
+                  14.584687538444996
+                ],
+                "order": [
+                  "baseline",
+                  "candidate",
+                  "candidate",
+                  "baseline"
+                ]
+              },
+              {
+                "baseline_us": [
+                  24.85593780875206,
+                  24.565313011407852
+                ],
+                "candidate_us": [
+                  14.721875078976154,
+                  14.577187597751617
+                ],
+                "order": [
+                  "candidate",
+                  "baseline",
+                  "baseline",
+                  "candidate"
+                ]
+              },
+              {
+                "baseline_us": [
+                  24.47156235575676,
+                  24.52000044286251
+                ],
+                "candidate_us": [
+                  14.329374767839909,
+                  14.410937204957008
+                ],
+                "order": [
+                  "baseline",
+                  "candidate",
+                  "candidate",
+                  "baseline"
+                ]
+              },
+              {
+                "baseline_us": [
+                  24.18999932706356,
+                  24.64156225323677
+                ],
+                "candidate_us": [
+                  14.352187514305115,
+                  14.366562478244305
+                ],
+                "order": [
+                  "candidate",
+                  "baseline",
+                  "baseline",
+                  "candidate"
+                ]
+              },
+              {
+                "baseline_us": [
+                  24.473125115036964,
+                  24.3946872651577
+                ],
+                "candidate_us": [
+                  15.082187950611115,
+                  14.434374868869781
+                ],
+                "order": [
+                  "baseline",
+                  "candidate",
+                  "candidate",
+                  "baseline"
+                ]
+              },
+              {
+                "baseline_us": [
+                  24.414999410510063,
+                  24.21499975025654
+                ],
+                "candidate_us": [
+                  14.333437196910381,
+                  14.313749969005585
+                ],
+                "order": [
+                  "candidate",
+                  "baseline",
+                  "baseline",
+                  "candidate"
+                ]
+              },
+              {
+                "baseline_us": [
+                  24.51343834400177,
+                  24.102186784148216
+                ],
+                "candidate_us": [
+                  14.319375157356262,
+                  14.254375360906124
+                ],
+                "order": [
+                  "baseline",
+                  "candidate",
+                  "candidate",
+                  "baseline"
+                ]
+              }
+            ],
+            "baseline_us": 24.472500197589397,
+            "candidate_us": 14.388749841600657,
+            "speedup": 1.70080795531205,
+            "baseline_min_max_us": [
+              24.102186784148216,
+              24.88437481224537
+            ],
+            "candidate_min_max_us": [
+              14.254375360906124,
+              15.082187950611115
+            ]
+          }
+        }
+      },
+      "baseline_correctness": {
+        "passed": true,
+        "finite": true,
+        "max_abs": 2.9802322387695312e-06,
+        "relative_l2": 4.874853309186824e-08,
+        "max_tolerance_ratio": 0.0003719758346047839,
+        "matched_ratio": 1.0,
+        "atol": 0.006,
+        "rtol": 0.003,
+        "deterministic": true,
+        "output_contract": true,
+        "inputs_unchanged": true
+      }
+    },
+    {
+      "case": {
+        "name": "chunk32",
+        "batch": 1,
+        "length": 256,
+        "heads": 8,
+        "groups": 1,
+        "headdim": 32,
+        "dstate": 64,
+        "chunk": 32,
+        "dtype": "bfloat16",
+        "labels": "none",
+        "states_in_fp32": true
+      },
+      "input_seed": 20261128,
+      "input_sha256": [
+        "e8fa0eaaf2565da28ca2cddc97a97ad934fb895e1a398771b8a12c5ca73b1922",
+        "ea7529e6c6fa65ba12e20c477aac91449bf4fd063003553916a2fc47c660db63",
+        "b47617a408b9c9bcb44979dad51ff86523bf8c93817147d2dff37a5230ca7d81",
+        "fc7f4e0d04fceb44baa815cc44bddb0b2a696ee0c12b5200a25fc76e41c0bd38",
+        null
+      ],
+      "upstream_config": [
+        32,
+        64,
+        32,
+        5,
+        2
+      ],
+      "default_configuration": {
+        "m": 32,
+        "col": 64,
+        "k": 32,
+        "pair": false,
+        "rank_one_tail": false,
+        "full_tiles": true
+      },
+      "output_dtype": "float32",
+      "variants": {
+        "optimized": {
+          "correctness": {
+            "passed": true,
+            "finite": true,
+            "max_abs": 0.000820159912109375,
+            "relative_l2": 1.2783566123431714e-05,
+            "max_tolerance_ratio": 0.13253253869770437,
+            "matched_ratio": 1.0,
+            "atol": 0.006,
+            "rtol": 0.003,
+            "deterministic": true,
+            "output_contract": true,
+            "inputs_unchanged": true
+          },
+          "vs_control": {
+            "passed": true,
+            "finite": true,
+            "max_abs": 0.0,
+            "relative_l2": 0.0,
+            "max_tolerance_ratio": 0.0,
+            "matched_ratio": 1.0,
+            "atol": 0.006,
+            "rtol": 0.003
+          },
+          "performance": {
+            "timing": "graph",
+            "capture_ops": 16,
+            "replays_per_measurement": 4,
+            "samples": [
+              {
+                "baseline_us": [
+                  16.539687290787697,
+                  16.68531261384487
+                ],
+                "candidate_us": [
+                  11.767187155783176,
+                  11.764062568545341
+                ],
+                "order": [
+                  "baseline",
+                  "candidate",
+                  "candidate",
+                  "baseline"
+                ]
+              },
+              {
+                "baseline_us": [
+                  16.869688406586647,
+                  16.75250008702278
+                ],
+                "candidate_us": [
+                  11.6371875628829,
+                  11.763437651097775
+                ],
+                "order": [
+                  "candidate",
+                  "baseline",
+                  "baseline",
+                  "candidate"
+                ]
+              },
+              {
+                "baseline_us": [
+                  16.708437353372574,
+                  16.780000180006027
+                ],
+                "candidate_us": [
+                  11.791249737143517,
+                  11.69656217098236
+                ],
+                "order": [
+                  "baseline",
+                  "candidate",
+                  "candidate",
+                  "baseline"
+                ]
+              },
+              {
+                "baseline_us": [
+                  16.683125868439674,
+                  16.73593744635582
+                ],
+                "candidate_us": [
+                  11.735312640666962,
+                  11.71875
+                ],
+                "order": [
+                  "candidate",
+                  "baseline",
+                  "baseline",
+                  "candidate"
+                ]
+              },
+              {
+                "baseline_us": [
+                  16.763750463724136,
+                  16.734687611460686
+                ],
+                "candidate_us": [
+                  11.769687756896019,
+                  11.781562119722366
+                ],
+                "order": [
+                  "baseline",
+                  "candidate",
+                  "candidate",
+                  "baseline"
+                ]
+              },
+              {
+                "baseline_us": [
+                  16.74281246960163,
+                  16.785625368356705
+                ],
+                "candidate_us": [
+                  11.860312893986702,
+                  11.633750051259995
+                ],
+                "order": [
+                  "candidate",
+                  "baseline",
+                  "baseline",
+                  "candidate"
+                ]
+              },
+              {
+                "baseline_us": [
+                  16.782499849796295,
+                  16.788750886917114
+                ],
+                "candidate_us": [
+                  11.655624955892563,
+                  11.707812547683716
+                ],
+                "order": [
+                  "baseline",
+                  "candidate",
+                  "candidate",
+                  "baseline"
+                ]
+              }
+            ],
+            "baseline_us": 16.747656278312206,
+            "candidate_us": 11.749375145882368,
+            "speedup": 1.4254082511086994,
+            "baseline_min_max_us": [
+              16.539687290787697,
+              16.869688406586647
+            ],
+            "candidate_min_max_us": [
+              11.633750051259995,
+              11.860312893986702
+            ]
+          }
+        }
+      },
+      "baseline_correctness": {
+        "passed": true,
+        "finite": true,
+        "max_abs": 0.000820159912109375,
+        "relative_l2": 1.2783566123431714e-05,
+        "max_tolerance_ratio": 0.13253253869770437,
+        "matched_ratio": 1.0,
+        "atol": 0.006,
+        "rtol": 0.003,
+        "deterministic": true,
+        "output_contract": true,
+        "inputs_unchanged": true
+      }
+    },
+    {
+      "case": {
+        "name": "shared_b",
+        "batch": 1,
+        "length": 1024,
+        "heads": 32,
+        "groups": 1,
+        "headdim": 64,
+        "dstate": 64,
+        "chunk": 128,
+        "dtype": "bfloat16",
+        "labels": "none",
+        "states_in_fp32": true
+      },
+      "input_seed": 20261129,
+      "input_sha256": [
+        "d6a94eb86db56e086c718ce707206c3e06a73e5456d710019a8e81bfa1c2648c",
+        "bea62aa429af3da000d1e1c139fffc8938facbb196110278e0ba714c4c733165",
+        "39d767faed7fb0764107b9c5908aa344b3ef33f4f8a50252c02eb7b37058076f",
+        "c2471b16342c189f1584c2e092a8d3fca30da674f4dae5eaed3e1370b3b40f10",
+        null
+      ],
+      "upstream_config": [
+        128,
+        256,
+        64,
+        3,
+        8
+      ],
+      "default_configuration": {
+        "m": 64,
+        "col": 64,
+        "k": 128,
+        "pair": true,
+        "rank_one_tail": false,
+        "full_tiles": true
+      },
+      "output_dtype": "float32",
+      "variants": {
+        "optimized": {
+          "correctness": {
+            "passed": true,
+            "finite": true,
+            "max_abs": 0.000354766845703125,
+            "relative_l2": 2.4097337863403073e-06,
+            "max_tolerance_ratio": 0.046814483240190836,
+            "matched_ratio": 1.0,
+            "atol": 0.006,
+            "rtol": 0.003,
+            "deterministic": true,
+            "output_contract": true,
+            "inputs_unchanged": true
+          },
+          "vs_control": {
+            "passed": true,
+            "finite": true,
+            "max_abs": 0.0,
+            "relative_l2": 0.0,
+            "max_tolerance_ratio": 0.0,
+            "matched_ratio": 1.0,
+            "atol": 0.006,
+            "rtol": 0.003
+          },
+          "performance": {
+            "timing": "graph",
+            "capture_ops": 16,
+            "replays_per_measurement": 4,
+            "samples": [
+              {
+                "baseline_us": [
+                  59.46062505245209,
+                  59.504374861717224
+                ],
+                "candidate_us": [
+                  25.883749127388,
+                  25.71093663573265
+                ],
+                "order": [
+                  "baseline",
+                  "candidate",
+                  "candidate",
+                  "baseline"
+                ]
+              },
+              {
+                "baseline_us": [
+                  59.38093736767769,
+                  59.2074990272522
+                ],
+                "candidate_us": [
+                  25.517811998724937,
+                  25.500312447547913
+                ],
+                "order": [
+                  "candidate",
+                  "baseline",
+                  "baseline",
+                  "candidate"
+                ]
+              },
+              {
+                "baseline_us": [
+                  59.42531302571297,
+                  59.36500057578087
+                ],
+                "candidate_us": [
+                  25.52250027656555,
+                  25.79374983906746
+                ],
+                "order": [
+                  "baseline",
+                  "candidate",
+                  "candidate",
+                  "baseline"
+                ]
+              },
+              {
+                "baseline_us": [
+                  59.546250849962234,
+                  59.213750064373016
+                ],
+                "candidate_us": [
+                  25.58562532067299,
+                  25.67187510430813
+                ],
+                "order": [
+                  "candidate",
+                  "baseline",
+                  "baseline",
+                  "candidate"
+                ]
+              },
+              {
+                "baseline_us": [
+                  59.16687473654747,
+                  59.42187458276749
+                ],
+                "candidate_us": [
+                  25.66562592983246,
+                  25.59593692421913
+                ],
+                "order": [
+                  "baseline",
+                  "candidate",
+                  "candidate",
+                  "baseline"
+                ]
+              },
+              {
+                "baseline_us": [
+                  59.290625154972076,
+                  59.280626475811005
+                ],
+                "candidate_us": [
+                  25.853125378489494,
+                  25.375625118613243
+                ],
+                "order": [
+                  "candidate",
+                  "baseline",
+                  "baseline",
+                  "candidate"
+                ]
+              },
+              {
+                "baseline_us": [
+                  59.41437557339668,
+                  59.382498264312744
+                ],
+                "candidate_us": [
+                  25.504061952233315,
+                  25.525936856865883
+                ],
+                "order": [
+                  "baseline",
+                  "candidate",
+                  "candidate",
+                  "baseline"
+                ]
+              }
+            ],
+            "baseline_us": 59.381717815995216,
+            "candidate_us": 25.59078112244606,
+            "speedup": 2.3204339692433464,
+            "baseline_min_max_us": [
+              59.16687473654747,
+              59.546250849962234
+            ],
+            "candidate_min_max_us": [
+              25.375625118613243,
+              25.883749127388
+            ]
+          }
+        }
+      },
+      "baseline_correctness": {
+        "passed": true,
+        "finite": true,
+        "max_abs": 0.000354766845703125,
+        "relative_l2": 2.4097337863403073e-06,
+        "max_tolerance_ratio": 0.046814483240190836,
+        "matched_ratio": 1.0,
+        "atol": 0.006,
+        "rtol": 0.003,
+        "deterministic": true,
+        "output_contract": true,
+        "inputs_unchanged": true
+      }
+    },
+    {
+      "case": {
+        "name": "per_head_b",
+        "batch": 1,
+        "length": 512,
+        "heads": 8,
+        "groups": 8,
+        "headdim": 64,
+        "dstate": 64,
+        "chunk": 128,
+        "dtype": "bfloat16",
+        "labels": "none",
+        "states_in_fp32": true
+      },
+      "input_seed": 20261130,
+      "input_sha256": [
+        "c9a7a698dd66d1e2a7edffdae6584fb5767c8430cfb6954e2f9783f45da5667d",
+        "d9ad9ea75c7b1ba6be91b89a4e3559e5bd356df5e9a4856add8d1a76a80c59aa",
+        "1e512cd739ea8c07e0f95bcf1ab30efe6393f6347074f69dee4ec0ba3fd83b87",
+        "2f0c2cf71076684b400d61ef7437c316eba5b9b46a73014aaece6ee5c82c124a",
+        null
+      ],
+      "upstream_config": [
+        128,
+        256,
+        64,
+        3,
+        8
+      ],
+      "default_configuration": {
+        "m": 64,
+        "col": 64,
+        "k": 128,
+        "pair": false,
+        "rank_one_tail": false,
+        "full_tiles": true
+      },
+      "output_dtype": "float32",
+      "variants": {
+        "optimized": {
+          "correctness": {
+            "passed": true,
+            "finite": true,
+            "max_abs": 2.0740553736686707e-05,
+            "relative_l2": 4.0744547493496683e-07,
+            "max_tolerance_ratio": 0.003411263994752279,
+            "matched_ratio": 1.0,
+            "atol": 0.006,
+            "rtol": 0.003,
+            "deterministic": true,
+            "output_contract": true,
+            "inputs_unchanged": true
+          },
+          "vs_control": {
+            "passed": true,
+            "finite": true,
+            "max_abs": 0.0,
+            "relative_l2": 0.0,
+            "max_tolerance_ratio": 0.0,
+            "matched_ratio": 1.0,
+            "atol": 0.006,
+            "rtol": 0.003
+          },
+          "performance": {
+            "timing": "graph",
+            "capture_ops": 16,
+            "replays_per_measurement": 4,
+            "samples": [
+              {
+                "baseline_us": [
+                  17.662812024354935,
+                  17.535937950015068
+                ],
+                "candidate_us": [
+                  11.409999802708626,
+                  11.566249653697014
+                ],
+                "order": [
+                  "baseline",
+                  "candidate",
+                  "candidate",
+                  "baseline"
+                ]
+              },
+              {
+                "baseline_us": [
+                  17.675312235951424,
+                  17.65531301498413
+                ],
+                "candidate_us": [
+                  11.381562799215317,
+                  11.452499777078629
+                ],
+                "order": [
+                  "candidate",
+                  "baseline",
+                  "baseline",
+                  "candidate"
+                ]
+              },
+              {
+                "baseline_us": [
+                  17.688125371932983,
+                  17.736874520778656
+                ],
+                "candidate_us": [
+                  11.463125236332417,
+                  11.454062536358833
+                ],
+                "order": [
+                  "baseline",
+                  "candidate",
+                  "candidate",
+                  "baseline"
+                ]
+              },
+              {
+                "baseline_us": [
+                  17.708750441670418,
+                  17.61624962091446
+                ],
+                "candidate_us": [
+                  11.487499810755253,
+                  11.506250128149986
+                ],
+                "order": [
+                  "candidate",
+                  "baseline",
+                  "baseline",
+                  "candidate"
+                ]
+              },
+              {
+                "baseline_us": [
+                  17.71531254053116,
+                  17.740312963724136
+                ],
+                "candidate_us": [
+                  11.571874842047691,
+                  11.382187716662884
+                ],
+                "order": [
+                  "baseline",
+                  "candidate",
+                  "candidate",
+                  "baseline"
+                ]
+              },
+              {
+                "baseline_us": [
+                  17.778750509023666,
+                  17.6771879196167
+                ],
+                "candidate_us": [
+                  11.519062332808971,
+                  11.514062061905861
+                ],
+                "order": [
+                  "candidate",
+                  "baseline",
+                  "baseline",
+                  "candidate"
+                ]
+              },
+              {
+                "baseline_us": [
+                  17.739063128829002,
+                  18.783750012516975
+                ],
+                "candidate_us": [
+                  11.517499573528767,
+                  14.826875180006027
+                ],
+                "order": [
+                  "baseline",
+                  "candidate",
+                  "candidate",
+                  "baseline"
+                ]
+              }
+            ],
+            "baseline_us": 17.6984379068017,
+            "candidate_us": 11.49687496945262,
+            "speedup": 1.5394129234097729,
+            "baseline_min_max_us": [
+              17.535937950015068,
+              18.783750012516975
+            ],
+            "candidate_min_max_us": [
+              11.381562799215317,
+              14.826875180006027
+            ]
+          }
+        }
+      },
+      "baseline_correctness": {
+        "passed": true,
+        "finite": true,
+        "max_abs": 2.0740553736686707e-05,
+        "relative_l2": 4.0744547493496683e-07,
+        "max_tolerance_ratio": 0.003411263994752279,
+        "matched_ratio": 1.0,
+        "atol": 0.006,
+        "rtol": 0.003,
+        "deterministic": true,
+        "output_contract": true,
+        "inputs_unchanged": true
+      }
+    },
+    {
+      "case": {
+        "name": "tail129",
+        "batch": 1,
+        "length": 129,
+        "heads": 8,
+        "groups": 2,
+        "headdim": 64,
+        "dstate": 128,
+        "chunk": 128,
+        "dtype": "bfloat16",
+        "labels": "none",
+        "states_in_fp32": true
+      },
+      "input_seed": 20261131,
+      "input_sha256": [
+        "f910c79287a91283d537c8bee36f877c23f4df87458303871b09bcbeeba77843",
+        "c0fb93e70d3b2d725b91bc1c316e0e83c2f88410282b0acd5d6078ce5e3ba16a",
+        "1c2be6005dfd44776cce82ae519f1a79373f4299b5c1bb3deef538292e916680",
+        "056b32e71bd5fbc0f439a722417b66f481f2646f8abab49469bff270ca0f29be",
+        null
+      ],
+      "upstream_config": [
+        64,
+        128,
+        32,
+        4,
+        4
+      ],
+      "default_configuration": {
+        "m": 64,
+        "col": 128,
+        "k": 128,
+        "pair": false,
+        "rank_one_tail": false,
+        "full_tiles": true
+      },
+      "output_dtype": "float32",
+      "variants": {
+        "optimized": {
+          "correctness": {
+            "passed": true,
+            "finite": true,
+            "max_abs": 2.384185791015625e-07,
+            "relative_l2": 3.617945244380794e-08,
+            "max_tolerance_ratio": 2.2718689193428376e-05,
+            "matched_ratio": 1.0,
+            "atol": 0.006,
+            "rtol": 0.003,
+            "deterministic": true,
+            "output_contract": true,
+            "inputs_unchanged": true
+          },
+          "vs_control": {
+            "passed": true,
+            "finite": true,
+            "max_abs": 0.0,
+            "relative_l2": 0.0,
+            "max_tolerance_ratio": 0.0,
+            "matched_ratio": 1.0,
+            "atol": 0.006,
+            "rtol": 0.003
+          },
+          "performance": {
+            "timing": "graph",
+            "capture_ops": 16,
+            "replays_per_measurement": 4,
+            "samples": [
+              {
+                "baseline_us": [
+                  12.450937181711197,
+                  12.571250088512897
+                ],
+                "candidate_us": [
+                  10.20906213670969,
+                  10.180000215768814
+                ],
+                "order": [
+                  "baseline",
+                  "candidate",
+                  "candidate",
+                  "baseline"
+                ]
+              },
+              {
+                "baseline_us": [
+                  12.50156294554472,
+                  12.544374912977219
+                ],
+                "candidate_us": [
+                  10.115312412381172,
+                  10.197499766945839
+                ],
+                "order": [
+                  "candidate",
+                  "baseline",
+                  "baseline",
+                  "candidate"
+                ]
+              },
+              {
+                "baseline_us": [
+                  12.534375302493572,
+                  12.505937367677689
+                ],
+                "candidate_us": [
+                  10.183124803006649,
+                  10.124687105417252
+                ],
+                "order": [
+                  "baseline",
+                  "candidate",
+                  "candidate",
+                  "baseline"
+                ]
+              },
+              {
+                "baseline_us": [
+                  12.626875191926956,
+                  12.544062919914722
+                ],
+                "candidate_us": [
+                  10.105937719345093,
+                  10.096250101923943
+                ],
+                "order": [
+                  "candidate",
+                  "baseline",
+                  "baseline",
+                  "candidate"
+                ]
+              },
+              {
+                "baseline_us": [
+                  12.548125348985195,
+                  12.605312280356884
+                ],
+                "candidate_us": [
+                  10.08718740195036,
+                  10.160312056541443
+                ],
+                "order": [
+                  "baseline",
+                  "candidate",
+                  "candidate",
+                  "baseline"
+                ]
+              },
+              {
+                "baseline_us": [
+                  12.53687497228384,
+                  12.651562690734863
+                ],
+                "candidate_us": [
+                  10.086875408887863,
+                  10.13218704611063
+                ],
+                "order": [
+                  "candidate",
+                  "baseline",
+                  "baseline",
+                  "candidate"
+                ]
+              },
+              {
+                "baseline_us": [
+                  12.449375353753567,
+                  12.633437290787697
+                ],
+                "candidate_us": [
+                  10.069062933325768,
+                  10.20437479019165
+                ],
+                "order": [
+                  "baseline",
+                  "candidate",
+                  "candidate",
+                  "baseline"
+                ]
+              }
+            ],
+            "baseline_us": 12.54421891644597,
+            "candidate_us": 10.12843707576394,
+            "speedup": 1.2385147701082813,
+            "baseline_min_max_us": [
+              12.449375353753567,
+              12.651562690734863
+            ],
+            "candidate_min_max_us": [
+              10.069062933325768,
+              10.20906213670969
+            ]
+          }
+        }
+      },
+      "baseline_correctness": {
+        "passed": true,
+        "finite": true,
+        "max_abs": 2.384185791015625e-07,
+        "relative_l2": 3.617945244380794e-08,
+        "max_tolerance_ratio": 2.2718689193428376e-05,
+        "matched_ratio": 1.0,
+        "atol": 0.006,
+        "rtol": 0.003,
+        "deterministic": true,
+        "output_contract": true,
+        "inputs_unchanged": true
+      }
+    },
+    {
+      "case": {
+        "name": "short13",
+        "batch": 1,
+        "length": 13,
+        "heads": 8,
+        "groups": 1,
+        "headdim": 32,
+        "dstate": 64,
+        "chunk": 128,
+        "dtype": "bfloat16",
+        "labels": "none",
+        "states_in_fp32": true
+      },
+      "input_seed": 20261132,
+      "input_sha256": [
+        "f4e275a3c782660783f888b8f4f6704a06c0ecbf53acdf565fee37caba764b99",
+        "6c21b1d4b92ab7fc1cf21e8786337312f5f66c2b7096ec3d4db45fe277bd4a7c",
+        "27efe2a03eca35bb49fa39451af237892ef9108cb90ccd7cfe4e4ed0fb6e8981",
+        "1b6ad9b0f9e1f4b855199344076322428eb12f485ceb21f9308b4a259924c45c",
+        null
+      ],
+      "upstream_config": [
+        32,
+        64,
+        32,
+        5,
+        2
+      ],
+      "default_configuration": {
+        "m": 32,
+        "col": 64,
+        "k": 16,
+        "pair": false,
+        "rank_one_tail": false,
+        "full_tiles": true
+      },
+      "output_dtype": "float32",
+      "variants": {
+        "optimized": {
+          "correctness": {
+            "passed": true,
+            "finite": true,
+            "max_abs": 0.0,
+            "relative_l2": 0.0,
+            "max_tolerance_ratio": 0.0,
+            "matched_ratio": 1.0,
+            "atol": 0.006,
+            "rtol": 0.003,
+            "deterministic": true,
+            "output_contract": true,
+            "inputs_unchanged": true
+          },
+          "vs_control": {
+            "passed": true,
+            "finite": true,
+            "max_abs": 0.0,
+            "relative_l2": 0.0,
+            "max_tolerance_ratio": 0.0,
+            "matched_ratio": 1.0,
+            "atol": 0.006,
+            "rtol": 0.003
+          },
+          "performance": {
+            "timing": "graph",
+            "capture_ops": 16,
+            "replays_per_measurement": 4,
+            "samples": [
+              {
+                "baseline_us": [
+                  9.912500157952309,
+                  9.138749912381172
+                ],
+                "candidate_us": [
+                  7.40343751385808,
+                  7.501875050365925
+                ],
+                "order": [
+                  "baseline",
+                  "candidate",
+                  "candidate",
+                  "baseline"
+                ]
+              },
+              {
+                "baseline_us": [
+                  9.152812883257866,
+                  9.075624868273735
+                ],
+                "candidate_us": [
+                  7.5587499886751175,
+                  7.482812274247408
+                ],
+                "order": [
+                  "candidate",
+                  "baseline",
+                  "baseline",
+                  "candidate"
+                ]
+              },
+              {
+                "baseline_us": [
+                  9.078437462449074,
+                  9.17031243443489
+                ],
+                "candidate_us": [
+                  7.468437310308218,
+                  7.487500086426735
+                ],
+                "order": [
+                  "baseline",
+                  "candidate",
+                  "candidate",
+                  "baseline"
+                ]
+              },
+              {
+                "baseline_us": [
+                  9.177500382065773,
+                  9.141875430941582
+                ],
+                "candidate_us": [
+                  7.484062574803829,
+                  7.492812350392342
+                ],
+                "order": [
+                  "candidate",
+                  "baseline",
+                  "baseline",
+                  "candidate"
+                ]
+              },
+              {
+                "baseline_us": [
+                  9.2996871098876,
+                  9.115937165915966
+                ],
+                "candidate_us": [
+                  7.4728126637637615,
+                  7.3828124441206455
+                ],
+                "order": [
+                  "baseline",
+                  "candidate",
+                  "candidate",
+                  "baseline"
+                ]
+              },
+              {
+                "baseline_us": [
+                  9.233124554157257,
+                  9.153749793767929
+                ],
+                "candidate_us": [
+                  7.492812350392342,
+                  7.532187271863222
+                ],
+                "order": [
+                  "candidate",
+                  "baseline",
+                  "baseline",
+                  "candidate"
+                ]
+              },
+              {
+                "baseline_us": [
+                  9.069062769412994,
+                  9.270312264561653
+                ],
+                "candidate_us": [
+                  7.491250056773424,
+                  7.486249785870314
+                ],
+                "order": [
+                  "baseline",
+                  "candidate",
+                  "candidate",
+                  "baseline"
+                ]
+              }
+            ],
+            "baseline_us": 9.153281338512897,
+            "candidate_us": 7.486874936148524,
+            "speedup": 1.2225770320161944,
+            "baseline_min_max_us": [
+              9.069062769412994,
+              9.912500157952309
+            ],
+            "candidate_min_max_us": [
+              7.3828124441206455,
+              7.5587499886751175
+            ]
+          }
+        }
+      },
+      "baseline_correctness": {
+        "passed": true,
+        "finite": true,
+        "max_abs": 0.0,
+        "relative_l2": 0.0,
+        "max_tolerance_ratio": 0.0,
+        "matched_ratio": 1.0,
+        "atol": 0.006,
+        "rtol": 0.003,
+        "deterministic": true,
+        "output_contract": true,
+        "inputs_unchanged": true
+      }
+    },
+    {
+      "case": {
+        "name": "packed",
+        "batch": 2,
+        "length": 300,
+        "heads": 8,
+        "groups": 2,
+        "headdim": 64,
+        "dstate": 64,
+        "chunk": 64,
+        "dtype": "bfloat16",
+        "labels": "packed",
+        "states_in_fp32": true
+      },
+      "input_seed": 20261133,
+      "input_sha256": [
+        "f9ac1a981d989c8abc5c2160703669e74fcde34859844de68080efac01c9ff6f",
+        "3800ae0e376294d6ae0fbb5ea5fc7b20856ccf34a8d518813615ffc32be3e330",
+        "ce9298a15334fc244d9c8e11cf649e7b490303945b5cf705648177cef04bc213",
+        "8a1cb8a251d90ee4b6237dd710731ed4ebb042d7cec1c5ac15e0f9e9e16ed17b",
+        "730221a122b835f95b54779e65a6e09cf48946f077044205bae377cad0931e04"
+      ],
+      "upstream_config": [
+        64,
+        128,
+        32,
+        4,
+        4
+      ],
+      "default_configuration": {
+        "m": 64,
+        "col": 64,
+        "k": 64,
+        "pair": true,
+        "rank_one_tail": false,
+        "full_tiles": true
+      },
+      "output_dtype": "float32",
+      "variants": {
+        "optimized": {
+          "correctness": {
+            "passed": true,
+            "finite": true,
+            "max_abs": 0.0,
+            "relative_l2": 0.0,
+            "max_tolerance_ratio": 0.0,
+            "matched_ratio": 1.0,
+            "atol": 0.006,
+            "rtol": 0.003,
+            "deterministic": true,
+            "output_contract": true,
+            "inputs_unchanged": true
+          },
+          "vs_control": {
+            "passed": true,
+            "finite": true,
+            "max_abs": 0.0,
+            "relative_l2": 0.0,
+            "max_tolerance_ratio": 0.0,
+            "matched_ratio": 1.0,
+            "atol": 0.006,
+            "rtol": 0.003
+          },
+          "performance": {
+            "timing": "graph",
+            "capture_ops": 16,
+            "replays_per_measurement": 4,
+            "samples": [
+              {
+                "baseline_us": [
+                  22.44812436401844,
+                  22.57656306028366
+                ],
+                "candidate_us": [
+                  13.492187485098839,
+                  13.527500443160534
+                ],
+                "order": [
+                  "baseline",
+                  "candidate",
+                  "candidate",
+                  "baseline"
+                ]
+              },
+              {
+                "baseline_us": [
+                  22.599687799811363,
+                  22.49624952673912
+                ],
+                "candidate_us": [
+                  13.678750023245811,
+                  13.502500019967556
+                ],
+                "order": [
+                  "candidate",
+                  "baseline",
+                  "baseline",
+                  "candidate"
+                ]
+              },
+              {
+                "baseline_us": [
+                  22.49312587082386,
+                  22.561250254511833
+                ],
+                "candidate_us": [
+                  13.447499834001064,
+                  13.413749635219574
+                ],
+                "order": [
+                  "baseline",
+                  "candidate",
+                  "candidate",
+                  "baseline"
+                ]
+              },
+              {
+                "baseline_us": [
+                  22.583749145269394,
+                  22.59812504053116
+                ],
+                "candidate_us": [
+                  13.639687560498714,
+                  13.435624539852142
+                ],
+                "order": [
+                  "candidate",
+                  "baseline",
+                  "baseline",
+                  "candidate"
+                ]
+              },
+              {
+                "baseline_us": [
+                  22.48937450349331,
+                  22.789686918258667
+                ],
+                "candidate_us": [
+                  13.43156211078167,
+                  13.430312275886536
+                ],
+                "order": [
+                  "baseline",
+                  "candidate",
+                  "candidate",
+                  "baseline"
+                ]
+              },
+              {
+                "baseline_us": [
+                  22.47406169772148,
+                  22.557811811566353
+                ],
+                "candidate_us": [
+                  13.363437727093697,
+                  13.554374687373638
+                ],
+                "order": [
+                  "candidate",
+                  "baseline",
+                  "baseline",
+                  "candidate"
+                ]
+              },
+              {
+                "baseline_us": [
+                  22.754061967134476,
+                  22.572500631213188
+                ],
+                "candidate_us": [
+                  13.58093786984682,
+                  13.539374805986881
+                ],
+                "order": [
+                  "baseline",
+                  "candidate",
+                  "candidate",
+                  "baseline"
+                ]
+              }
+            ],
+            "baseline_us": 22.56687544286251,
+            "candidate_us": 13.497343752533197,
+            "speedup": 1.6719493743816913,
+            "baseline_min_max_us": [
+              22.44812436401844,
+              22.789686918258667
+            ],
+            "candidate_min_max_us": [
+              13.363437727093697,
+              13.678750023245811
+            ]
+          }
+        }
+      },
+      "baseline_correctness": {
+        "passed": true,
+        "finite": true,
+        "max_abs": 0.0,
+        "relative_l2": 0.0,
+        "max_tolerance_ratio": 0.0,
+        "matched_ratio": 1.0,
+        "atol": 0.006,
+        "rtol": 0.003,
+        "deterministic": true,
+        "output_contract": true,
+        "inputs_unchanged": true
+      }
+    },
+    {
+      "case": {
+        "name": "pad_last",
+        "batch": 1,
+        "length": 513,
+        "heads": 8,
+        "groups": 4,
+        "headdim": 64,
+        "dstate": 64,
+        "chunk": 128,
+        "dtype": "bfloat16",
+        "labels": "padded",
+        "states_in_fp32": true
+      },
+      "input_seed": 20261134,
+      "input_sha256": [
+        "acd7b1d78171fe445d0d71a1debcf32e8c3a0c7cdabd447b03612076b90cc53d",
+        "beeb1a211d2fa719e88dee31cc04575bde090596ef28b4ba45e0e2d1ba040d30",
+        "60de510b09e093594740bd9c38afe5fbf4678c9f059e995ede0c31ba30ffe5b1",
+        "d59070611a136bee10fc06eab9b1dc7a5520faeaba8525cfdb09e87c07e9de2c",
+        "6740246ed1a3e483a8cb2c4a7dac7e1ba681ba856f2a9bf9ca4ad735d2e03153"
+      ],
+      "upstream_config": [
+        128,
+        256,
+        64,
+        3,
+        8
+      ],
+      "default_configuration": {
+        "m": 64,
+        "col": 64,
+        "k": 128,
+        "pair": false,
+        "rank_one_tail": false,
+        "full_tiles": true
+      },
+      "output_dtype": "float32",
+      "variants": {
+        "optimized": {
+          "correctness": {
+            "passed": true,
+            "finite": true,
+            "max_abs": 0.0,
+            "relative_l2": 0.0,
+            "max_tolerance_ratio": 0.0,
+            "matched_ratio": 1.0,
+            "atol": 0.006,
+            "rtol": 0.003,
+            "deterministic": true,
+            "output_contract": true,
+            "inputs_unchanged": true
+          },
+          "vs_control": {
+            "passed": true,
+            "finite": true,
+            "max_abs": 0.0,
+            "relative_l2": 0.0,
+            "max_tolerance_ratio": 0.0,
+            "matched_ratio": 1.0,
+            "atol": 0.006,
+            "rtol": 0.003
+          },
+          "performance": {
+            "timing": "graph",
+            "capture_ops": 16,
+            "replays_per_measurement": 4,
+            "samples": [
+              {
+                "baseline_us": [
+                  17.87562482059002,
+                  18.031561747193336
+                ],
+                "candidate_us": [
+                  12.226562947034836,
+                  12.10749987512827
+                ],
+                "order": [
+                  "baseline",
+                  "candidate",
+                  "candidate",
+                  "baseline"
+                ]
+              },
+              {
+                "baseline_us": [
+                  18.14218796789646,
+                  18.11968721449375
+                ],
+                "candidate_us": [
+                  12.17187475413084,
+                  12.095624580979347
+                ],
+                "order": [
+                  "candidate",
+                  "baseline",
+                  "baseline",
+                  "candidate"
+                ]
+              },
+              {
+                "baseline_us": [
+                  18.044374883174896,
+                  18.127499148249626
+                ],
+                "candidate_us": [
+                  12.18937523663044,
+                  12.189687229692936
+                ],
+                "order": [
+                  "baseline",
+                  "candidate",
+                  "candidate",
+                  "baseline"
+                ]
+              },
+              {
+                "baseline_us": [
+                  17.996249720454216,
+                  17.83750019967556
+                ],
+                "candidate_us": [
+                  11.830312199890614,
+                  11.77156250923872
+                ],
+                "order": [
+                  "candidate",
+                  "baseline",
+                  "baseline",
+                  "candidate"
+                ]
+              },
+              {
+                "baseline_us": [
+                  17.99749955534935,
+                  17.804061993956566
+                ],
+                "candidate_us": [
+                  12.054375372827053,
+                  11.855937540531158
+                ],
+                "order": [
+                  "baseline",
+                  "candidate",
+                  "candidate",
+                  "baseline"
+                ]
+              },
+              {
+                "baseline_us": [
+                  17.974061891436577,
+                  17.75406301021576
+                ],
+                "candidate_us": [
+                  11.83874998241663,
+                  12.200312688946724
+                ],
+                "order": [
+                  "candidate",
+                  "baseline",
+                  "baseline",
+                  "candidate"
+                ]
+              },
+              {
+                "baseline_us": [
+                  17.79250055551529,
+                  18.059687688946724
+                ],
+                "candidate_us": [
+                  12.026875279843807,
+                  11.794687248766422
+                ],
+                "order": [
+                  "baseline",
+                  "candidate",
+                  "candidate",
+                  "baseline"
+                ]
+              }
+            ],
+            "baseline_us": 17.996874637901783,
+            "candidate_us": 12.0749999769032,
+            "speedup": 1.4904244035052436,
+            "baseline_min_max_us": [
+              17.75406301021576,
+              18.14218796789646
+            ],
+            "candidate_min_max_us": [
+              11.77156250923872,
+              12.226562947034836
+            ]
+          }
+        }
+      },
+      "baseline_correctness": {
+        "passed": true,
+        "finite": true,
+        "max_abs": 0.0,
+        "relative_l2": 0.0,
+        "max_tolerance_ratio": 0.0,
+        "matched_ratio": 1.0,
+        "atol": 0.006,
+        "rtol": 0.003,
+        "deterministic": true,
+        "output_contract": true,
+        "inputs_unchanged": true
+      }
+    },
+    {
+      "case": {
+        "name": "odd_dims",
+        "batch": 1,
+        "length": 97,
+        "heads": 6,
+        "groups": 2,
+        "headdim": 40,
+        "dstate": 48,
+        "chunk": 48,
+        "dtype": "bfloat16",
+        "labels": "none",
+        "states_in_fp32": true
+      },
+      "input_seed": 20261135,
+      "input_sha256": [
+        "87947fa3aa4e2ba3210850f8a430ccddb3a9ddea00feee200828661288daae72",
+        "95f3e3c7d8c88d342c7782d6caf5635858ad6e71d37f91b6b5395f49cbcaad08",
+        "df9503ba7684c66970c41389592992e8687648a6c883944c86d4834e362ef3ac",
+        "2ad8ab666f324f9c23b7ed43af0b1dcf776bc4c486a62aac6c97dafff7374287",
+        null
+      ],
+      "upstream_config": [
+        128,
+        64,
+        32,
+        4,
+        4
+      ],
+      "default_configuration": {
+        "m": 64,
+        "col": 64,
+        "k": 64,
+        "pair": false,
+        "rank_one_tail": false,
+        "full_tiles": true
+      },
+      "output_dtype": "float32",
+      "variants": {
+        "optimized": {
+          "correctness": {
+            "passed": true,
+            "finite": true,
+            "max_abs": 2.384185791015625e-07,
+            "relative_l2": 2.4007284713910763e-08,
+            "max_tolerance_ratio": 1.737560254462919e-05,
+            "matched_ratio": 1.0,
+            "atol": 0.006,
+            "rtol": 0.003,
+            "deterministic": true,
+            "output_contract": true,
+            "inputs_unchanged": true
+          },
+          "vs_control": {
+            "passed": true,
+            "finite": true,
+            "max_abs": 0.0,
+            "relative_l2": 0.0,
+            "max_tolerance_ratio": 0.0,
+            "matched_ratio": 1.0,
+            "atol": 0.006,
+            "rtol": 0.003
+          },
+          "performance": {
+            "timing": "graph",
+            "capture_ops": 16,
+            "replays_per_measurement": 4,
+            "samples": [
+              {
+                "baseline_us": [
+                  12.21343781799078,
+                  12.477187439799309
+                ],
+                "candidate_us": [
+                  10.294999927282333,
+                  10.423749685287476
+                ],
+                "order": [
+                  "baseline",
+                  "candidate",
+                  "candidate",
+                  "baseline"
+                ]
+              },
+              {
+                "baseline_us": [
+                  12.44062464684248,
+                  12.409999966621399
+                ],
+                "candidate_us": [
+                  12.843437492847443,
+                  10.400312952697277
+                ],
+                "order": [
+                  "candidate",
+                  "baseline",
+                  "baseline",
+                  "candidate"
+                ]
+              },
+              {
+                "baseline_us": [
+                  12.555000372231007,
+                  12.55593728274107
+                ],
+                "candidate_us": [
+                  10.450937785208225,
+                  10.430624708533287
+                ],
+                "order": [
+                  "baseline",
+                  "candidate",
+                  "candidate",
+                  "baseline"
+                ]
+              },
+              {
+                "baseline_us": [
+                  12.409375049173832,
+                  12.288750149309635
+                ],
+                "candidate_us": [
+                  10.44437475502491,
+                  10.394062846899033
+                ],
+                "order": [
+                  "candidate",
+                  "baseline",
+                  "baseline",
+                  "candidate"
+                ]
+              },
+              {
+                "baseline_us": [
+                  12.52218708395958,
+                  12.56093755364418
+                ],
+                "candidate_us": [
+                  10.287187062203884,
+                  10.400624945759773
+                ],
+                "order": [
+                  "baseline",
+                  "candidate",
+                  "candidate",
+                  "baseline"
+                ]
+              },
+              {
+                "baseline_us": [
+                  12.542812153697014,
+                  12.58468721061945
+                ],
+                "candidate_us": [
+                  10.293437168002129,
+                  10.057187639176846
+                ],
+                "order": [
+                  "candidate",
+                  "baseline",
+                  "baseline",
+                  "candidate"
+                ]
+              },
+              {
+                "baseline_us": [
+                  12.48906273394823,
+                  12.591875158250332
+                ],
+                "candidate_us": [
+                  10.363125242292881,
+                  10.272187180817127
+                ],
+                "order": [
+                  "baseline",
+                  "candidate",
+                  "candidate",
+                  "baseline"
+                ]
+              }
+            ],
+            "baseline_us": 12.505624908953905,
+            "candidate_us": 10.397187899798155,
+            "speedup": 1.2027891608265233,
+            "baseline_min_max_us": [
+              12.21343781799078,
+              12.591875158250332
+            ],
+            "candidate_min_max_us": [
+              10.057187639176846,
+              12.843437492847443
+            ]
+          }
+        }
+      },
+      "baseline_correctness": {
+        "passed": true,
+        "finite": true,
+        "max_abs": 2.384185791015625e-07,
+        "relative_l2": 2.4007284713910763e-08,
+        "max_tolerance_ratio": 1.737560254462919e-05,
+        "matched_ratio": 1.0,
+        "atol": 0.006,
+        "rtol": 0.003,
+        "deterministic": true,
+        "output_contract": true,
+        "inputs_unchanged": true
+      }
+    },
+    {
+      "case": {
+        "name": "fp16",
+        "batch": 1,
+        "length": 512,
+        "heads": 8,
+        "groups": 2,
+        "headdim": 64,
+        "dstate": 128,
+        "chunk": 128,
+        "dtype": "float16",
+        "labels": "none",
+        "states_in_fp32": true
+      },
+      "input_seed": 20261136,
+      "input_sha256": [
+        "a62b1e83ac6850193bc8877e8a84da18b45940cb012af787e84f64263e48598a",
+        "24830f70c4b8af19b561e19c160c543b9681cc6ec416024490d7aa2c3ff0c937",
+        "5939252d0b2866b31542c0e55faad6a8b9d4f463dd91069672945bd36c0f13bd",
+        "9f116f2899a43a2f92993b41077974632c7b30bea6fb76cbd0adff7fe286e264",
+        null
+      ],
+      "upstream_config": [
+        128,
+        256,
+        64,
+        3,
+        8
+      ],
+      "default_configuration": {
+        "m": 64,
+        "col": 128,
+        "k": 128,
+        "pair": false,
+        "rank_one_tail": false,
+        "full_tiles": true
+      },
+      "output_dtype": "float32",
+      "variants": {
+        "optimized": {
+          "correctness": {
+            "passed": true,
+            "finite": true,
+            "max_abs": 0.00022459030151367188,
+            "relative_l2": 4.045033945045822e-06,
+            "max_tolerance_ratio": 0.16663498405524763,
+            "matched_ratio": 1.0,
+            "atol": 0.001,
+            "rtol": 0.001,
+            "deterministic": true,
+            "output_contract": true,
+            "inputs_unchanged": true
+          },
+          "vs_control": {
+            "passed": true,
+            "finite": true,
+            "max_abs": 0.0,
+            "relative_l2": 0.0,
+            "max_tolerance_ratio": 0.0,
+            "matched_ratio": 1.0,
+            "atol": 0.001,
+            "rtol": 0.001
+          },
+          "performance": {
+            "timing": "graph",
+            "capture_ops": 16,
+            "replays_per_measurement": 4,
+            "samples": [
+              {
+                "baseline_us": [
+                  17.478125169873238,
+                  17.582187429070473
+                ],
+                "candidate_us": [
+                  12.055312283337116,
+                  12.058124877512455
+                ],
+                "order": [
+                  "baseline",
+                  "candidate",
+                  "candidate",
+                  "baseline"
+                ]
+              },
+              {
+                "baseline_us": [
+                  17.595624551177025,
+                  19.173437729477882
+                ],
+                "candidate_us": [
+                  12.164062820374966,
+                  11.95906288921833
+                ],
+                "order": [
+                  "candidate",
+                  "baseline",
+                  "baseline",
+                  "candidate"
+                ]
+              },
+              {
+                "baseline_us": [
+                  17.500000074505806,
+                  17.829999327659607
+                ],
+                "candidate_us": [
+                  12.030312791466713,
+                  12.190000154078007
+                ],
+                "order": [
+                  "baseline",
+                  "candidate",
+                  "candidate",
+                  "baseline"
+                ]
+              },
+              {
+                "baseline_us": [
+                  17.84656196832657,
+                  17.85343699157238
+                ],
+                "candidate_us": [
+                  12.187812477350235,
+                  12.325000017881393
+                ],
+                "order": [
+                  "candidate",
+                  "baseline",
+                  "baseline",
+                  "candidate"
+                ]
+              },
+              {
+                "baseline_us": [
+                  18.030937761068344,
+                  17.948437482118607
+                ],
+                "candidate_us": [
+                  12.367499992251396,
+                  12.298749759793282
+                ],
+                "order": [
+                  "baseline",
+                  "candidate",
+                  "candidate",
+                  "baseline"
+                ]
+              },
+              {
+                "baseline_us": [
+                  17.924686893820763,
+                  17.848437651991844
+                ],
+                "candidate_us": [
+                  12.231250293552876,
+                  12.318124994635582
+                ],
+                "order": [
+                  "candidate",
+                  "baseline",
+                  "baseline",
+                  "candidate"
+                ]
+              },
+              {
+                "baseline_us": [
+                  17.87249930202961,
+                  17.804061993956566
+                ],
+                "candidate_us": [
+                  12.326249852776527,
+                  12.350937351584435
+                ],
+                "order": [
+                  "baseline",
+                  "candidate",
+                  "candidate",
+                  "baseline"
+                ]
+              }
+            ],
+            "baseline_us": 17.847499810159206,
+            "candidate_us": 12.210625223815441,
+            "speedup": 1.4616368517600296,
+            "baseline_min_max_us": [
+              17.478125169873238,
+              19.173437729477882
+            ],
+            "candidate_min_max_us": [
+              11.95906288921833,
+              12.367499992251396
+            ]
+          }
+        }
+      },
+      "baseline_correctness": {
+        "passed": true,
+        "finite": true,
+        "max_abs": 0.00022459030151367188,
+        "relative_l2": 4.045033945045822e-06,
+        "max_tolerance_ratio": 0.16663498405524763,
+        "matched_ratio": 1.0,
+        "atol": 0.001,
+        "rtol": 0.001,
+        "deterministic": true,
+        "output_contract": true,
+        "inputs_unchanged": true
+      }
+    },
+    {
+      "case": {
+        "name": "fp32",
+        "batch": 1,
+        "length": 256,
+        "heads": 8,
+        "groups": 4,
+        "headdim": 64,
+        "dstate": 64,
+        "chunk": 64,
+        "dtype": "float32",
+        "labels": "none",
+        "states_in_fp32": true
+      },
+      "input_seed": 20261137,
+      "input_sha256": [
+        "dac6a51b9f60a8e93843f41aa259c5457dd12804aaa23e3f7dc93eef675dd2c5",
+        "2cc43d5662fd2dbf15111f421b23918896861c49221bceb1735f4482da426d64",
+        "cdba5bc787aa99d248df4bcfd512b48b5263b39f4653da6239d9b26d522569fb",
+        "c619e33da82a1e8b3e0dccdf24924ee7a248cd69dd919f01fdfbfaf1f131c1a0",
+        null
+      ],
+      "upstream_config": [
+        64,
+        64,
+        32,
+        4,
+        2
+      ],
+      "default_configuration": {
+        "m": 64,
+        "col": 64,
+        "k": 64,
+        "pair": false,
+        "rank_one_tail": false,
+        "full_tiles": true
+      },
+      "output_dtype": "float32",
+      "variants": {
+        "optimized": {
+          "correctness": {
+            "passed": true,
+            "finite": true,
+            "max_abs": 4.76837158203125e-07,
+            "relative_l2": 7.361284004703082e-08,
+            "max_tolerance_ratio": 0.0006583400259083134,
+            "matched_ratio": 1.0,
+            "atol": 0.0005,
+            "rtol": 0.0001,
+            "deterministic": true,
+            "output_contract": true,
+            "inputs_unchanged": true
+          },
+          "vs_control": {
+            "passed": true,
+            "finite": true,
+            "max_abs": 0.0,
+            "relative_l2": 0.0,
+            "max_tolerance_ratio": 0.0,
+            "matched_ratio": 1.0,
+            "atol": 0.0005,
+            "rtol": 0.0001
+          },
+          "performance": {
+            "timing": "graph",
+            "capture_ops": 16,
+            "replays_per_measurement": 4,
+            "samples": [
+              {
+                "baseline_us": [
+                  15.30156284570694,
+                  15.670938417315483
+                ],
+                "candidate_us": [
+                  11.0256252810359,
+                  10.978437960147858
+                ],
+                "order": [
+                  "baseline",
+                  "candidate",
+                  "candidate",
+                  "baseline"
+                ]
+              },
+              {
+                "baseline_us": [
+                  15.657499432563782,
+                  15.643749386072159
+                ],
+                "candidate_us": [
+                  10.878750123083591,
+                  10.959374718368053
+                ],
+                "order": [
+                  "candidate",
+                  "baseline",
+                  "baseline",
+                  "candidate"
+                ]
+              },
+              {
+                "baseline_us": [
+                  15.49843791872263,
+                  15.659375116229057
+                ],
+                "candidate_us": [
+                  10.872500017285347,
+                  10.859374888241291
+                ],
+                "order": [
+                  "baseline",
+                  "candidate",
+                  "candidate",
+                  "baseline"
+                ]
+              },
+              {
+                "baseline_us": [
+                  15.627186745405197,
+                  15.561250038444996
+                ],
+                "candidate_us": [
+                  10.875937528908253,
+                  10.984375141561031
+                ],
+                "order": [
+                  "candidate",
+                  "baseline",
+                  "baseline",
+                  "candidate"
+                ]
+              },
+              {
+                "baseline_us": [
+                  15.48749953508377,
+                  15.65687544643879
+                ],
+                "candidate_us": [
+                  10.946562513709068,
+                  10.89562475681305
+                ],
+                "order": [
+                  "baseline",
+                  "candidate",
+                  "candidate",
+                  "baseline"
+                ]
+              },
+              {
+                "baseline_us": [
+                  15.651250258088112,
+                  15.649687498807907
+                ],
+                "candidate_us": [
+                  10.86874958127737,
+                  10.860312730073929
+                ],
+                "order": [
+                  "candidate",
+                  "baseline",
+                  "baseline",
+                  "candidate"
+                ]
+              },
+              {
+                "baseline_us": [
+                  15.558437444269657,
+                  15.648124739527702
+                ],
+                "candidate_us": [
+                  10.941250249743462,
+                  10.979999788105488
+                ],
+                "order": [
+                  "baseline",
+                  "candidate",
+                  "candidate",
+                  "baseline"
+                ]
+              }
+            ],
+            "baseline_us": 15.64593706279993,
+            "candidate_us": 10.918437503278255,
+            "speedup": 1.432983158817573,
+            "baseline_min_max_us": [
+              15.30156284570694,
+              15.670938417315483
+            ],
+            "candidate_min_max_us": [
+              10.859374888241291,
+              11.0256252810359
+            ]
+          }
+        }
+      },
+      "baseline_correctness": {
+        "passed": true,
+        "finite": true,
+        "max_abs": 4.76837158203125e-07,
+        "relative_l2": 7.361284004703082e-08,
+        "max_tolerance_ratio": 0.0006583400259083134,
+        "matched_ratio": 1.0,
+        "atol": 0.0005,
+        "rtol": 0.0001,
+        "deterministic": true,
+        "output_contract": true,
+        "inputs_unchanged": true
+      }
+    },
+    {
+      "case": {
+        "name": "lowp_out",
+        "batch": 1,
+        "length": 511,
+        "heads": 8,
+        "groups": 2,
+        "headdim": 64,
+        "dstate": 64,
+        "chunk": 128,
+        "dtype": "bfloat16",
+        "labels": "none",
+        "states_in_fp32": false
+      },
+      "input_seed": 20261138,
+      "input_sha256": [
+        "905dd64cb04c448b83083bcabd1110c5fccea8647fa040c01dc72d71fedc1e37",
+        "10a232be7699169bdcb0c01dfb8ce265cf171174f663304b2cf4d813b28f1c34",
+        "afcd1aa397a883336f83e44d2f3ff29fc92a39f32fb03174a6d96f7892e10bcd",
+        "ebbec12e43d863dbaeab2ea537fe877dba9199d3ab6570736d8e812487c8b026",
+        null
+      ],
+      "upstream_config": [
+        128,
+        256,
+        64,
+        3,
+        8
+      ],
+      "default_configuration": {
+        "m": 64,
+        "col": 64,
+        "k": 128,
+        "pair": false,
+        "rank_one_tail": false,
+        "full_tiles": true
+      },
+      "output_dtype": "bfloat16",
+      "variants": {
+        "optimized": {
+          "correctness": {
+            "passed": true,
+            "finite": true,
+            "max_abs": 0.0,
+            "relative_l2": 0.0,
+            "max_tolerance_ratio": 0.0,
+            "matched_ratio": 1.0,
+            "atol": 0.008,
+            "rtol": 0.008,
+            "deterministic": true,
+            "output_contract": true,
+            "inputs_unchanged": true
+          },
+          "vs_control": {
+            "passed": true,
+            "finite": true,
+            "max_abs": 0.0,
+            "relative_l2": 0.0,
+            "max_tolerance_ratio": 0.0,
+            "matched_ratio": 1.0,
+            "atol": 0.008,
+            "rtol": 0.008
+          },
+          "performance": {
+            "timing": "graph",
+            "capture_ops": 16,
+            "replays_per_measurement": 4,
+            "samples": [
+              {
+                "baseline_us": [
+                  17.62937568128109,
+                  17.934374511241913
+                ],
+                "candidate_us": [
+                  11.68531272560358,
+                  11.691562831401825
+                ],
+                "order": [
+                  "baseline",
+                  "candidate",
+                  "candidate",
+                  "baseline"
+                ]
+              },
+              {
+                "baseline_us": [
+                  17.93625019490719,
+                  17.957499250769615
+                ],
+                "candidate_us": [
+                  11.624687351286411,
+                  11.584687046706676
+                ],
+                "order": [
+                  "candidate",
+                  "baseline",
+                  "baseline",
+                  "candidate"
+                ]
+              },
+              {
+                "baseline_us": [
+                  18.050312995910645,
+                  17.99437589943409
+                ],
+                "candidate_us": [
+                  11.316562071442604,
+                  11.540625244379044
+                ],
+                "order": [
+                  "baseline",
+                  "candidate",
+                  "candidate",
+                  "baseline"
+                ]
+              },
+              {
+                "baseline_us": [
+                  17.572499811649323,
+                  17.63249933719635
+                ],
+                "candidate_us": [
+                  11.328437365591526,
+                  11.423124931752682
+                ],
+                "order": [
+                  "candidate",
+                  "baseline",
+                  "baseline",
+                  "candidate"
+                ]
+              },
+              {
+                "baseline_us": [
+                  17.742499709129333,
+                  18.200000748038292
+                ],
+                "candidate_us": [
+                  11.445312760770321,
+                  11.428125202655792
+                ],
+                "order": [
+                  "baseline",
+                  "candidate",
+                  "candidate",
+                  "baseline"
+                ]
+              },
+              {
+                "baseline_us": [
+                  17.728125676512718,
+                  17.62562431395054
+                ],
+                "candidate_us": [
+                  11.490312404930592,
+                  11.407187208533287
+                ],
+                "order": [
+                  "candidate",
+                  "baseline",
+                  "baseline",
+                  "candidate"
+                ]
+              },
+              {
+                "baseline_us": [
+                  17.761249095201492,
+                  17.67750084400177
+                ],
+                "candidate_us": [
+                  11.423437856137753,
+                  11.374999769032001
+                ],
+                "order": [
+                  "baseline",
+                  "candidate",
+                  "candidate",
+                  "baseline"
+                ]
+              }
+            ],
+            "baseline_us": 17.751874402165413,
+            "candidate_us": 11.436718981713057,
+            "speedup": 1.5521824424076596,
+            "baseline_min_max_us": [
+              17.572499811649323,
+              18.200000748038292
+            ],
+            "candidate_min_max_us": [
+              11.316562071442604,
+              11.691562831401825
+            ]
+          }
+        }
+      },
+      "baseline_correctness": {
+        "passed": true,
+        "finite": true,
+        "max_abs": 0.0,
+        "relative_l2": 0.0,
+        "max_tolerance_ratio": 0.0,
+        "matched_ratio": 1.0,
+        "atol": 0.008,
+        "rtol": 0.008,
+        "deterministic": true,
+        "output_contract": true,
+        "inputs_unchanged": true
+      }
+    }
+  ],
+  "protocol": {
+    "seed": 20261123,
+    "timing": "graph",
+    "samples": 7,
+    "capture_ops": 16,
+    "replays": 4,
+    "variants": [
+      "optimized"
+    ],
+    "control": "upstream",
+    "tuning_sha256": "65f772a4ca164f2176775dfcc1cfde5785ab75542a7f5542bed24f6ef971d9ed"
+  }
+}
