@@ -14,3 +14,10 @@ HiDevLab设备借用协议_*.docx
 .DS_Store
 ~$*.xlsx
 ~$*.docx
+
+# 算子构建与 Python 运行产物
+__pycache__/
+*.py[cod]
+*.so
+.venv/
+operators/lightning_diag/build/

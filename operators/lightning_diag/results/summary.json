@@ -1,0 +1,27 @@
+{
+  "primary_cases": 16,
+  "primary_geomean": 3.8073968967338305,
+  "primary_range": [
+    1.7912532684247435,
+    7.093604208931581
+  ],
+  "control_cases": 14,
+  "control_geomean": 1.642009374587144,
+  "control_range": [
+    1.0056428638506878,
+    3.258613258837212
+  ],
+  "custom_control_cases": 13,
+  "custom_control_geomean": 1.7051202253082287,
+  "custom_control_range": [
+    1.541672399798202,
+    3.258613258837212
+  ],
+  "source_sha256": {
+    "kernel.py": "f66cccfa568fd026b3b441cf580940de5a68db9427ef530a693bcd6f4ced0627",
+    "baseline_kernel.py": "e00b227e4af1693bcef4ef9f395140b4abba5697d954fd9d589a15956c645150",
+    "inputs.py": "18c7996bfe4cb07ab15f2f626d22ee86a17334f4fd7b1e8a08cfd15ce36f8346",
+    "reference.py": "7bff44ebce8105799f535f9d8c683f90477d6cd8ad9cb8ec120f383152fc39a4",
+    "benchmark.py": "9eee6cd22992adbeb2984cba82be563e1023b0315d118daa49064215cf7b770b"
+  }
+}

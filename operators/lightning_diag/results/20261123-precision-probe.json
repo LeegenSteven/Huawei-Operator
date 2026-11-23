@@ -1,0 +1,38 @@
+[
+  {
+    "fp32_first": true,
+    "lowp_second": false,
+    "qk_abs": 3.337860107421875e-06,
+    "qk_rel_l2": 4.6574073964824344e-08,
+    "recon_abs": 0.0,
+    "out_abs": 3.669827856356278e-05,
+    "out_rel_l2": 8.630118082032231e-08
+  },
+  {
+    "fp32_first": true,
+    "lowp_second": true,
+    "qk_abs": 3.337860107421875e-06,
+    "qk_rel_l2": 4.6574073964824344e-08,
+    "recon_abs": 0.0,
+    "out_abs": 0.4527556248358451,
+    "out_rel_l2": 0.0016750434762644068
+  },
+  {
+    "fp32_first": false,
+    "lowp_second": false,
+    "qk_abs": 2.637505531311035e-06,
+    "qk_rel_l2": 3.6947019321610856e-08,
+    "recon_abs": 0.0,
+    "out_abs": 3.669827856356278e-05,
+    "out_rel_l2": 8.275729158368563e-08
+  },
+  {
+    "fp32_first": false,
+    "lowp_second": true,
+    "qk_abs": 2.637505531311035e-06,
+    "qk_rel_l2": 3.6947019321610856e-08,
+    "recon_abs": 0.0,
+    "out_abs": 0.4527556248358451,
+    "out_rel_l2": 0.0016750434762644068
+  }
+]

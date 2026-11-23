@@ -1,0 +1,22 @@
+/usr/local/python3.11/lib/python3.11/site-packages/triton/language/extra/cann/extension/math_ops.py:13: FutureWarning: triton.language.extra.cann.extension.atan2 is deprecated and will be removed in the next release; use triton.language.extra.cann.libdevice.atan2 instead.
+  @_deprecated(replacement="triton.language.extra.cann.libdevice.atan2")
+/usr/local/python3.11/lib/python3.11/site-packages/triton/language/extra/cann/extension/math_ops.py:35: FutureWarning: triton.language.extra.cann.extension.isfinited is deprecated and will be removed in the next release; use triton.language.extra.cann.libdevice.isfinited instead.
+  @_deprecated(replacement="triton.language.extra.cann.libdevice.isfinited")
+/usr/local/python3.11/lib/python3.11/site-packages/triton/language/extra/cann/extension/math_ops.py:49: FutureWarning: triton.language.extra.cann.extension.finitef is deprecated and will be removed in the next release; use triton.language.extra.cann.libdevice.finitef instead.
+  @_deprecated(replacement="triton.language.extra.cann.libdevice.finitef")
+test_dtypes_dimensions_and_tail_boundaries (test_hardware.HardwareTests.test_dtypes_dimensions_and_tail_boundaries) ... [W1123 02:22:21.033271390 NPUCachingAllocator.cpp:204] Warning: The current CANN and Soc versions require processing for 32 padding size, with memory allocation. (function operator())
+ok
+test_fp32_exact_cancellation (test_hardware.HardwareTests.test_fp32_exact_cancellation) ... ok
+test_future_and_other_blocks_cannot_change_earlier_outputs (test_hardware.HardwareTests.test_future_and_other_blocks_cannot_change_earlier_outputs) ... ok
+test_graph_replay_reloads_input_buffers (test_hardware.HardwareTests.test_graph_replay_reloads_input_buffers) ... ok
+test_invalid_metadata_is_rejected (test_hardware.HardwareTests.test_invalid_metadata_is_rejected) ... ok
+test_zero_and_empty_inputs (test_hardware.HardwareTests.test_zero_and_empty_inputs) ... ok
+test_baseline_is_an_unchanged_upstream_function (test_reference.ReferenceTests.test_baseline_is_an_unchanged_upstream_function) ... ok
+test_future_and_cross_block_values_do_not_leak (test_reference.ReferenceTests.test_future_and_cross_block_values_do_not_leak) ... ok
+test_local_anchor_remains_finite_for_strong_decay (test_reference.ReferenceTests.test_local_anchor_remains_finite_for_strong_decay) ... ok
+test_matches_scalar_formula_with_tail_and_different_dims (test_reference.ReferenceTests.test_matches_scalar_formula_with_tail_and_different_dims) ... ok
+
+----------------------------------------------------------------------
+Ran 10 tests in 12.649s
+
+OK

@@ -1,8 +1,8 @@
 # 服务器连接与开发环境
 
-验证日期：2026-11-20（北京时间）。
+验证日期：2026-11-23（北京时间）。
 
-**当前可用入口为 `root@179.46.2.2:22`，已完成 SSH 登录和 CPU 算子环境验证。** 先接通 UniVPN，再执行 SSH。原表中另一台鲲鹏服务器 `179.125.7.2:22` 本次连接超时。
+**当前可用入口为 `root@179.46.2.2:22`，已重新验证 SSH 登录及 NPU 计算。** 先接通 UniVPN，再执行 SSH。原表中另一台鲲鹏服务器 `179.125.7.2:22` 于 2026-11-20 连接超时。
 
 ## 快速连接
 
@@ -16,12 +16,15 @@ ssh -p 22 -o ConnectTimeout=10 root@179.46.2.2
 
 SSH 密码使用环境信息表中 **业务系统 IP 为 `179.46.2.2` 的那一行**的「业务系统 密码」，与 VPN 密码分开。
 
-4. 登录服务器后，加载已验证的开发环境：
+4. 登录服务器后，加载 Lightning / NPU 开发环境：
 
 ```bash
-source /opt/kunpeng-operator-lab/env.sh
-cd /opt/kunpeng-operator-lab
+cd /opt/lightning-diag-lab/src
+source operators/lightning_diag/env.sh
+export ASCEND_RT_VISIBLE_DEVICES=0
 ```
+
+NPU 命令使用 `python3.11`。原有 CPU 虚拟环境入口为 `source /opt/kunpeng-operator-lab/env.sh`，详见下方 CPU 环境一节。
 
 ## 连接参数与有效期
 
@@ -100,7 +103,27 @@ scp ./local_file root@179.46.2.2:/opt/kunpeng-operator-lab/src/
 scp root@179.46.2.2:/remote_path ./
 ```
 
-## 已验证的 CPU 算子开发环境
+## 已验证的 NPU 算子开发环境
+
+2026-11-23，已复用服务器现有软件栈完成 NPU 矩阵计算及 Triton 算子运行。
+
+| 项目 | 实测结果 |
+| --- | --- |
+| NPU | 8 张 Ascend 910B3，`npu-smi` 显示健康状态 `OK` |
+| 单卡计算资源 | 20 个 Cube Core、40 个 Vector Core |
+| 驱动 | `25.5.0` |
+| CANN | `9.2.0-beta.2`，`/usr/local/Ascend/cann` |
+| Python | `3.11.15`，`/usr/local/python3.11/bin/python3.11` |
+| PyTorch / TorchNPU | `2.9.0+cpu` / `2.9.0.post9` |
+| Triton / Triton-Ascend | `3.6.0` / `3.6.0` |
+| NumPy | `1.26.4` |
+| GCC 运行库入口 | `/opt/kunpeng-gcc/lib64` |
+| 项目副本 | `/opt/lightning-diag-lab/src` |
+| 实验结果 | `/opt/lightning-diag-lab/results` |
+
+项目环境入口为 `operators/lightning_diag/env.sh`；在当前 shell 中配置 Python、GCC 运行库及 CANN。查看 [Lightning 算子说明](../operators/lightning_diag/README.md) 运行精度和性能验证。
+
+## 原有 CPU 算子开发环境（2026-11-20 核验）
 
 以下配置均位于 **`179.46.2.2`**，已通过实机登录检查。
 
@@ -131,19 +154,20 @@ printf 'VIRTUAL_ENV=%s\n' "$VIRTUAL_ENV"
 
 只需 Python 环境时，可执行 `source /opt/kunpeng-operator-env/bin/activate`；使用 `deactivate` 退出。仅激活 Python 环境时不包含上述线程和临时目录设置。
 
-本次未检测到 SciPy、PyTorch、pytest。PCIe 列表中可见华为加速设备，但未发现 `npu-smi`、`/usr/local/Ascend` 或 `/dev/davinci0`；当前已验证的是 CPU 算子环境，NPU 驱动及 CANN 工具链仍需单独确认。
+该 Python 3.7 虚拟环境与上面的 Python 3.11 NPU 环境独立；NPU 实验使用新的项目入口。
 
 ## 验证记录与排障
 
-| 检查项 | 2026-11-20 结果 |
+| 检查项 | 最近结果 |
 | --- | --- |
-| VPN 网关 `123.60.114.227:41024` | TCP/TLS 可达；客户端登录成功 |
-| 到业务网段的路由 | 接通后走 `utun6`；隧道接口编号随会话变化 |
-| `179.46.2.2:22` | SSH 登录成功；使用原表对应行的业务系统凭据 |
+| VPN 网关 `123.60.114.227:41024` | 2026-11-23 TCP/TLS 可达，客户端登录成功 |
+| 到业务网段的路由 | 通过 VPN 隧道；接口编号随会话变化 |
+| `179.46.2.2:22` | 2026-11-23 SSH 登录成功；使用原表对应行的业务系统凭据 |
+| NPU 驱动与计算 | 2026-11-23 八卡健康；单卡 PyTorch 矩阵计算、Triton 算子运行成功 |
 | 环境脚本与 Python | 激活成功，路径和版本已核实，NumPy 计算通过 |
-| `179.125.7.2:22` | 隧道接通后 TCP/SSH 仍超时 |
-| 鲲鹏 BMC `190.90.125.15` | Redfish 只读查询成功；机型 `S920X20`，电源 `On`，健康状态 `Critical` |
-| Atlas BMC `190.90.46.11` | HTTPS 可达；原表 BMC 凭据的 Redfish 请求返回 `401`，管理登录未验证 |
+| `179.125.7.2:22` | 2026-11-20，隧道接通后 TCP/SSH 仍超时 |
+| 鲲鹏 BMC `190.90.125.15` | 2026-11-20，Redfish 只读查询成功；机型 `S920X20`，电源 `On`，健康状态 `Critical` |
+| Atlas BMC `190.90.46.11` | 2026-11-20，HTTPS 可达；原表 BMC 凭据的 Redfish 请求返回 `401`，管理登录未验证 |
 
 连接失败时，按阶段检查：
 

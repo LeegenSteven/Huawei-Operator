@@ -1,0 +1,1269 @@
+{
+  "environment": {
+    "timestamp": "2026-11-23T10:04:53.508958+08:00",
+    "architecture": "aarch64",
+    "kernel": "4.19.90-89.11.v2401.ky10.aarch64",
+    "python": "3.11.15",
+    "versions": {
+      "torch": "2.9.0+cpu",
+      "torch-npu": "2.9.0.post9",
+      "triton": "3.6.0",
+      "triton-ascend": "3.6.0",
+      "numpy": "1.26.4"
+    },
+    "device": "npu:0",
+    "properties": {
+      "name": "Ascend910B3",
+      "total_memory": 65452113920,
+      "cube_core_num": 20,
+      "vector_core_num": 40
+    },
+    "visible_devices": "0",
+    "source_sha256": {
+      "kernel.py": "c7dcb4906c4c498fe6011a5a277074420f9d0acd4d8b0ca8b02e57e97aea10ec",
+      "baseline_kernel.py": "e00b227e4af1693bcef4ef9f395140b4abba5697d954fd9d589a15956c645150",
+      "inputs.py": "18c7996bfe4cb07ab15f2f626d22ee86a17334f4fd7b1e8a08cfd15ce36f8346",
+      "reference.py": "7bff44ebce8105799f535f9d8c683f90477d6cd8ad9cb8ec120f383152fc39a4",
+      "benchmark.py": "9ad77868a314bd654c1dd723f17edf040001c79a4900eafa3ae509bbfe81a70c"
+    },
+    "upstream": [
+      {
+        "repository": "vllm-project/vllm",
+        "commit": "8c1557a79c539ffe82d004d2a0c8d7b5e71159ce",
+        "path": "vllm/model_executor/layers/lightning_attn.py",
+        "url": "https://github.com/vllm-project/vllm/blob/8c1557a79c539ffe82d004d2a0c8d7b5e71159ce/vllm/model_executor/layers/lightning_attn.py",
+        "sha256": "8a7b8a1fcb54a9ff326b1a0a696ab004aed988f4f2d2ac39b5f105d3c6411e05",
+        "local": "operators/lightning_diag/third_party/vllm/lightning_attn.py"
+      },
+      {
+        "repository": "OpenNLPLab/lightning-attention",
+        "commit": "2363947041390c7258e261df90d5cf305b699d95",
+        "path": "lightning_attn/ops/triton/lightning_attn2.py",
+        "url": "https://github.com/OpenNLPLab/lightning-attention/blob/2363947041390c7258e261df90d5cf305b699d95/lightning_attn/ops/triton/lightning_attn2.py",
+        "sha256": "ca318413537870f14f0755eda52e5b119821a8a032402a40432778c766495404",
+        "local": "operators/lightning_diag/third_party/lightning_attention/lightning_attn2.py"
+      }
+    ]
+  },
+  "protocol": {
+    "device": "npu:0",
+    "cases": "small,batch2,dim128,different_dims,short16,tail300",
+    "variants": "optimized,unpruned,native128_early",
+    "timing": "graph",
+    "samples": 3,
+    "capture_ops": 8,
+    "replays": 2,
+    "validate_only": false,
+    "seed": 20261120,
+    "output": "/opt/lightning-diag-lab/results/20261123-ablation-r04.json"
+  },
+  "baseline": "unmodified pinned vLLM _fwd_diag_kernel, CBLOCK=32",
+  "oracle": "independent NumPy FP64 formula, rounded to output dtype",
+  "tolerances": {
+    "bfloat16": [
+      0.03125,
+      0.015625
+    ],
+    "float16": [
+      0.01,
+      0.002
+    ],
+    "float32": [
+      0.002,
+      0.0001
+    ]
+  },
+  "cases": [
+    {
+      "case": {
+        "name": "small",
+        "batch": 1,
+        "heads": 4,
+        "tokens": 256,
+        "qk_dim": 64,
+        "value_dim": 64,
+        "dtype": "bfloat16",
+        "slope_mode": "normal"
+      },
+      "input_seed": 20261120,
+      "input_sha256": [
+        "d0fef6ec74d744c8d73f974401c03abec85f1d4e2422ed4467c55204c32365d6",
+        "e3abe52ed8041620ad290803e0f0224b2d42d2f756314114046f7b85ef506854",
+        "9e1bfb1d99fb6fc8420ec598e54e61104e5b59b44b1b0fdced00e653520904f4",
+        "3a04d97e9e28d8aa4b371da2ceec42a26442c6908712b5934b11f24873feaa42"
+      ],
+      "variants": {
+        "optimized": {
+          "correctness": {
+            "passed": true,
+            "finite": true,
+            "max_abs": 0.03125,
+            "relative_l2": 6.423365827754415e-06,
+            "max_tolerance_ratio": 0.2206896551724138,
+            "matched_ratio": 1.0,
+            "atol": 0.03125,
+            "rtol": 0.015625,
+            "deterministic": true,
+            "shape_dtype_device_match": true,
+            "inputs_unchanged": true
+          },
+          "performance": {
+            "timing": "graph",
+            "capture_ops": 8,
+            "replays_per_measurement": 2,
+            "samples": [
+              {
+                "baseline_us": [
+                  57.42499977350235,
+                  54.061248898506165
+                ],
+                "candidate_us": [
+                  18.406249582767487,
+                  18.14124919474125
+                ],
+                "order": [
+                  "baseline",
+                  "candidate",
+                  "candidate",
+                  "baseline"
+                ]
+              },
+              {
+                "baseline_us": [
+                  54.31624874472618,
+                  53.91374975442886
+                ],
+                "candidate_us": [
+                  18.39499920606613,
+                  17.766250297427177
+                ],
+                "order": [
+                  "candidate",
+                  "baseline",
+                  "baseline",
+                  "candidate"
+                ]
+              },
+              {
+                "baseline_us": [
+                  53.814999759197235,
+                  58.17500129342079
+                ],
+                "candidate_us": [
+                  30.774999409914017,
+                  17.268750816583633
+                ],
+                "order": [
+                  "baseline",
+                  "candidate",
+                  "candidate",
+                  "baseline"
+                ]
+              }
+            ],
+            "baseline_us": 54.18874882161617,
+            "candidate_us": 18.26812420040369,
+            "speedup": 2.9663006572080732,
+            "baseline_min_max_us": [
+              53.814999759197235,
+              58.17500129342079
+            ],
+            "candidate_min_max_us": [
+              17.268750816583633,
+              30.774999409914017
+            ]
+          }
+        },
+        "unpruned": {
+          "correctness": {
+            "passed": true,
+            "finite": true,
+            "max_abs": 0.03125,
+            "relative_l2": 6.423365827754415e-06,
+            "max_tolerance_ratio": 0.2206896551724138,
+            "matched_ratio": 1.0,
+            "atol": 0.03125,
+            "rtol": 0.015625,
+            "deterministic": true,
+            "shape_dtype_device_match": true,
+            "inputs_unchanged": true
+          },
+          "performance": {
+            "timing": "graph",
+            "capture_ops": 8,
+            "replays_per_measurement": 2,
+            "samples": [
+              {
+                "baseline_us": [
+                  53.181249648332596,
+                  52.9399998486042
+                ],
+                "candidate_us": [
+                  21.61625027656555,
+                  515.853762626648
+                ],
+                "order": [
+                  "baseline",
+                  "candidate",
+                  "candidate",
+                  "baseline"
+                ]
+              },
+              {
+                "baseline_us": [
+                  53.30124869942665,
+                  53.33999916911125
+                ],
+                "candidate_us": [
+                  17.521249130368233,
+                  17.787499353289604
+                ],
+                "order": [
+                  "candidate",
+                  "baseline",
+                  "baseline",
+                  "candidate"
+                ]
+              },
+              {
+                "baseline_us": [
+                  53.372498601675034,
+                  52.736248821020126
+                ],
+                "candidate_us": [
+                  17.35999993979931,
+                  17.503749579191208
+                ],
+                "order": [
+                  "baseline",
+                  "candidate",
+                  "candidate",
+                  "baseline"
+                ]
+              }
+            ],
+            "baseline_us": 53.24124917387962,
+            "candidate_us": 17.65437424182892,
+            "speedup": 3.015753968086498,
+            "baseline_min_max_us": [
+              52.736248821020126,
+              53.372498601675034
+            ],
+            "candidate_min_max_us": [
+              17.35999993979931,
+              515.853762626648
+            ]
+          }
+        },
+        "native128_early": {
+          "error": "MLIRCompilationError('ConvertLinalgIRToBinary', '[NOTE] Ub overflow detected; automatically set enable-code-motion to false and retrying compilation.\\n[NOTE] Ub overflow detected; automatically set enable-auto-multi-buffer to false and retrying compilation.\\n[NOTE] Due to Ub overflow, automatically set enable-code-motion to false, set enable-auto-multi-buffer to false; compilation still failed.\\nloc(\"/tmp/tmpkmjxr7fd/kernel.mlir\":2:1): error: Failed to run BiShengHIR pipeline\\n\\nloc(\"/tmp/tmpkmjxr7fd/kernel.mlir\":3:3): error: ub overflow, requires 2891776 bits while 1572864 bits available! (possible reason: tiling basic block is too large or block number is more than what user expect due to multi-buffer feature is enabled and some ops need extra local buffer.)\\nloc(\"/tmp/tmpkmjxr7fd/kernel.mlir\":2:1): error: Failed to apply transform\\nloc(\"/tmp/tmpkmjxr7fd/kernel.mlir\":2:1): error: could not find next producer to fuse into container\\nloc(\"/tmp/tmpkmjxr7fd/kernel.mlir\":2:1): error: Failed to apply transform\\nloc(\"/tmp/tmpkmjxr7fd/kernel.mlir\":2:1): error: could not find next producer to fuse into container\\n[ERROR] Failed to run BiShengIR pipeline\\n\\n\\n[INFO]: The compiled kernel cache is in /root/.triton/cache/YEHJMMIKQXFHQSMDY6SUC5MKKY4YXPYF25JC5EAHUKLDSR2N3TCQ\\n\\n')"
+        }
+      },
+      "baseline_correctness": {
+        "passed": true,
+        "finite": true,
+        "max_abs": 0.03125,
+        "relative_l2": 6.423377890854995e-06,
+        "max_tolerance_ratio": 0.2206896551724138,
+        "matched_ratio": 1.0,
+        "atol": 0.03125,
+        "rtol": 0.015625
+      }
+    },
+    {
+      "case": {
+        "name": "batch2",
+        "batch": 2,
+        "heads": 8,
+        "tokens": 256,
+        "qk_dim": 64,
+        "value_dim": 64,
+        "dtype": "bfloat16",
+        "slope_mode": "normal"
+      },
+      "input_seed": 20261121,
+      "input_sha256": [
+        "e44a50b07b99c3b59122712457ba7069971d0df2fbf6b436cacf50542a94cf24",
+        "48ee1dca80234301e910d6af3a8ffccbf320fc178f2fcc7346a44e3bc9666c00",
+        "63cdb0e413085c224a81bd46ae4933f5413db661b252b6690fab072f359e4cb4",
+        "a301bfc616f5b360d03aca39f1f0dc109db8c843728eb29c4624e6ff59370455"
+      ],
+      "variants": {
+        "optimized": {
+          "correctness": {
+            "passed": true,
+            "finite": true,
+            "max_abs": 0.125,
+            "relative_l2": 1.708590459643705e-05,
+            "max_tolerance_ratio": 0.3368421052631579,
+            "matched_ratio": 1.0,
+            "atol": 0.03125,
+            "rtol": 0.015625,
+            "deterministic": true,
+            "shape_dtype_device_match": true,
+            "inputs_unchanged": true
+          },
+          "performance": {
+            "timing": "graph",
+            "capture_ops": 8,
+            "replays_per_measurement": 2,
+            "samples": [
+              {
+                "baseline_us": [
+                  162.19499707221985,
+                  163.201242685318
+                ],
+                "candidate_us": [
+                  40.2350015938282,
+                  40.146250277757645
+                ],
+                "order": [
+                  "baseline",
+                  "candidate",
+                  "candidate",
+                  "baseline"
+                ]
+              },
+              {
+                "baseline_us": [
+                  163.70125114917755,
+                  163.1762534379959
+                ],
+                "candidate_us": [
+                  39.36750069260597,
+                  39.2412506043911
+                ],
+                "order": [
+                  "candidate",
+                  "baseline",
+                  "baseline",
+                  "candidate"
+                ]
+              },
+              {
+                "baseline_us": [
+                  162.49249875545502,
+                  162.67874836921692
+                ],
+                "candidate_us": [
+                  38.913749158382416,
+                  39.342500269412994
+                ],
+                "order": [
+                  "baseline",
+                  "candidate",
+                  "candidate",
+                  "baseline"
+                ]
+              }
+            ],
+            "baseline_us": 162.92750090360641,
+            "candidate_us": 39.35500048100948,
+            "speedup": 4.139944070950427,
+            "baseline_min_max_us": [
+              162.19499707221985,
+              163.70125114917755
+            ],
+            "candidate_min_max_us": [
+              38.913749158382416,
+              40.2350015938282
+            ]
+          }
+        },
+        "unpruned": {
+          "correctness": {
+            "passed": true,
+            "finite": true,
+            "max_abs": 0.125,
+            "relative_l2": 1.708590459643705e-05,
+            "max_tolerance_ratio": 0.3368421052631579,
+            "matched_ratio": 1.0,
+            "atol": 0.03125,
+            "rtol": 0.015625,
+            "deterministic": true,
+            "shape_dtype_device_match": true,
+            "inputs_unchanged": true
+          },
+          "performance": {
+            "timing": "graph",
+            "capture_ops": 8,
+            "replays_per_measurement": 2,
+            "samples": [
+              {
+                "baseline_us": [
+                  163.2462441921234,
+                  163.05500268936157
+                ],
+                "candidate_us": [
+                  42.733751237392426,
+                  40.004998445510864
+                ],
+                "order": [
+                  "baseline",
+                  "candidate",
+                  "candidate",
+                  "baseline"
+                ]
+              },
+              {
+                "baseline_us": [
+                  164.50375318527222,
+                  164.23749923706055
+                ],
+                "candidate_us": [
+                  41.276250034570694,
+                  40.66000133752823
+                ],
+                "order": [
+                  "candidate",
+                  "baseline",
+                  "baseline",
+                  "candidate"
+                ]
+              },
+              {
+                "baseline_us": [
+                  162.6950055360794,
+                  163.0374938249588
+                ],
+                "candidate_us": [
+                  39.56000134348869,
+                  40.043748915195465
+                ],
+                "order": [
+                  "baseline",
+                  "candidate",
+                  "candidate",
+                  "baseline"
+                ]
+              }
+            ],
+            "baseline_us": 163.1506234407425,
+            "candidate_us": 40.35187512636185,
+            "speedup": 4.04319806526553,
+            "baseline_min_max_us": [
+              162.6950055360794,
+              164.50375318527222
+            ],
+            "candidate_min_max_us": [
+              39.56000134348869,
+              42.733751237392426
+            ]
+          }
+        },
+        "native128_early": {
+          "error": "MLIRCompilationError('ConvertLinalgIRToBinary', '[NOTE] Ub overflow detected; automatically set enable-code-motion to false and retrying compilation.\\n[NOTE] Ub overflow detected; automatically set enable-auto-multi-buffer to false and retrying compilation.\\n[NOTE] Due to Ub overflow, automatically set enable-code-motion to false, set enable-auto-multi-buffer to false; compilation still failed.\\nloc(\"/tmp/tmpek45vd8x/kernel.mlir\":2:1): error: Failed to run BiShengHIR pipeline\\n\\nloc(\"/tmp/tmpek45vd8x/kernel.mlir\":3:3): error: ub overflow, requires 2891776 bits while 1572864 bits available! (possible reason: tiling basic block is too large or block number is more than what user expect due to multi-buffer feature is enabled and some ops need extra local buffer.)\\nloc(\"/tmp/tmpek45vd8x/kernel.mlir\":2:1): error: Failed to apply transform\\nloc(\"/tmp/tmpek45vd8x/kernel.mlir\":2:1): error: could not find next producer to fuse into container\\nloc(\"/tmp/tmpek45vd8x/kernel.mlir\":2:1): error: Failed to apply transform\\nloc(\"/tmp/tmpek45vd8x/kernel.mlir\":2:1): error: could not find next producer to fuse into container\\n[ERROR] Failed to run BiShengIR pipeline\\n\\n\\n[INFO]: The compiled kernel cache is in /root/.triton/cache/7NGCJT3PMEOWFGPVE5RT7754ESONZCP65SH2MBJT3NRJMGDORYQA\\n\\n')"
+        }
+      },
+      "baseline_correctness": {
+        "passed": true,
+        "finite": true,
+        "max_abs": 0.125,
+        "relative_l2": 1.655949931121414e-05,
+        "max_tolerance_ratio": 0.3368421052631579,
+        "matched_ratio": 1.0,
+        "atol": 0.03125,
+        "rtol": 0.015625
+      }
+    },
+    {
+      "case": {
+        "name": "dim128",
+        "batch": 1,
+        "heads": 4,
+        "tokens": 512,
+        "qk_dim": 128,
+        "value_dim": 128,
+        "dtype": "bfloat16",
+        "slope_mode": "normal"
+      },
+      "input_seed": 20261126,
+      "input_sha256": [
+        "513d4b19a68d06e81c396a988288c70576102693517d6c309f1cadeb3a273911",
+        "f84d5e825c0ae26b2c79f9ca4498bcb9b47b8c785eace4e6681b156efeb42920",
+        "6a2fcfdfd90c9afbd24a9da75e6d465147d5b242fd810c1336d53067227e4ade",
+        "a0553302b42ae13e28837ec2da4289bac0fbe473c72c61df4306ac4534af03ce"
+      ],
+      "variants": {
+        "optimized": {
+          "correctness": {
+            "passed": true,
+            "finite": true,
+            "max_abs": 0.25,
+            "relative_l2": 1.8276433149567777e-05,
+            "max_tolerance_ratio": 0.27705627705627706,
+            "matched_ratio": 1.0,
+            "atol": 0.03125,
+            "rtol": 0.015625,
+            "deterministic": true,
+            "shape_dtype_device_match": true,
+            "inputs_unchanged": true
+          },
+          "performance": {
+            "timing": "graph",
+            "capture_ops": 8,
+            "replays_per_measurement": 2,
+            "samples": [
+              {
+                "baseline_us": [
+                  90.19000083208084,
+                  90.5425027012825
+                ],
+                "candidate_us": [
+                  43.95750164985657,
+                  43.37875172495842
+                ],
+                "order": [
+                  "baseline",
+                  "candidate",
+                  "candidate",
+                  "baseline"
+                ]
+              },
+              {
+                "baseline_us": [
+                  91.38625115156174,
+                  91.816246509552
+                ],
+                "candidate_us": [
+                  43.64375025033951,
+                  42.457498610019684
+                ],
+                "order": [
+                  "candidate",
+                  "baseline",
+                  "baseline",
+                  "candidate"
+                ]
+              },
+              {
+                "baseline_us": [
+                  91.15374833345413,
+                  90.91874957084656
+                ],
+                "candidate_us": [
+                  43.39750111103058,
+                  43.252501636743546
+                ],
+                "order": [
+                  "baseline",
+                  "candidate",
+                  "candidate",
+                  "baseline"
+                ]
+              }
+            ],
+            "baseline_us": 91.03624895215034,
+            "candidate_us": 43.3881264179945,
+            "speedup": 2.0981834540427307,
+            "baseline_min_max_us": [
+              90.19000083208084,
+              91.816246509552
+            ],
+            "candidate_min_max_us": [
+              42.457498610019684,
+              43.95750164985657
+            ]
+          }
+        },
+        "unpruned": {
+          "correctness": {
+            "passed": true,
+            "finite": true,
+            "max_abs": 0.25,
+            "relative_l2": 1.8276433149567777e-05,
+            "max_tolerance_ratio": 0.27705627705627706,
+            "matched_ratio": 1.0,
+            "atol": 0.03125,
+            "rtol": 0.015625,
+            "deterministic": true,
+            "shape_dtype_device_match": true,
+            "inputs_unchanged": true
+          },
+          "performance": {
+            "timing": "graph",
+            "capture_ops": 8,
+            "replays_per_measurement": 2,
+            "samples": [
+              {
+                "baseline_us": [
+                  89.85625207424164,
+                  89.74625170230865
+                ],
+                "candidate_us": [
+                  42.188748717308044,
+                  41.696250438690186
+                ],
+                "order": [
+                  "baseline",
+                  "candidate",
+                  "candidate",
+                  "baseline"
+                ]
+              },
+              {
+                "baseline_us": [
+                  90.40000289678574,
+                  88.74624967575073
+                ],
+                "candidate_us": [
+                  41.913751512765884,
+                  42.399998754262924
+                ],
+                "order": [
+                  "candidate",
+                  "baseline",
+                  "baseline",
+                  "candidate"
+                ]
+              },
+              {
+                "baseline_us": [
+                  89.38000351190567,
+                  89.47374671697617
+                ],
+                "candidate_us": [
+                  42.32250154018402,
+                  42.1612486243248
+                ],
+                "order": [
+                  "baseline",
+                  "candidate",
+                  "candidate",
+                  "baseline"
+                ]
+              }
+            ],
+            "baseline_us": 89.60999920964241,
+            "candidate_us": 42.17499867081642,
+            "speedup": 2.1247184833143646,
+            "baseline_min_max_us": [
+              88.74624967575073,
+              90.40000289678574
+            ],
+            "candidate_min_max_us": [
+              41.696250438690186,
+              42.399998754262924
+            ]
+          }
+        },
+        "native128_early": {
+          "error": "MLIRCompilationError('ConvertLinalgIRToBinary', '[NOTE] Ub overflow detected; automatically set enable-code-motion to false and retrying compilation.\\n[NOTE] Ub overflow detected; automatically set enable-auto-multi-buffer to false and retrying compilation.\\n[NOTE] Due to Ub overflow, automatically set enable-code-motion to false, set enable-auto-multi-buffer to false; compilation still failed.\\nloc(\"/tmp/tmppwkh25p0/kernel.mlir\":2:1): error: Failed to run BiShengHIR pipeline\\n\\nloc(\"/tmp/tmppwkh25p0/kernel.mlir\":3:3): error: ub overflow, requires 3022848 bits while 1572864 bits available! (possible reason: tiling basic block is too large or block number is more than what user expect due to multi-buffer feature is enabled and some ops need extra local buffer.)\\nloc(\"/tmp/tmppwkh25p0/kernel.mlir\":2:1): error: Failed to apply transform\\nloc(\"/tmp/tmppwkh25p0/kernel.mlir\":2:1): error: could not find next producer to fuse into container\\nloc(\"/tmp/tmppwkh25p0/kernel.mlir\":2:1): error: Failed to apply transform\\nloc(\"/tmp/tmppwkh25p0/kernel.mlir\":2:1): error: could not find next producer to fuse into container\\n[ERROR] Failed to run BiShengIR pipeline\\n\\n\\n[INFO]: The compiled kernel cache is in /root/.triton/cache/3ER6BMVLFWMCWMTHCI7VT65B2TFSNWEWE62EOVWJ7EGSOZK5LC4A\\n\\n')"
+        }
+      },
+      "baseline_correctness": {
+        "passed": true,
+        "finite": true,
+        "max_abs": 0.03125,
+        "relative_l2": 2.8944059994401103e-06,
+        "max_tolerance_ratio": 0.24427480916030533,
+        "matched_ratio": 1.0,
+        "atol": 0.03125,
+        "rtol": 0.015625
+      }
+    },
+    {
+      "case": {
+        "name": "different_dims",
+        "batch": 1,
+        "heads": 8,
+        "tokens": 512,
+        "qk_dim": 64,
+        "value_dim": 128,
+        "dtype": "bfloat16",
+        "slope_mode": "normal"
+      },
+      "input_seed": 20261127,
+      "input_sha256": [
+        "40a1c7a02081d079495d24e04bdc5527c8cb0d1ebba801c4bcf6f3dac8262bbe",
+        "705e809a259f030f4bb3e340dab9e6d48f049b705b9426a4c34579fbf9fff242",
+        "101ebe28a406c491f89098392ac15f1bc101446cc90334ce8882b50aedf1de4e",
+        "afeaed123352c09ccba2471a9ce3330c8d370f2e789045d271446184c7a90e60"
+      ],
+      "variants": {
+        "optimized": {
+          "correctness": {
+            "passed": true,
+            "finite": true,
+            "max_abs": 0.0625,
+            "relative_l2": 8.144319909564519e-06,
+            "max_tolerance_ratio": 0.31683168316831684,
+            "matched_ratio": 1.0,
+            "atol": 0.03125,
+            "rtol": 0.015625,
+            "deterministic": true,
+            "shape_dtype_device_match": true,
+            "inputs_unchanged": true
+          },
+          "performance": {
+            "timing": "graph",
+            "capture_ops": 8,
+            "replays_per_measurement": 2,
+            "samples": [
+              {
+                "baseline_us": [
+                  160.23874282836914,
+                  165.85999727249146
+                ],
+                "candidate_us": [
+                  76.67750120162964,
+                  78.11374962329865
+                ],
+                "order": [
+                  "baseline",
+                  "candidate",
+                  "candidate",
+                  "baseline"
+                ]
+              },
+              {
+                "baseline_us": [
+                  164.1562432050705,
+                  162.9362553358078
+                ],
+                "candidate_us": [
+                  81.59250020980835,
+                  77.16500014066696
+                ],
+                "order": [
+                  "candidate",
+                  "baseline",
+                  "baseline",
+                  "candidate"
+                ]
+              },
+              {
+                "baseline_us": [
+                  163.08750212192535,
+                  162.45250403881073
+                ],
+                "candidate_us": [
+                  80.55750280618668,
+                  77.11750268936157
+                ],
+                "order": [
+                  "baseline",
+                  "candidate",
+                  "candidate",
+                  "baseline"
+                ]
+              }
+            ],
+            "baseline_us": 163.01187872886658,
+            "candidate_us": 77.6393748819828,
+            "speedup": 2.099603184294771,
+            "baseline_min_max_us": [
+              160.23874282836914,
+              165.85999727249146
+            ],
+            "candidate_min_max_us": [
+              76.67750120162964,
+              81.59250020980835
+            ]
+          }
+        },
+        "unpruned": {
+          "correctness": {
+            "passed": true,
+            "finite": true,
+            "max_abs": 0.0625,
+            "relative_l2": 8.144319909564519e-06,
+            "max_tolerance_ratio": 0.31683168316831684,
+            "matched_ratio": 1.0,
+            "atol": 0.03125,
+            "rtol": 0.015625,
+            "deterministic": true,
+            "shape_dtype_device_match": true,
+            "inputs_unchanged": true
+          },
+          "performance": {
+            "timing": "graph",
+            "capture_ops": 8,
+            "replays_per_measurement": 2,
+            "samples": [
+              {
+                "baseline_us": [
+                  161.81249916553497,
+                  162.96625137329102
+                ],
+                "candidate_us": [
+                  76.29500329494476,
+                  76.10125094652176
+                ],
+                "order": [
+                  "baseline",
+                  "candidate",
+                  "candidate",
+                  "baseline"
+                ]
+              },
+              {
+                "baseline_us": [
+                  162.8050059080124,
+                  162.06124424934387
+                ],
+                "candidate_us": [
+                  75.96500217914581,
+                  76.31749659776688
+                ],
+                "order": [
+                  "candidate",
+                  "baseline",
+                  "baseline",
+                  "candidate"
+                ]
+              },
+              {
+                "baseline_us": [
+                  163.63124549388885,
+                  162.40499913692474
+                ],
+                "candidate_us": [
+                  77.05499976873398,
+                  76.01624727249146
+                ],
+                "order": [
+                  "baseline",
+                  "candidate",
+                  "candidate",
+                  "baseline"
+                ]
+              }
+            ],
+            "baseline_us": 162.60500252246857,
+            "candidate_us": 76.19812712073326,
+            "speedup": 2.1339763674877026,
+            "baseline_min_max_us": [
+              161.81249916553497,
+              163.63124549388885
+            ],
+            "candidate_min_max_us": [
+              75.96500217914581,
+              77.05499976873398
+            ]
+          }
+        },
+        "native128_early": {
+          "error": "MLIRCompilationError('ConvertLinalgIRToBinary', '[NOTE] Ub overflow detected; automatically set enable-code-motion to false and retrying compilation.\\n[NOTE] Ub overflow detected; automatically set enable-auto-multi-buffer to false and retrying compilation.\\n[NOTE] Due to Ub overflow, automatically set enable-code-motion to false, set enable-auto-multi-buffer to false; compilation still failed.\\nloc(\"/tmp/tmp1e_jo1qf/kernel.mlir\":2:1): error: Failed to run BiShengHIR pipeline\\n\\nloc(\"/tmp/tmp1e_jo1qf/kernel.mlir\":3:3): error: ub overflow, requires 3022848 bits while 1572864 bits available! (possible reason: tiling basic block is too large or block number is more than what user expect due to multi-buffer feature is enabled and some ops need extra local buffer.)\\nloc(\"/tmp/tmp1e_jo1qf/kernel.mlir\":2:1): error: Failed to apply transform\\nloc(\"/tmp/tmp1e_jo1qf/kernel.mlir\":2:1): error: could not find next producer to fuse into container\\nloc(\"/tmp/tmp1e_jo1qf/kernel.mlir\":2:1): error: Failed to apply transform\\nloc(\"/tmp/tmp1e_jo1qf/kernel.mlir\":2:1): error: could not find next producer to fuse into container\\n[ERROR] Failed to run BiShengIR pipeline\\n\\n\\n[INFO]: The compiled kernel cache is in /root/.triton/cache/ILFLWAAEW4YWJ7Z7RU55HAY2OO5HGLI5DBWQUD3MOG35SKNTSWOA\\n\\n')"
+        }
+      },
+      "baseline_correctness": {
+        "passed": true,
+        "finite": true,
+        "max_abs": 0.0625,
+        "relative_l2": 8.121110292413764e-06,
+        "max_tolerance_ratio": 0.32,
+        "matched_ratio": 1.0,
+        "atol": 0.03125,
+        "rtol": 0.015625
+      }
+    },
+    {
+      "case": {
+        "name": "short16",
+        "batch": 1,
+        "heads": 4,
+        "tokens": 16,
+        "qk_dim": 64,
+        "value_dim": 64,
+        "dtype": "bfloat16",
+        "slope_mode": "normal"
+      },
+      "input_seed": 20261132,
+      "input_sha256": [
+        "f44cefa9a78796524969ecd6fddc7799920ea055c6eae7aab0450f770786281b",
+        "17f1b3b76e3a913d5a599c9fef65aec0d9abd6576c8d713d8bbaf24477fee652",
+        "06cf1e5b67d32a0ec163118abe692257a1197969e64d6ee9607767c2a3eecab0",
+        "659bc0c504602dd65e4baf4f589a0eba8e96318d2141f1d645cb52d9ff34f036"
+      ],
+      "variants": {
+        "optimized": {
+          "correctness": {
+            "passed": true,
+            "finite": true,
+            "max_abs": 0.0,
+            "relative_l2": 0.0,
+            "max_tolerance_ratio": 0.0,
+            "matched_ratio": 1.0,
+            "atol": 0.03125,
+            "rtol": 0.015625,
+            "deterministic": true,
+            "shape_dtype_device_match": true,
+            "inputs_unchanged": true
+          },
+          "performance": {
+            "timing": "graph",
+            "capture_ops": 8,
+            "replays_per_measurement": 2,
+            "samples": [
+              {
+                "baseline_us": [
+                  51.67749896645546,
+                  53.11249941587448
+                ],
+                "candidate_us": [
+                  9.72250010818243,
+                  9.641249664127827
+                ],
+                "order": [
+                  "baseline",
+                  "candidate",
+                  "candidate",
+                  "baseline"
+                ]
+              },
+              {
+                "baseline_us": [
+                  53.5225011408329,
+                  52.66999825835228
+                ],
+                "candidate_us": [
+                  9.340000338852406,
+                  9.77499969303608
+                ],
+                "order": [
+                  "candidate",
+                  "baseline",
+                  "baseline",
+                  "candidate"
+                ]
+              },
+              {
+                "baseline_us": [
+                  52.60125175118446,
+                  53.113751113414764
+                ],
+                "candidate_us": [
+                  9.641249664127827,
+                  9.259999729692936
+                ],
+                "order": [
+                  "baseline",
+                  "candidate",
+                  "candidate",
+                  "baseline"
+                ]
+              }
+            ],
+            "baseline_us": 52.89124883711338,
+            "candidate_us": 9.641249664127827,
+            "speedup": 5.485932911156291,
+            "baseline_min_max_us": [
+              51.67749896645546,
+              53.5225011408329
+            ],
+            "candidate_min_max_us": [
+              9.259999729692936,
+              9.77499969303608
+            ]
+          }
+        },
+        "unpruned": {
+          "correctness": {
+            "passed": true,
+            "finite": true,
+            "max_abs": 0.0,
+            "relative_l2": 0.0,
+            "max_tolerance_ratio": 0.0,
+            "matched_ratio": 1.0,
+            "atol": 0.03125,
+            "rtol": 0.015625,
+            "deterministic": true,
+            "shape_dtype_device_match": true,
+            "inputs_unchanged": true
+          },
+          "performance": {
+            "timing": "graph",
+            "capture_ops": 8,
+            "replays_per_measurement": 2,
+            "samples": [
+              {
+                "baseline_us": [
+                  52.406251430511475,
+                  53.04500088095665
+                ],
+                "candidate_us": [
+                  52.4587482213974,
+                  52.242498844861984
+                ],
+                "order": [
+                  "baseline",
+                  "candidate",
+                  "candidate",
+                  "baseline"
+                ]
+              },
+              {
+                "baseline_us": [
+                  53.45999822020531,
+                  53.02625149488449
+                ],
+                "candidate_us": [
+                  52.54499986767769,
+                  52.09749937057495
+                ],
+                "order": [
+                  "candidate",
+                  "baseline",
+                  "baseline",
+                  "candidate"
+                ]
+              },
+              {
+                "baseline_us": [
+                  52.319999784231186,
+                  52.754998207092285
+                ],
+                "candidate_us": [
+                  52.54124850034714,
+                  52.04249918460846
+                ],
+                "order": [
+                  "baseline",
+                  "candidate",
+                  "candidate",
+                  "baseline"
+                ]
+              }
+            ],
+            "baseline_us": 52.89062485098839,
+            "candidate_us": 52.35062353312969,
+            "speedup": 1.0103150885589158,
+            "baseline_min_max_us": [
+              52.319999784231186,
+              53.45999822020531
+            ],
+            "candidate_min_max_us": [
+              52.04249918460846,
+              52.54499986767769
+            ]
+          }
+        },
+        "native128_early": {
+          "error": "MLIRCompilationError('ConvertLinalgIRToBinary', '[NOTE] Ub overflow detected; automatically set enable-code-motion to false and retrying compilation.\\n[NOTE] Ub overflow detected; automatically set enable-auto-multi-buffer to false and retrying compilation.\\n[NOTE] Due to Ub overflow, automatically set enable-code-motion to false, set enable-auto-multi-buffer to false; compilation still failed.\\nloc(\"/tmp/tmpny6wc3pk/kernel.mlir\":2:1): error: Failed to run BiShengHIR pipeline\\n\\nloc(\"/tmp/tmpny6wc3pk/kernel.mlir\":3:3): error: ub overflow, requires 3932160 bits while 1572864 bits available! (possible reason: tiling basic block is too large or block number is more than what user expect due to multi-buffer feature is enabled and some ops need extra local buffer.)\\nloc(\"/tmp/tmpny6wc3pk/kernel.mlir\":2:1): error: Failed to apply transform\\nloc(\"/tmp/tmpny6wc3pk/kernel.mlir\":2:1): error: could not find next producer to fuse into container\\n[ERROR] Failed to run BiShengIR pipeline\\n\\n\\n[INFO]: The compiled kernel cache is in /root/.triton/cache/6DZV3AOFGVEXENPIBTC7HLQQ3VCTVBITPZUKHXKENI4HU52P677A\\n\\n')"
+        }
+      },
+      "baseline_correctness": {
+        "passed": true,
+        "finite": true,
+        "max_abs": 0.0,
+        "relative_l2": 0.0,
+        "max_tolerance_ratio": 0.0,
+        "matched_ratio": 1.0,
+        "atol": 0.03125,
+        "rtol": 0.015625
+      }
+    },
+    {
+      "case": {
+        "name": "tail300",
+        "batch": 1,
+        "heads": 8,
+        "tokens": 300,
+        "qk_dim": 64,
+        "value_dim": 64,
+        "dtype": "bfloat16",
+        "slope_mode": "normal"
+      },
+      "input_seed": 20261128,
+      "input_sha256": [
+        "7f838a8dcdeedc0cf05757bc383ccf001849bdc72ae525c1ee8281a92f60bc71",
+        "52fb3dbb62c7fad56a6b728dc430826157137ce6ed3f4c2b57a6833ff2b5a6fc",
+        "c5ec90227231346e70cff0363e9967012bdd6547a39e209b7e874bbaba454678",
+        "5b523ab4844a3f249e89cd5f2bfae26e8810fa0cf61ed4e12ff7d980c368aea8"
+      ],
+      "variants": {
+        "optimized": {
+          "correctness": {
+            "passed": true,
+            "finite": true,
+            "max_abs": 0.03125,
+            "relative_l2": 4.800235962182763e-06,
+            "max_tolerance_ratio": 0.24242424242424243,
+            "matched_ratio": 1.0,
+            "atol": 0.03125,
+            "rtol": 0.015625,
+            "deterministic": true,
+            "shape_dtype_device_match": true,
+            "inputs_unchanged": true
+          },
+          "performance": {
+            "timing": "graph",
+            "capture_ops": 8,
+            "replays_per_measurement": 2,
+            "samples": [
+              {
+                "baseline_us": [
+                  162.04750537872314,
+                  162.10250556468964
+                ],
+                "candidate_us": [
+                  33.652499318122864,
+                  33.72250124812126
+                ],
+                "order": [
+                  "baseline",
+                  "candidate",
+                  "candidate",
+                  "baseline"
+                ]
+              },
+              {
+                "baseline_us": [
+                  162.2762531042099,
+                  162.69250214099884
+                ],
+                "candidate_us": [
+                  33.9912511408329,
+                  33.20875018835068
+                ],
+                "order": [
+                  "candidate",
+                  "baseline",
+                  "baseline",
+                  "candidate"
+                ]
+              },
+              {
+                "baseline_us": [
+                  162.64374554157257,
+                  162.3237431049347
+                ],
+                "candidate_us": [
+                  32.660000026226044,
+                  33.361248672008514
+                ],
+                "order": [
+                  "baseline",
+                  "candidate",
+                  "candidate",
+                  "baseline"
+                ]
+              }
+            ],
+            "baseline_us": 162.2999981045723,
+            "candidate_us": 33.50687399506569,
+            "speedup": 4.843782148357768,
+            "baseline_min_max_us": [
+              162.04750537872314,
+              162.69250214099884
+            ],
+            "candidate_min_max_us": [
+              32.660000026226044,
+              33.9912511408329
+            ]
+          }
+        },
+        "unpruned": {
+          "correctness": {
+            "passed": true,
+            "finite": true,
+            "max_abs": 0.03125,
+            "relative_l2": 4.800235962182763e-06,
+            "max_tolerance_ratio": 0.24242424242424243,
+            "matched_ratio": 1.0,
+            "atol": 0.03125,
+            "rtol": 0.015625,
+            "deterministic": true,
+            "shape_dtype_device_match": true,
+            "inputs_unchanged": true
+          },
+          "performance": {
+            "timing": "graph",
+            "capture_ops": 8,
+            "replays_per_measurement": 2,
+            "samples": [
+              {
+                "baseline_us": [
+                  160.26000678539276,
+                  161.83750331401825
+                ],
+                "candidate_us": [
+                  42.54375025629997,
+                  39.67000171542168
+                ],
+                "order": [
+                  "baseline",
+                  "candidate",
+                  "candidate",
+                  "baseline"
+                ]
+              },
+              {
+                "baseline_us": [
+                  161.5774929523468,
+                  162.16999292373657
+                ],
+                "candidate_us": [
+                  38.87125104665756,
+                  38.30249980092049
+                ],
+                "order": [
+                  "candidate",
+                  "baseline",
+                  "baseline",
+                  "candidate"
+                ]
+              },
+              {
+                "baseline_us": [
+                  162.22749650478363,
+                  161.31624579429626
+                ],
+                "candidate_us": [
+                  38.916248828172684,
+                  38.600001484155655
+                ],
+                "order": [
+                  "baseline",
+                  "candidate",
+                  "candidate",
+                  "baseline"
+                ]
+              }
+            ],
+            "baseline_us": 161.70749813318253,
+            "candidate_us": 38.89374993741512,
+            "speedup": 4.157673106691692,
+            "baseline_min_max_us": [
+              160.26000678539276,
+              162.22749650478363
+            ],
+            "candidate_min_max_us": [
+              38.30249980092049,
+              42.54375025629997
+            ]
+          }
+        },
+        "native128_early": {
+          "error": "MLIRCompilationError('ConvertLinalgIRToBinary', '[NOTE] Ub overflow detected; automatically set enable-code-motion to false and retrying compilation.\\n[NOTE] Ub overflow detected; automatically set enable-auto-multi-buffer to false and retrying compilation.\\n[NOTE] Due to Ub overflow, automatically set enable-code-motion to false, set enable-auto-multi-buffer to false; compilation still failed.\\nloc(\"/tmp/tmpshybltpk/kernel.mlir\":2:1): error: Failed to run BiShengHIR pipeline\\n\\nloc(\"/tmp/tmpshybltpk/kernel.mlir\":3:3): error: ub overflow, requires 2891776 bits while 1572864 bits available! (possible reason: tiling basic block is too large or block number is more than what user expect due to multi-buffer feature is enabled and some ops need extra local buffer.)\\nloc(\"/tmp/tmpshybltpk/kernel.mlir\":2:1): error: Failed to apply transform\\nloc(\"/tmp/tmpshybltpk/kernel.mlir\":2:1): error: could not find next producer to fuse into container\\nloc(\"/tmp/tmpshybltpk/kernel.mlir\":2:1): error: Failed to apply transform\\nloc(\"/tmp/tmpshybltpk/kernel.mlir\":2:1): error: could not find next producer to fuse into container\\n[ERROR] Failed to run BiShengIR pipeline\\n\\n\\n[INFO]: The compiled kernel cache is in /root/.triton/cache/DPIDJHZTZTFWVZT5TGYVN7D7GMALO6DQWHHSXSCY6GXUY4MZUT3Q\\n\\n')"
+        }
+      },
+      "baseline_correctness": {
+        "passed": true,
+        "finite": true,
+        "max_abs": 0.03125,
+        "relative_l2": 4.666744347432488e-06,
+        "max_tolerance_ratio": 0.24242424242424243,
+        "matched_ratio": 1.0,
+        "atol": 0.03125,
+        "rtol": 0.015625
+      }
+    }
+  ],
+  "summary": {
+    "optimized": {
+      "measured_cases": 6,
+      "geomean_speedup": 3.3594710493869853,
+      "min_speedup": 2.0981834540427307,
+      "max_speedup": 5.485932911156291
+    },
+    "unpruned": {
+      "measured_cases": 6,
+      "geomean_speedup": 2.4792473112869056,
+      "min_speedup": 1.0103150885589158,
+      "max_speedup": 4.157673106691692
+    }
+  },
+  "all_passed": false
+}

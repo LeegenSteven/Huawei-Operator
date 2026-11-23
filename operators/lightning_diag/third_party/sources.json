@@ -1,0 +1,18 @@
+[
+  {
+    "repository": "vllm-project/vllm",
+    "commit": "8c1557a79c539ffe82d004d2a0c8d7b5e71159ce",
+    "path": "vllm/model_executor/layers/lightning_attn.py",
+    "url": "https://github.com/vllm-project/vllm/blob/8c1557a79c539ffe82d004d2a0c8d7b5e71159ce/vllm/model_executor/layers/lightning_attn.py",
+    "sha256": "8a7b8a1fcb54a9ff326b1a0a696ab004aed988f4f2d2ac39b5f105d3c6411e05",
+    "local": "operators/lightning_diag/third_party/vllm/lightning_attn.py"
+  },
+  {
+    "repository": "OpenNLPLab/lightning-attention",
+    "commit": "2363947041390c7258e261df90d5cf305b699d95",
+    "path": "lightning_attn/ops/triton/lightning_attn2.py",
+    "url": "https://github.com/OpenNLPLab/lightning-attention/blob/2363947041390c7258e261df90d5cf305b699d95/lightning_attn/ops/triton/lightning_attn2.py",
+    "sha256": "ca318413537870f14f0755eda52e5b119821a8a032402a40432778c766495404",
+    "local": "operators/lightning_diag/third_party/lightning_attention/lightning_attn2.py"
+  }
+]

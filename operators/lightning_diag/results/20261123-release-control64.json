@@ -1,0 +1,2694 @@
+{
+  "environment": {
+    "timestamp": "2026-11-23T10:22:54.810108+08:00",
+    "architecture": "aarch64",
+    "kernel": "4.19.90-89.11.v2401.ky10.aarch64",
+    "python": "3.11.15",
+    "versions": {
+      "torch": "2.9.0+cpu",
+      "torch-npu": "2.9.0.post9",
+      "triton": "3.6.0",
+      "triton-ascend": "3.6.0",
+      "numpy": "1.26.4"
+    },
+    "device": "npu:0",
+    "properties": {
+      "name": "Ascend910B3",
+      "total_memory": 65452113920,
+      "cube_core_num": 20,
+      "vector_core_num": 40
+    },
+    "visible_devices": "0",
+    "cann_installation": "/usr/local/Ascend/cann-9.2.0-beta.2",
+    "driver_version": "Version=25.5.0",
+    "source_sha256": {
+      "kernel.py": "f66cccfa568fd026b3b441cf580940de5a68db9427ef530a693bcd6f4ced0627",
+      "baseline_kernel.py": "e00b227e4af1693bcef4ef9f395140b4abba5697d954fd9d589a15956c645150",
+      "inputs.py": "18c7996bfe4cb07ab15f2f626d22ee86a17334f4fd7b1e8a08cfd15ce36f8346",
+      "reference.py": "7bff44ebce8105799f535f9d8c683f90477d6cd8ad9cb8ec120f383152fc39a4",
+      "benchmark.py": "9eee6cd22992adbeb2984cba82be563e1023b0315d118daa49064215cf7b770b"
+    },
+    "upstream": [
+      {
+        "repository": "vllm-project/vllm",
+        "commit": "8c1557a79c539ffe82d004d2a0c8d7b5e71159ce",
+        "path": "vllm/model_executor/layers/lightning_attn.py",
+        "url": "https://github.com/vllm-project/vllm/blob/8c1557a79c539ffe82d004d2a0c8d7b5e71159ce/vllm/model_executor/layers/lightning_attn.py",
+        "sha256": "8a7b8a1fcb54a9ff326b1a0a696ab004aed988f4f2d2ac39b5f105d3c6411e05",
+        "local": "operators/lightning_diag/third_party/vllm/lightning_attn.py"
+      },
+      {
+        "repository": "OpenNLPLab/lightning-attention",
+        "commit": "2363947041390c7258e261df90d5cf305b699d95",
+        "path": "lightning_attn/ops/triton/lightning_attn2.py",
+        "url": "https://github.com/OpenNLPLab/lightning-attention/blob/2363947041390c7258e261df90d5cf305b699d95/lightning_attn/ops/triton/lightning_attn2.py",
+        "sha256": "ca318413537870f14f0755eda52e5b119821a8a032402a40432778c766495404",
+        "local": "operators/lightning_diag/third_party/lightning_attention/lightning_attn2.py"
+      }
+    ]
+  },
+  "protocol": {
+    "device": "npu:0",
+    "cases": "small,batch2,two_blocks,prefill1k,prefill2k,prefill4k,tail300,tail500,batch3,fp32,short16,zero_decay,strong_decay,long8k",
+    "variants": "optimized",
+    "baseline_tile": 64,
+    "timing": "graph",
+    "samples": 7,
+    "capture_ops": 16,
+    "replays": 4,
+    "validate_only": false,
+    "seed": 20261120,
+    "output": "/opt/lightning-diag-lab/results/20261123-release-control64.json"
+  },
+  "baseline": "unmodified pinned vLLM _fwd_diag_kernel, CBLOCK=64",
+  "oracle": "independent NumPy FP64 formula, rounded to output dtype",
+  "tolerances": {
+    "bfloat16": [
+      0.03125,
+      0.015625
+    ],
+    "float16": [
+      0.01,
+      0.002
+    ],
+    "float32": [
+      0.002,
+      0.0001
+    ]
+  },
+  "cases": [
+    {
+      "case": {
+        "name": "small",
+        "batch": 1,
+        "heads": 4,
+        "tokens": 256,
+        "qk_dim": 64,
+        "value_dim": 64,
+        "dtype": "bfloat16",
+        "slope_mode": "normal"
+      },
+      "input_seed": 20261120,
+      "input_sha256": [
+        "d0fef6ec74d744c8d73f974401c03abec85f1d4e2422ed4467c55204c32365d6",
+        "e3abe52ed8041620ad290803e0f0224b2d42d2f756314114046f7b85ef506854",
+        "9e1bfb1d99fb6fc8420ec598e54e61104e5b59b44b1b0fdced00e653520904f4",
+        "3a04d97e9e28d8aa4b371da2ceec42a26442c6908712b5934b11f24873feaa42"
+      ],
+      "automatic_configuration": {
+        "tile": 128,
+        "column_tile": 128,
+        "native_qk": true,
+        "anchor": false,
+        "interleave": true,
+        "late_value": true,
+        "prune_tail": true,
+        "engine": "custom"
+      },
+      "variants": {
+        "optimized": {
+          "correctness": {
+            "passed": true,
+            "finite": true,
+            "max_abs": 0.03125,
+            "relative_l2": 6.423365827754415e-06,
+            "max_tolerance_ratio": 0.2206896551724138,
+            "matched_ratio": 1.0,
+            "atol": 0.03125,
+            "rtol": 0.015625,
+            "deterministic": true,
+            "shape_dtype_device_match": true,
+            "inputs_unchanged": true
+          },
+          "performance": {
+            "timing": "graph",
+            "capture_ops": 16,
+            "replays_per_measurement": 4,
+            "samples": [
+              {
+                "baseline_us": [
+                  24.028124287724495,
+                  23.27468805015087
+                ],
+                "candidate_us": [
+                  15.465937554836273,
+                  15.193125233054161
+                ],
+                "order": [
+                  "baseline",
+                  "candidate",
+                  "candidate",
+                  "baseline"
+                ]
+              },
+              {
+                "baseline_us": [
+                  23.865625262260437,
+                  23.483125492930412
+                ],
+                "candidate_us": [
+                  15.021874569356441,
+                  15.31312521547079
+                ],
+                "order": [
+                  "candidate",
+                  "baseline",
+                  "baseline",
+                  "candidate"
+                ]
+              },
+              {
+                "baseline_us": [
+                  23.470312356948853,
+                  23.406563326716423
+                ],
+                "candidate_us": [
+                  14.93156235665083,
+                  14.980625361204147
+                ],
+                "order": [
+                  "baseline",
+                  "candidate",
+                  "candidate",
+                  "baseline"
+                ]
+              },
+              {
+                "baseline_us": [
+                  25.892186909914017,
+                  23.742811754345894
+                ],
+                "candidate_us": [
+                  15.171250328421593,
+                  15.17343707382679
+                ],
+                "order": [
+                  "candidate",
+                  "baseline",
+                  "baseline",
+                  "candidate"
+                ]
+              },
+              {
+                "baseline_us": [
+                  24.120625108480453,
+                  23.66749942302704
+                ],
+                "candidate_us": [
+                  15.51937498152256,
+                  16.53062552213669
+                ],
+                "order": [
+                  "baseline",
+                  "candidate",
+                  "candidate",
+                  "baseline"
+                ]
+              },
+              {
+                "baseline_us": [
+                  23.61312508583069,
+                  23.416562005877495
+                ],
+                "candidate_us": [
+                  15.256250277161598,
+                  15.139687806367874
+                ],
+                "order": [
+                  "candidate",
+                  "baseline",
+                  "baseline",
+                  "candidate"
+                ]
+              },
+              {
+                "baseline_us": [
+                  23.76125007867813,
+                  24.60593730211258
+                ],
+                "candidate_us": [
+                  15.286874957382679,
+                  16.54718816280365
+                ],
+                "order": [
+                  "baseline",
+                  "candidate",
+                  "candidate",
+                  "baseline"
+                ]
+              }
+            ],
+            "baseline_us": 23.705155588686466,
+            "candidate_us": 15.22468775510788,
+            "speedup": 1.5570208052860324,
+            "baseline_min_max_us": [
+              23.27468805015087,
+              25.892186909914017
+            ],
+            "candidate_min_max_us": [
+              14.93156235665083,
+              16.54718816280365
+            ]
+          }
+        }
+      },
+      "baseline_correctness": {
+        "passed": true,
+        "finite": true,
+        "max_abs": 0.03125,
+        "relative_l2": 6.423377890854995e-06,
+        "max_tolerance_ratio": 0.2206896551724138,
+        "matched_ratio": 1.0,
+        "atol": 0.03125,
+        "rtol": 0.015625
+      }
+    },
+    {
+      "case": {
+        "name": "batch2",
+        "batch": 2,
+        "heads": 8,
+        "tokens": 256,
+        "qk_dim": 64,
+        "value_dim": 64,
+        "dtype": "bfloat16",
+        "slope_mode": "normal"
+      },
+      "input_seed": 20261121,
+      "input_sha256": [
+        "e44a50b07b99c3b59122712457ba7069971d0df2fbf6b436cacf50542a94cf24",
+        "48ee1dca80234301e910d6af3a8ffccbf320fc178f2fcc7346a44e3bc9666c00",
+        "63cdb0e413085c224a81bd46ae4933f5413db661b252b6690fab072f359e4cb4",
+        "a301bfc616f5b360d03aca39f1f0dc109db8c843728eb29c4624e6ff59370455"
+      ],
+      "automatic_configuration": {
+        "tile": 128,
+        "column_tile": 128,
+        "native_qk": true,
+        "anchor": false,
+        "interleave": true,
+        "late_value": true,
+        "prune_tail": true,
+        "engine": "custom"
+      },
+      "variants": {
+        "optimized": {
+          "correctness": {
+            "passed": true,
+            "finite": true,
+            "max_abs": 0.125,
+            "relative_l2": 1.708590459643705e-05,
+            "max_tolerance_ratio": 0.3368421052631579,
+            "matched_ratio": 1.0,
+            "atol": 0.03125,
+            "rtol": 0.015625,
+            "deterministic": true,
+            "shape_dtype_device_match": true,
+            "inputs_unchanged": true
+          },
+          "performance": {
+            "timing": "graph",
+            "capture_ops": 16,
+            "replays_per_measurement": 4,
+            "samples": [
+              {
+                "baseline_us": [
+                  59.658125042915344,
+                  58.48843604326248
+                ],
+                "candidate_us": [
+                  37.18656301498413,
+                  37.46406361460686
+                ],
+                "order": [
+                  "baseline",
+                  "candidate",
+                  "candidate",
+                  "baseline"
+                ]
+              },
+              {
+                "baseline_us": [
+                  59.517186135053635,
+                  59.33656170964241
+                ],
+                "candidate_us": [
+                  37.55062445998192,
+                  37.20156103372574
+                ],
+                "order": [
+                  "candidate",
+                  "baseline",
+                  "baseline",
+                  "candidate"
+                ]
+              },
+              {
+                "baseline_us": [
+                  58.557186275720596,
+                  59.789687395095825
+                ],
+                "candidate_us": [
+                  37.51968592405319,
+                  45.678749680519104
+                ],
+                "order": [
+                  "baseline",
+                  "candidate",
+                  "candidate",
+                  "baseline"
+                ]
+              },
+              {
+                "baseline_us": [
+                  59.28562581539154,
+                  58.91468748450279
+                ],
+                "candidate_us": [
+                  37.99906373023987,
+                  37.091560661792755
+                ],
+                "order": [
+                  "candidate",
+                  "baseline",
+                  "baseline",
+                  "candidate"
+                ]
+              },
+              {
+                "baseline_us": [
+                  59.13843587040901,
+                  59.01343747973442
+                ],
+                "candidate_us": [
+                  37.54875063896179,
+                  37.61781379580498
+                ],
+                "order": [
+                  "baseline",
+                  "candidate",
+                  "candidate",
+                  "baseline"
+                ]
+              },
+              {
+                "baseline_us": [
+                  58.681562542915344,
+                  59.90593880414963
+                ],
+                "candidate_us": [
+                  36.893751472234726,
+                  37.69312426447868
+                ],
+                "order": [
+                  "candidate",
+                  "baseline",
+                  "baseline",
+                  "candidate"
+                ]
+              },
+              {
+                "baseline_us": [
+                  60.302186757326126,
+                  59.363748878240585
+                ],
+                "candidate_us": [
+                  37.20281273126602,
+                  38.19437325000763
+                ],
+                "order": [
+                  "baseline",
+                  "candidate",
+                  "candidate",
+                  "baseline"
+                ]
+              }
+            ],
+            "baseline_us": 59.311093762516975,
+            "candidate_us": 37.53421828150749,
+            "speedup": 1.5801872658618443,
+            "baseline_min_max_us": [
+              58.48843604326248,
+              60.302186757326126
+            ],
+            "candidate_min_max_us": [
+              36.893751472234726,
+              45.678749680519104
+            ]
+          }
+        }
+      },
+      "baseline_correctness": {
+        "passed": true,
+        "finite": true,
+        "max_abs": 0.125,
+        "relative_l2": 1.655949931121414e-05,
+        "max_tolerance_ratio": 0.3368421052631579,
+        "matched_ratio": 1.0,
+        "atol": 0.03125,
+        "rtol": 0.015625
+      }
+    },
+    {
+      "case": {
+        "name": "two_blocks",
+        "batch": 1,
+        "heads": 8,
+        "tokens": 512,
+        "qk_dim": 64,
+        "value_dim": 64,
+        "dtype": "bfloat16",
+        "slope_mode": "normal"
+      },
+      "input_seed": 20261122,
+      "input_sha256": [
+        "b91bb14ccb769b2d633a44a272d506f21b7d276512b56b9c7ea0e4982410f8e1",
+        "c90d37a545e498c5f4c2721ec7a5e69607fe91abc6bd77d697137d43a7efa9d2",
+        "91a44c6f47ff378a86eb567979d396b2982c302fd3276353fb9a1dfb421fa784",
+        "52a7e8352eecbfa04d64f54307f75191b4baac062173a0fa202d73b5f9b39100"
+      ],
+      "automatic_configuration": {
+        "tile": 128,
+        "column_tile": 128,
+        "native_qk": true,
+        "anchor": false,
+        "interleave": true,
+        "late_value": true,
+        "prune_tail": true,
+        "engine": "custom"
+      },
+      "variants": {
+        "optimized": {
+          "correctness": {
+            "passed": true,
+            "finite": true,
+            "max_abs": 0.125,
+            "relative_l2": 1.9655392872861604e-05,
+            "max_tolerance_ratio": 0.28699551569506726,
+            "matched_ratio": 1.0,
+            "atol": 0.03125,
+            "rtol": 0.015625,
+            "deterministic": true,
+            "shape_dtype_device_match": true,
+            "inputs_unchanged": true
+          },
+          "performance": {
+            "timing": "graph",
+            "capture_ops": 16,
+            "replays_per_measurement": 4,
+            "samples": [
+              {
+                "baseline_us": [
+                  59.67999994754791,
+                  59.16031077504158
+                ],
+                "candidate_us": [
+                  38.52812573313713,
+                  37.26249933242798
+                ],
+                "order": [
+                  "baseline",
+                  "candidate",
+                  "candidate",
+                  "baseline"
+                ]
+              },
+              {
+                "baseline_us": [
+                  59.77968871593475,
+                  59.28906425833702
+                ],
+                "candidate_us": [
+                  37.86906227469444,
+                  37.232812494039536
+                ],
+                "order": [
+                  "candidate",
+                  "baseline",
+                  "baseline",
+                  "candidate"
+                ]
+              },
+              {
+                "baseline_us": [
+                  58.74531343579292,
+                  59.56374853849411
+                ],
+                "candidate_us": [
+                  37.72624954581261,
+                  37.31437399983406
+                ],
+                "order": [
+                  "baseline",
+                  "candidate",
+                  "candidate",
+                  "baseline"
+                ]
+              },
+              {
+                "baseline_us": [
+                  58.701250702142715,
+                  60.14562398195267
+                ],
+                "candidate_us": [
+                  37.40281239151955,
+                  37.34562546014786
+                ],
+                "order": [
+                  "candidate",
+                  "baseline",
+                  "baseline",
+                  "candidate"
+                ]
+              },
+              {
+                "baseline_us": [
+                  59.59875136613846,
+                  59.046562761068344
+                ],
+                "candidate_us": [
+                  37.805624306201935,
+                  37.75406256318092
+                ],
+                "order": [
+                  "baseline",
+                  "candidate",
+                  "candidate",
+                  "baseline"
+                ]
+              },
+              {
+                "baseline_us": [
+                  59.70406159758568,
+                  59.2753142118454
+                ],
+                "candidate_us": [
+                  37.635624408721924,
+                  37.60343790054321
+                ],
+                "order": [
+                  "candidate",
+                  "baseline",
+                  "baseline",
+                  "candidate"
+                ]
+              },
+              {
+                "baseline_us": [
+                  59.162188321352005,
+                  58.53937566280365
+                ],
+                "candidate_us": [
+                  37.3053140938282,
+                  37.47374936938286
+                ],
+                "order": [
+                  "baseline",
+                  "candidate",
+                  "candidate",
+                  "baseline"
+                ]
+              }
+            ],
+            "baseline_us": 59.28218923509121,
+            "candidate_us": 37.538593634963036,
+            "speedup": 1.5792330903914424,
+            "baseline_min_max_us": [
+              58.53937566280365,
+              60.14562398195267
+            ],
+            "candidate_min_max_us": [
+              37.232812494039536,
+              38.52812573313713
+            ]
+          }
+        }
+      },
+      "baseline_correctness": {
+        "passed": true,
+        "finite": true,
+        "max_abs": 0.125,
+        "relative_l2": 1.6565595218189916e-05,
+        "max_tolerance_ratio": 0.28699551569506726,
+        "matched_ratio": 1.0,
+        "atol": 0.03125,
+        "rtol": 0.015625
+      }
+    },
+    {
+      "case": {
+        "name": "prefill1k",
+        "batch": 1,
+        "heads": 16,
+        "tokens": 1024,
+        "qk_dim": 64,
+        "value_dim": 64,
+        "dtype": "bfloat16",
+        "slope_mode": "normal"
+      },
+      "input_seed": 20261123,
+      "input_sha256": [
+        "b95afc5b59ea6131e31df32ab456211daf5a9757534120d82714332c33770abf",
+        "66f085687e786fba2fa906b2348e6dc0e38d88c66379605a3eca097bc2446636",
+        "14b16bc0e3e6a1bec409845834bb98612e4a1877cc3494a8a925df8a37d62fdc",
+        "ffd7b8ca4e5bea62c8ead0c1a3c4166ef06c117561f570b55bf6a966ca3984b6"
+      ],
+      "automatic_configuration": {
+        "tile": 128,
+        "column_tile": 128,
+        "native_qk": true,
+        "anchor": false,
+        "interleave": true,
+        "late_value": true,
+        "prune_tail": true,
+        "engine": "custom"
+      },
+      "variants": {
+        "optimized": {
+          "correctness": {
+            "passed": true,
+            "finite": true,
+            "max_abs": 0.125,
+            "relative_l2": 1.0944872508475312e-05,
+            "max_tolerance_ratio": 0.4,
+            "matched_ratio": 1.0,
+            "atol": 0.03125,
+            "rtol": 0.015625,
+            "deterministic": true,
+            "shape_dtype_device_match": true,
+            "inputs_unchanged": true
+          },
+          "performance": {
+            "timing": "graph",
+            "capture_ops": 16,
+            "replays_per_measurement": 4,
+            "samples": [
+              {
+                "baseline_us": [
+                  187.77374923229218,
+                  189.52780961990356
+                ],
+                "candidate_us": [
+                  121.70812487602234,
+                  122.26687371730804
+                ],
+                "order": [
+                  "baseline",
+                  "candidate",
+                  "candidate",
+                  "baseline"
+                ]
+              },
+              {
+                "baseline_us": [
+                  187.4946802854538,
+                  188.21874260902405
+                ],
+                "candidate_us": [
+                  120.95218896865845,
+                  120.96812576055527
+                ],
+                "order": [
+                  "candidate",
+                  "baseline",
+                  "baseline",
+                  "candidate"
+                ]
+              },
+              {
+                "baseline_us": [
+                  188.0490630865097,
+                  187.7906322479248
+                ],
+                "candidate_us": [
+                  121.48156017065048,
+                  122.41781502962112
+                ],
+                "order": [
+                  "baseline",
+                  "candidate",
+                  "candidate",
+                  "baseline"
+                ]
+              },
+              {
+                "baseline_us": [
+                  187.80843913555145,
+                  187.8337562084198
+                ],
+                "candidate_us": [
+                  121.41656130552292,
+                  121.74093723297119
+                ],
+                "order": [
+                  "candidate",
+                  "baseline",
+                  "baseline",
+                  "candidate"
+                ]
+              },
+              {
+                "baseline_us": [
+                  188.11437487602234,
+                  187.9156231880188
+                ],
+                "candidate_us": [
+                  121.26218527555466,
+                  121.70843780040741
+                ],
+                "order": [
+                  "baseline",
+                  "candidate",
+                  "candidate",
+                  "baseline"
+                ]
+              },
+              {
+                "baseline_us": [
+                  186.9681179523468,
+                  188.51906061172485
+                ],
+                "candidate_us": [
+                  122.18499928712845,
+                  121.4759349822998
+                ],
+                "order": [
+                  "candidate",
+                  "baseline",
+                  "baseline",
+                  "candidate"
+                ]
+              },
+              {
+                "baseline_us": [
+                  187.6796931028366,
+                  188.15156817436218
+                ],
+                "candidate_us": [
+                  121.40656262636185,
+                  120.87874859571457
+                ],
+                "order": [
+                  "baseline",
+                  "candidate",
+                  "candidate",
+                  "baseline"
+                ]
+              }
+            ],
+            "baseline_us": 187.8746896982193,
+            "candidate_us": 121.47874757647514,
+            "speedup": 1.546564262855489,
+            "baseline_min_max_us": [
+              186.9681179523468,
+              189.52780961990356
+            ],
+            "candidate_min_max_us": [
+              120.87874859571457,
+              122.41781502962112
+            ]
+          }
+        }
+      },
+      "baseline_correctness": {
+        "passed": true,
+        "finite": true,
+        "max_abs": 0.125,
+        "relative_l2": 1.2151687606461992e-05,
+        "max_tolerance_ratio": 0.4,
+        "matched_ratio": 1.0,
+        "atol": 0.03125,
+        "rtol": 0.015625
+      }
+    },
+    {
+      "case": {
+        "name": "prefill2k",
+        "batch": 1,
+        "heads": 8,
+        "tokens": 2048,
+        "qk_dim": 64,
+        "value_dim": 64,
+        "dtype": "bfloat16",
+        "slope_mode": "normal"
+      },
+      "input_seed": 20261124,
+      "input_sha256": [
+        "beca7bfb937449c0bb0fff8fb4f052080cece24df8d6dff041f7b6ca0c201b9b",
+        "56a749aeab93010514f7e97dfe76d5024151b5fec5e67b91f10512f28af92130",
+        "b59af6fda31a6387afa2e83ef393b932faa339856b505351421f4f7cca8cbbdf",
+        "414b293320cfe2b36b7e1e2e4307c4d9532813d4b926b95f8a6dd38c67548fd2"
+      ],
+      "automatic_configuration": {
+        "tile": 128,
+        "column_tile": 128,
+        "native_qk": true,
+        "anchor": false,
+        "interleave": true,
+        "late_value": true,
+        "prune_tail": true,
+        "engine": "custom"
+      },
+      "variants": {
+        "optimized": {
+          "correctness": {
+            "passed": true,
+            "finite": true,
+            "max_abs": 0.125,
+            "relative_l2": 1.1937727246460148e-05,
+            "max_tolerance_ratio": 0.39751552795031053,
+            "matched_ratio": 1.0,
+            "atol": 0.03125,
+            "rtol": 0.015625,
+            "deterministic": true,
+            "shape_dtype_device_match": true,
+            "inputs_unchanged": true
+          },
+          "performance": {
+            "timing": "graph",
+            "capture_ops": 16,
+            "replays_per_measurement": 4,
+            "samples": [
+              {
+                "baseline_us": [
+                  189.05624747276306,
+                  188.0921870470047
+                ],
+                "candidate_us": [
+                  121.55812233686447,
+                  121.65343761444092
+                ],
+                "order": [
+                  "baseline",
+                  "candidate",
+                  "candidate",
+                  "baseline"
+                ]
+              },
+              {
+                "baseline_us": [
+                  187.50250339508057,
+                  187.29250133037567
+                ],
+                "candidate_us": [
+                  121.41969054937363,
+                  121.66843563318253
+                ],
+                "order": [
+                  "candidate",
+                  "baseline",
+                  "baseline",
+                  "candidate"
+                ]
+              },
+              {
+                "baseline_us": [
+                  188.18874657154083,
+                  187.29625642299652
+                ],
+                "candidate_us": [
+                  121.50280922651291,
+                  121.80124968290329
+                ],
+                "order": [
+                  "baseline",
+                  "candidate",
+                  "candidate",
+                  "baseline"
+                ]
+              },
+              {
+                "baseline_us": [
+                  188.2784366607666,
+                  187.92624771595
+                ],
+                "candidate_us": [
+                  122.00500071048737,
+                  122.10218608379364
+                ],
+                "order": [
+                  "candidate",
+                  "baseline",
+                  "baseline",
+                  "candidate"
+                ]
+              },
+              {
+                "baseline_us": [
+                  187.5990629196167,
+                  187.64062225818634
+                ],
+                "candidate_us": [
+                  121.66468799114227,
+                  121.72937393188477
+                ],
+                "order": [
+                  "baseline",
+                  "candidate",
+                  "candidate",
+                  "baseline"
+                ]
+              },
+              {
+                "baseline_us": [
+                  186.58094108104706,
+                  187.3999983072281
+                ],
+                "candidate_us": [
+                  122.25906550884247,
+                  121.1325004696846
+                ],
+                "order": [
+                  "candidate",
+                  "baseline",
+                  "baseline",
+                  "candidate"
+                ]
+              },
+              {
+                "baseline_us": [
+                  187.73125112056732,
+                  187.57499754428864
+                ],
+                "candidate_us": [
+                  121.90750241279602,
+                  122.00000137090683
+                ],
+                "order": [
+                  "baseline",
+                  "candidate",
+                  "candidate",
+                  "baseline"
+                ]
+              }
+            ],
+            "baseline_us": 187.61984258890152,
+            "candidate_us": 121.69890478253365,
+            "speedup": 1.541672399798202,
+            "baseline_min_max_us": [
+              186.58094108104706,
+              189.05624747276306
+            ],
+            "candidate_min_max_us": [
+              121.1325004696846,
+              122.25906550884247
+            ]
+          }
+        }
+      },
+      "baseline_correctness": {
+        "passed": true,
+        "finite": true,
+        "max_abs": 0.125,
+        "relative_l2": 8.109772498298803e-06,
+        "max_tolerance_ratio": 0.39751552795031053,
+        "matched_ratio": 1.0,
+        "atol": 0.03125,
+        "rtol": 0.015625
+      }
+    },
+    {
+      "case": {
+        "name": "prefill4k",
+        "batch": 1,
+        "heads": 8,
+        "tokens": 4096,
+        "qk_dim": 64,
+        "value_dim": 64,
+        "dtype": "bfloat16",
+        "slope_mode": "normal"
+      },
+      "input_seed": 20261125,
+      "input_sha256": [
+        "654eaa7ccc250406e7eace9a9ee382866e9e234fe4627b90c5101f05e3e52f8a",
+        "abe3aee621997f6b5a07eca67dafb9f6ce36ca980f8c2a02c04fdff7045ba16a",
+        "d83fa884be224272908135bf8f9b2f91d59ec04482cbddcbd5fff8d750c0d5bd",
+        "e8f41e88a71dd5da32fdebc9d906b5b94c2a211a8cb36a61c5a6d32a39e8d34a"
+      ],
+      "automatic_configuration": {
+        "tile": 128,
+        "column_tile": 128,
+        "native_qk": true,
+        "anchor": false,
+        "interleave": true,
+        "late_value": true,
+        "prune_tail": true,
+        "engine": "custom"
+      },
+      "variants": {
+        "optimized": {
+          "correctness": {
+            "passed": true,
+            "finite": true,
+            "max_abs": 0.5,
+            "relative_l2": 2.0236643053311508e-05,
+            "max_tolerance_ratio": 0.34594594594594597,
+            "matched_ratio": 1.0,
+            "atol": 0.03125,
+            "rtol": 0.015625,
+            "deterministic": true,
+            "shape_dtype_device_match": true,
+            "inputs_unchanged": true
+          },
+          "performance": {
+            "timing": "graph",
+            "capture_ops": 16,
+            "replays_per_measurement": 4,
+            "samples": [
+              {
+                "baseline_us": [
+                  357.69718885421753,
+                  358.2596778869629
+                ],
+                "candidate_us": [
+                  229.61874306201935,
+                  229.9206256866455
+                ],
+                "order": [
+                  "baseline",
+                  "candidate",
+                  "candidate",
+                  "baseline"
+                ]
+              },
+              {
+                "baseline_us": [
+                  359.5815598964691,
+                  358.86406898498535
+                ],
+                "candidate_us": [
+                  230.0918698310852,
+                  229.6828180551529
+                ],
+                "order": [
+                  "candidate",
+                  "baseline",
+                  "baseline",
+                  "candidate"
+                ]
+              },
+              {
+                "baseline_us": [
+                  357.9181134700775,
+                  358.49282145500183
+                ],
+                "candidate_us": [
+                  229.95156049728394,
+                  229.86061871051788
+                ],
+                "order": [
+                  "baseline",
+                  "candidate",
+                  "candidate",
+                  "baseline"
+                ]
+              },
+              {
+                "baseline_us": [
+                  358.1690490245819,
+                  359.37437415122986
+                ],
+                "candidate_us": [
+                  229.96656596660614,
+                  230.7034432888031
+                ],
+                "order": [
+                  "candidate",
+                  "baseline",
+                  "baseline",
+                  "candidate"
+                ]
+              },
+              {
+                "baseline_us": [
+                  358.52688550949097,
+                  358.7862551212311
+                ],
+                "candidate_us": [
+                  229.91125285625458,
+                  229.98781502246857
+                ],
+                "order": [
+                  "baseline",
+                  "candidate",
+                  "candidate",
+                  "baseline"
+                ]
+              },
+              {
+                "baseline_us": [
+                  358.96000266075134,
+                  358.56905579566956
+                ],
+                "candidate_us": [
+                  230.53687810897827,
+                  229.68031466007233
+                ],
+                "order": [
+                  "candidate",
+                  "baseline",
+                  "baseline",
+                  "candidate"
+                ]
+              },
+              {
+                "baseline_us": [
+                  358.6049973964691,
+                  359.07188057899475
+                ],
+                "candidate_us": [
+                  229.8259437084198,
+                  230.8315634727478
+                ],
+                "order": [
+                  "baseline",
+                  "candidate",
+                  "candidate",
+                  "baseline"
+                ]
+              }
+            ],
+            "baseline_us": 358.58702659606934,
+            "candidate_us": 229.93609309196472,
+            "speedup": 1.5595073473421577,
+            "baseline_min_max_us": [
+              357.69718885421753,
+              359.5815598964691
+            ],
+            "candidate_min_max_us": [
+              229.61874306201935,
+              230.8315634727478
+            ]
+          }
+        }
+      },
+      "baseline_correctness": {
+        "passed": true,
+        "finite": true,
+        "max_abs": 0.25,
+        "relative_l2": 1.3382000512357113e-05,
+        "max_tolerance_ratio": 0.4025157232704403,
+        "matched_ratio": 1.0,
+        "atol": 0.03125,
+        "rtol": 0.015625
+      }
+    },
+    {
+      "case": {
+        "name": "tail300",
+        "batch": 1,
+        "heads": 8,
+        "tokens": 300,
+        "qk_dim": 64,
+        "value_dim": 64,
+        "dtype": "bfloat16",
+        "slope_mode": "normal"
+      },
+      "input_seed": 20261128,
+      "input_sha256": [
+        "7f838a8dcdeedc0cf05757bc383ccf001849bdc72ae525c1ee8281a92f60bc71",
+        "52fb3dbb62c7fad56a6b728dc430826157137ce6ed3f4c2b57a6833ff2b5a6fc",
+        "c5ec90227231346e70cff0363e9967012bdd6547a39e209b7e874bbaba454678",
+        "5b523ab4844a3f249e89cd5f2bfae26e8810fa0cf61ed4e12ff7d980c368aea8"
+      ],
+      "automatic_configuration": {
+        "tile": 128,
+        "column_tile": 128,
+        "native_qk": true,
+        "anchor": false,
+        "interleave": true,
+        "late_value": true,
+        "prune_tail": true,
+        "engine": "custom"
+      },
+      "variants": {
+        "optimized": {
+          "correctness": {
+            "passed": true,
+            "finite": true,
+            "max_abs": 0.03125,
+            "relative_l2": 4.800235962182763e-06,
+            "max_tolerance_ratio": 0.24242424242424243,
+            "matched_ratio": 1.0,
+            "atol": 0.03125,
+            "rtol": 0.015625,
+            "deterministic": true,
+            "shape_dtype_device_match": true,
+            "inputs_unchanged": true
+          },
+          "performance": {
+            "timing": "graph",
+            "capture_ops": 16,
+            "replays_per_measurement": 4,
+            "samples": [
+              {
+                "baseline_us": [
+                  58.57156217098236,
+                  59.190623462200165
+                ],
+                "candidate_us": [
+                  29.739374294877052,
+                  29.967186972498894
+                ],
+                "order": [
+                  "baseline",
+                  "candidate",
+                  "candidate",
+                  "baseline"
+                ]
+              },
+              {
+                "baseline_us": [
+                  58.24406072497368,
+                  58.91750007867813
+                ],
+                "candidate_us": [
+                  30.162500217556953,
+                  29.782813042402267
+                ],
+                "order": [
+                  "candidate",
+                  "baseline",
+                  "baseline",
+                  "candidate"
+                ]
+              },
+              {
+                "baseline_us": [
+                  58.899376541376114,
+                  58.943748474121094
+                ],
+                "candidate_us": [
+                  29.97531183063984,
+                  29.727187007665634
+                ],
+                "order": [
+                  "baseline",
+                  "candidate",
+                  "candidate",
+                  "baseline"
+                ]
+              },
+              {
+                "baseline_us": [
+                  58.84156376123428,
+                  59.16687473654747
+                ],
+                "candidate_us": [
+                  29.9918744713068,
+                  29.51749972999096
+                ],
+                "order": [
+                  "candidate",
+                  "baseline",
+                  "baseline",
+                  "candidate"
+                ]
+              },
+              {
+                "baseline_us": [
+                  58.953750878572464,
+                  59.300001710653305
+                ],
+                "candidate_us": [
+                  29.984688386321068,
+                  29.85718660056591
+                ],
+                "order": [
+                  "baseline",
+                  "candidate",
+                  "candidate",
+                  "baseline"
+                ]
+              },
+              {
+                "baseline_us": [
+                  58.80625173449516,
+                  59.088751673698425
+                ],
+                "candidate_us": [
+                  29.624687507748604,
+                  29.978124424815178
+                ],
+                "order": [
+                  "candidate",
+                  "baseline",
+                  "baseline",
+                  "candidate"
+                ]
+              },
+              {
+                "baseline_us": [
+                  59.17343869805336,
+                  59.63031202554703
+                ],
+                "candidate_us": [
+                  31.619373708963394,
+                  29.910625889897346
+                ],
+                "order": [
+                  "baseline",
+                  "candidate",
+                  "candidate",
+                  "baseline"
+                ]
+              }
+            ],
+            "baseline_us": 58.94874967634678,
+            "candidate_us": 29.93890643119812,
+            "speedup": 1.9689680320093013,
+            "baseline_min_max_us": [
+              58.24406072497368,
+              59.63031202554703
+            ],
+            "candidate_min_max_us": [
+              29.51749972999096,
+              31.619373708963394
+            ]
+          }
+        }
+      },
+      "baseline_correctness": {
+        "passed": true,
+        "finite": true,
+        "max_abs": 0.03125,
+        "relative_l2": 4.666744347432488e-06,
+        "max_tolerance_ratio": 0.24242424242424243,
+        "matched_ratio": 1.0,
+        "atol": 0.03125,
+        "rtol": 0.015625
+      }
+    },
+    {
+      "case": {
+        "name": "tail500",
+        "batch": 1,
+        "heads": 4,
+        "tokens": 500,
+        "qk_dim": 64,
+        "value_dim": 64,
+        "dtype": "bfloat16",
+        "slope_mode": "normal"
+      },
+      "input_seed": 20261129,
+      "input_sha256": [
+        "bb5417b94fc72f691b5c55cdbfbac2b4e300e258fad12e50f21598b567c8067c",
+        "b7439247b41747b08c330ac9beb5fb3ec55a3b499a9f92628f3fd799b2adaa4e",
+        "766a9e1596d9ccb65bde796504259d98a02f37624d3141142062adcfaabf4245",
+        "29586c825b753bee20ded1e02bcc1687f73687ee461f18c4375811dca31bc428"
+      ],
+      "automatic_configuration": {
+        "tile": 128,
+        "column_tile": 128,
+        "native_qk": true,
+        "anchor": false,
+        "interleave": true,
+        "late_value": true,
+        "prune_tail": true,
+        "engine": "custom"
+      },
+      "variants": {
+        "optimized": {
+          "correctness": {
+            "passed": true,
+            "finite": true,
+            "max_abs": 0.0625,
+            "relative_l2": 1.0631624018195407e-05,
+            "max_tolerance_ratio": 0.26556016597510373,
+            "matched_ratio": 1.0,
+            "atol": 0.03125,
+            "rtol": 0.015625,
+            "deterministic": true,
+            "shape_dtype_device_match": true,
+            "inputs_unchanged": true
+          },
+          "performance": {
+            "timing": "graph",
+            "capture_ops": 16,
+            "replays_per_measurement": 4,
+            "samples": [
+              {
+                "baseline_us": [
+                  37.04531118273735,
+                  37.1115617454052
+                ],
+                "candidate_us": [
+                  22.315625101327896,
+                  22.387811914086342
+                ],
+                "order": [
+                  "baseline",
+                  "candidate",
+                  "candidate",
+                  "baseline"
+                ]
+              },
+              {
+                "baseline_us": [
+                  37.18375042080879,
+                  37.10531070828438
+                ],
+                "candidate_us": [
+                  22.37156219780445,
+                  22.327499464154243
+                ],
+                "order": [
+                  "candidate",
+                  "baseline",
+                  "baseline",
+                  "candidate"
+                ]
+              },
+              {
+                "baseline_us": [
+                  37.50937432050705,
+                  36.83468699455261
+                ],
+                "candidate_us": [
+                  22.13156223297119,
+                  23.51093664765358
+                ],
+                "order": [
+                  "baseline",
+                  "candidate",
+                  "candidate",
+                  "baseline"
+                ]
+              },
+              {
+                "baseline_us": [
+                  37.16500103473663,
+                  37.45093569159508
+                ],
+                "candidate_us": [
+                  22.560937330126762,
+                  23.809999227523804
+                ],
+                "order": [
+                  "candidate",
+                  "baseline",
+                  "baseline",
+                  "candidate"
+                ]
+              },
+              {
+                "baseline_us": [
+                  36.93687543272972,
+                  37.117186933755875
+                ],
+                "candidate_us": [
+                  22.283125668764114,
+                  22.30750024318695
+                ],
+                "order": [
+                  "baseline",
+                  "candidate",
+                  "candidate",
+                  "baseline"
+                ]
+              },
+              {
+                "baseline_us": [
+                  36.91656142473221,
+                  38.45718875527382
+                ],
+                "candidate_us": [
+                  22.337812930345535,
+                  22.882187739014626
+                ],
+                "order": [
+                  "candidate",
+                  "baseline",
+                  "baseline",
+                  "candidate"
+                ]
+              },
+              {
+                "baseline_us": [
+                  37.32125088572502,
+                  36.67125105857849
+                ],
+                "candidate_us": [
+                  22.305937483906746,
+                  22.334687411785126
+                ],
+                "order": [
+                  "baseline",
+                  "candidate",
+                  "candidate",
+                  "baseline"
+                ]
+              }
+            ],
+            "baseline_us": 37.114374339580536,
+            "candidate_us": 22.33625017106533,
+            "speedup": 1.6616206415729968,
+            "baseline_min_max_us": [
+              36.67125105857849,
+              38.45718875527382
+            ],
+            "candidate_min_max_us": [
+              22.13156223297119,
+              23.809999227523804
+            ]
+          }
+        }
+      },
+      "baseline_correctness": {
+        "passed": true,
+        "finite": true,
+        "max_abs": 0.0078125,
+        "relative_l2": 1.3651636962776202e-06,
+        "max_tolerance_ratio": 0.15058823529411763,
+        "matched_ratio": 1.0,
+        "atol": 0.03125,
+        "rtol": 0.015625
+      }
+    },
+    {
+      "case": {
+        "name": "batch3",
+        "batch": 3,
+        "heads": 8,
+        "tokens": 256,
+        "qk_dim": 64,
+        "value_dim": 64,
+        "dtype": "bfloat16",
+        "slope_mode": "normal"
+      },
+      "input_seed": 20261130,
+      "input_sha256": [
+        "804bc68bb754a484d0595d58853856613a04969496a00992a504ec17bf18bfad",
+        "b28ddf1a98d8f59f5d0b638988a61d9ba7bcfd1362627bdcadbd929a945c0cd4",
+        "c4284c01367a319eb50a6de289aa96e252d73b5c6cec2f7d9b2f51971cc26e0d",
+        "836f50f3e8a565d4542a349fafc1800500fd6809461c43f133259321b7e3df6c"
+      ],
+      "automatic_configuration": {
+        "tile": 128,
+        "column_tile": 128,
+        "native_qk": true,
+        "anchor": false,
+        "interleave": true,
+        "late_value": true,
+        "prune_tail": true,
+        "engine": "custom"
+      },
+      "variants": {
+        "optimized": {
+          "correctness": {
+            "passed": true,
+            "finite": true,
+            "max_abs": 0.25,
+            "relative_l2": 1.8649232968508875e-05,
+            "max_tolerance_ratio": 0.3595505617977528,
+            "matched_ratio": 1.0,
+            "atol": 0.03125,
+            "rtol": 0.015625,
+            "deterministic": true,
+            "shape_dtype_device_match": true,
+            "inputs_unchanged": true
+          },
+          "performance": {
+            "timing": "graph",
+            "capture_ops": 16,
+            "replays_per_measurement": 4,
+            "samples": [
+              {
+                "baseline_us": [
+                  80.2740603685379,
+                  80.15843480825424
+                ],
+                "candidate_us": [
+                  51.91750079393387,
+                  52.230626344680786
+                ],
+                "order": [
+                  "baseline",
+                  "candidate",
+                  "candidate",
+                  "baseline"
+                ]
+              },
+              {
+                "baseline_us": [
+                  80.47937601804733,
+                  80.77719062566757
+                ],
+                "candidate_us": [
+                  52.21875011920929,
+                  51.59375071525574
+                ],
+                "order": [
+                  "candidate",
+                  "baseline",
+                  "baseline",
+                  "candidate"
+                ]
+              },
+              {
+                "baseline_us": [
+                  80.53124696016312,
+                  80.98062127828598
+                ],
+                "candidate_us": [
+                  52.121251821517944,
+                  51.75374820828438
+                ],
+                "order": [
+                  "baseline",
+                  "candidate",
+                  "candidate",
+                  "baseline"
+                ]
+              },
+              {
+                "baseline_us": [
+                  80.22093772888184,
+                  80.56250214576721
+                ],
+                "candidate_us": [
+                  52.35125124454498,
+                  51.63624882698059
+                ],
+                "order": [
+                  "candidate",
+                  "baseline",
+                  "baseline",
+                  "candidate"
+                ]
+              },
+              {
+                "baseline_us": [
+                  80.76155930757523,
+                  80.5109366774559
+                ],
+                "candidate_us": [
+                  51.88500136137009,
+                  51.94281414151192
+                ],
+                "order": [
+                  "baseline",
+                  "candidate",
+                  "candidate",
+                  "baseline"
+                ]
+              },
+              {
+                "baseline_us": [
+                  80.66187798976898,
+                  80.21437376737595
+                ],
+                "candidate_us": [
+                  51.71718820929527,
+                  51.86000093817711
+                ],
+                "order": [
+                  "candidate",
+                  "baseline",
+                  "baseline",
+                  "candidate"
+                ]
+              },
+              {
+                "baseline_us": [
+                  80.12593537569046,
+                  80.73250204324722
+                ],
+                "candidate_us": [
+                  51.73499882221222,
+                  52.52968892455101
+                ],
+                "order": [
+                  "baseline",
+                  "candidate",
+                  "candidate",
+                  "baseline"
+                ]
+              }
+            ],
+            "baseline_us": 80.52109181880951,
+            "candidate_us": 51.90125107765198,
+            "speedup": 1.5514287256455148,
+            "baseline_min_max_us": [
+              80.12593537569046,
+              80.98062127828598
+            ],
+            "candidate_min_max_us": [
+              51.59375071525574,
+              52.52968892455101
+            ]
+          }
+        }
+      },
+      "baseline_correctness": {
+        "passed": true,
+        "finite": true,
+        "max_abs": 0.25,
+        "relative_l2": 2.0761514118989057e-05,
+        "max_tolerance_ratio": 0.3595505617977528,
+        "matched_ratio": 1.0,
+        "atol": 0.03125,
+        "rtol": 0.015625
+      }
+    },
+    {
+      "case": {
+        "name": "fp32",
+        "batch": 1,
+        "heads": 8,
+        "tokens": 1024,
+        "qk_dim": 64,
+        "value_dim": 64,
+        "dtype": "float32",
+        "slope_mode": "normal"
+      },
+      "input_seed": 20261131,
+      "input_sha256": [
+        "8a2b69bde86f1bd386434a1ab960561904dc0def12a343543d45b58b0356504c",
+        "9b57211c197511a6cc96a548fa321bcf0cc855841547186a782a0af0993ee00b",
+        "8fd309059a0c7f7292346b6db65e110b3bc951782c1cb5d777ce7abe49353b89",
+        "08ce9814e1d240e0e1302e5143b8379da2688c79f5427fcc9df30217c502a5f2"
+      ],
+      "automatic_configuration": {
+        "tile": 64,
+        "column_tile": 64,
+        "native_qk": false,
+        "anchor": false,
+        "interleave": true,
+        "late_value": true,
+        "prune_tail": true,
+        "engine": "vllm_fp32_64"
+      },
+      "variants": {
+        "optimized": {
+          "correctness": {
+            "passed": true,
+            "finite": true,
+            "max_abs": 1.9073486328125e-05,
+            "relative_l2": 9.488994966211174e-08,
+            "max_tolerance_ratio": 0.005496724166158465,
+            "matched_ratio": 1.0,
+            "atol": 0.002,
+            "rtol": 0.0001,
+            "deterministic": true,
+            "shape_dtype_device_match": true,
+            "inputs_unchanged": true
+          },
+          "performance": {
+            "timing": "graph",
+            "capture_ops": 16,
+            "replays_per_measurement": 4,
+            "samples": [
+              {
+                "baseline_us": [
+                  53.16093564033508,
+                  53.82687598466873
+                ],
+                "candidate_us": [
+                  53.26374992728233,
+                  53.51781100034714
+                ],
+                "order": [
+                  "baseline",
+                  "candidate",
+                  "candidate",
+                  "baseline"
+                ]
+              },
+              {
+                "baseline_us": [
+                  53.44843864440918,
+                  53.59906330704689
+                ],
+                "candidate_us": [
+                  53.549688309431076,
+                  53.58999967575073
+                ],
+                "order": [
+                  "candidate",
+                  "baseline",
+                  "baseline",
+                  "candidate"
+                ]
+              },
+              {
+                "baseline_us": [
+                  54.09218743443489,
+                  53.40937525033951
+                ],
+                "candidate_us": [
+                  54.40124869346619,
+                  53.286876529455185
+                ],
+                "order": [
+                  "baseline",
+                  "candidate",
+                  "candidate",
+                  "baseline"
+                ]
+              },
+              {
+                "baseline_us": [
+                  53.776249289512634,
+                  53.584687411785126
+                ],
+                "candidate_us": [
+                  52.97468602657318,
+                  53.078439086675644
+                ],
+                "order": [
+                  "candidate",
+                  "baseline",
+                  "baseline",
+                  "candidate"
+                ]
+              },
+              {
+                "baseline_us": [
+                  53.571250289678574,
+                  53.5806268453598
+                ],
+                "candidate_us": [
+                  53.017813712358475,
+                  53.03812399506569
+                ],
+                "order": [
+                  "baseline",
+                  "candidate",
+                  "candidate",
+                  "baseline"
+                ]
+              },
+              {
+                "baseline_us": [
+                  53.526248782873154,
+                  53.754061460494995
+                ],
+                "candidate_us": [
+                  52.90812626481056,
+                  53.45499888062477
+                ],
+                "order": [
+                  "candidate",
+                  "baseline",
+                  "baseline",
+                  "candidate"
+                ]
+              },
+              {
+                "baseline_us": [
+                  53.456563502550125,
+                  53.4934364259243
+                ],
+                "candidate_us": [
+                  53.05499956011772,
+                  53.555626422166824
+                ],
+                "order": [
+                  "baseline",
+                  "candidate",
+                  "candidate",
+                  "baseline"
+                ]
+              }
+            ],
+            "baseline_us": 53.57593856751919,
+            "candidate_us": 53.27531322836876,
+            "speedup": 1.0056428638506878,
+            "baseline_min_max_us": [
+              53.16093564033508,
+              54.09218743443489
+            ],
+            "candidate_min_max_us": [
+              52.90812626481056,
+              54.40124869346619
+            ]
+          }
+        }
+      },
+      "baseline_correctness": {
+        "passed": true,
+        "finite": true,
+        "max_abs": 1.9073486328125e-05,
+        "relative_l2": 9.488994966211174e-08,
+        "max_tolerance_ratio": 0.005496724166158465,
+        "matched_ratio": 1.0,
+        "atol": 0.002,
+        "rtol": 0.0001
+      }
+    },
+    {
+      "case": {
+        "name": "short16",
+        "batch": 1,
+        "heads": 4,
+        "tokens": 16,
+        "qk_dim": 64,
+        "value_dim": 64,
+        "dtype": "bfloat16",
+        "slope_mode": "normal"
+      },
+      "input_seed": 20261132,
+      "input_sha256": [
+        "f44cefa9a78796524969ecd6fddc7799920ea055c6eae7aab0450f770786281b",
+        "17f1b3b76e3a913d5a599c9fef65aec0d9abd6576c8d713d8bbaf24477fee652",
+        "06cf1e5b67d32a0ec163118abe692257a1197969e64d6ee9607767c2a3eecab0",
+        "659bc0c504602dd65e4baf4f589a0eba8e96318d2141f1d645cb52d9ff34f036"
+      ],
+      "automatic_configuration": {
+        "tile": 32,
+        "column_tile": 32,
+        "native_qk": true,
+        "anchor": false,
+        "interleave": true,
+        "late_value": true,
+        "prune_tail": true,
+        "engine": "custom"
+      },
+      "variants": {
+        "optimized": {
+          "correctness": {
+            "passed": true,
+            "finite": true,
+            "max_abs": 0.0,
+            "relative_l2": 0.0,
+            "max_tolerance_ratio": 0.0,
+            "matched_ratio": 1.0,
+            "atol": 0.03125,
+            "rtol": 0.015625,
+            "deterministic": true,
+            "shape_dtype_device_match": true,
+            "inputs_unchanged": true
+          },
+          "performance": {
+            "timing": "graph",
+            "capture_ops": 16,
+            "replays_per_measurement": 4,
+            "samples": [
+              {
+                "baseline_us": [
+                  23.912500590085983,
+                  23.623749613761902
+                ],
+                "candidate_us": [
+                  7.289375178515911,
+                  7.203749846667051
+                ],
+                "order": [
+                  "baseline",
+                  "candidate",
+                  "candidate",
+                  "baseline"
+                ]
+              },
+              {
+                "baseline_us": [
+                  23.778125643730164,
+                  23.426249623298645
+                ],
+                "candidate_us": [
+                  7.301874924451113,
+                  7.22968764603138
+                ],
+                "order": [
+                  "candidate",
+                  "baseline",
+                  "baseline",
+                  "candidate"
+                ]
+              },
+              {
+                "baseline_us": [
+                  23.468436673283577,
+                  23.480936884880066
+                ],
+                "candidate_us": [
+                  7.242187391966581,
+                  7.193124853074551
+                ],
+                "order": [
+                  "baseline",
+                  "candidate",
+                  "candidate",
+                  "baseline"
+                ]
+              },
+              {
+                "baseline_us": [
+                  23.449374362826347,
+                  23.64843711256981
+                ],
+                "candidate_us": [
+                  7.233750075101852,
+                  7.181250024586916
+                ],
+                "order": [
+                  "candidate",
+                  "baseline",
+                  "baseline",
+                  "candidate"
+                ]
+              },
+              {
+                "baseline_us": [
+                  23.439999669790268,
+                  23.593125864863396
+                ],
+                "candidate_us": [
+                  7.207812275737524,
+                  7.2140623815357685
+                ],
+                "order": [
+                  "baseline",
+                  "candidate",
+                  "candidate",
+                  "baseline"
+                ]
+              },
+              {
+                "baseline_us": [
+                  23.356249555945396,
+                  23.51437509059906
+                ],
+                "candidate_us": [
+                  7.256562355905771,
+                  7.170937489718199
+                ],
+                "order": [
+                  "candidate",
+                  "baseline",
+                  "baseline",
+                  "candidate"
+                ]
+              },
+              {
+                "baseline_us": [
+                  23.611875250935555,
+                  23.446250706911087
+                ],
+                "candidate_us": [
+                  7.188125047832727,
+                  7.196562364697456
+                ],
+                "order": [
+                  "baseline",
+                  "candidate",
+                  "candidate",
+                  "baseline"
+                ]
+              }
+            ],
+            "baseline_us": 23.497655987739563,
+            "candidate_us": 7.210937328636646,
+            "speedup": 3.258613258837212,
+            "baseline_min_max_us": [
+              23.356249555945396,
+              23.912500590085983
+            ],
+            "candidate_min_max_us": [
+              7.170937489718199,
+              7.301874924451113
+            ]
+          }
+        }
+      },
+      "baseline_correctness": {
+        "passed": true,
+        "finite": true,
+        "max_abs": 0.0,
+        "relative_l2": 0.0,
+        "max_tolerance_ratio": 0.0,
+        "matched_ratio": 1.0,
+        "atol": 0.03125,
+        "rtol": 0.015625
+      }
+    },
+    {
+      "case": {
+        "name": "zero_decay",
+        "batch": 1,
+        "heads": 4,
+        "tokens": 512,
+        "qk_dim": 64,
+        "value_dim": 64,
+        "dtype": "bfloat16",
+        "slope_mode": "zero"
+      },
+      "input_seed": 20261133,
+      "input_sha256": [
+        "7be400afa7c8208320f8b8c055def89df7fcef304a74f935615a2048bd96b60c",
+        "316e4e4c39bad6f5a666216e238375b61762b2d10a1c9aed8b4214591f8ab6b3",
+        "c2e9efc2c3974865d2ebf4f95799cf3511033b0f2e6aaa693c2a8f773d9f5693",
+        "374708fff7719dd5979ec875d56cd2286f6d3cf7ec317a3b25632aab28ec37bb"
+      ],
+      "automatic_configuration": {
+        "tile": 128,
+        "column_tile": 128,
+        "native_qk": true,
+        "anchor": false,
+        "interleave": true,
+        "late_value": true,
+        "prune_tail": true,
+        "engine": "custom"
+      },
+      "variants": {
+        "optimized": {
+          "correctness": {
+            "passed": true,
+            "finite": true,
+            "max_abs": 1.0,
+            "relative_l2": 3.0346284883666435e-05,
+            "max_tolerance_ratio": 0.2591093117408907,
+            "matched_ratio": 1.0,
+            "atol": 0.03125,
+            "rtol": 0.015625,
+            "deterministic": true,
+            "shape_dtype_device_match": true,
+            "inputs_unchanged": true
+          },
+          "performance": {
+            "timing": "graph",
+            "capture_ops": 16,
+            "replays_per_measurement": 4,
+            "samples": [
+              {
+                "baseline_us": [
+                  36.963749676942825,
+                  36.8434377014637
+                ],
+                "candidate_us": [
+                  22.194374352693558,
+                  22.13124930858612
+                ],
+                "order": [
+                  "baseline",
+                  "candidate",
+                  "candidate",
+                  "baseline"
+                ]
+              },
+              {
+                "baseline_us": [
+                  37.28218749165535,
+                  37.26375102996826
+                ],
+                "candidate_us": [
+                  22.049374878406525,
+                  22.01281301677227
+                ],
+                "order": [
+                  "candidate",
+                  "baseline",
+                  "baseline",
+                  "candidate"
+                ]
+              },
+              {
+                "baseline_us": [
+                  36.7615632712841,
+                  37.091560661792755
+                ],
+                "candidate_us": [
+                  22.64625020325184,
+                  22.13124930858612
+                ],
+                "order": [
+                  "baseline",
+                  "candidate",
+                  "candidate",
+                  "baseline"
+                ]
+              },
+              {
+                "baseline_us": [
+                  36.68062388896942,
+                  37.030939012765884
+                ],
+                "candidate_us": [
+                  22.19156175851822,
+                  22.094374522566795
+                ],
+                "order": [
+                  "candidate",
+                  "baseline",
+                  "baseline",
+                  "candidate"
+                ]
+              },
+              {
+                "baseline_us": [
+                  37.25718706846237,
+                  36.66749969124794
+                ],
+                "candidate_us": [
+                  22.040624171495438,
+                  22.14062586426735
+                ],
+                "order": [
+                  "baseline",
+                  "candidate",
+                  "candidate",
+                  "baseline"
+                ]
+              },
+              {
+                "baseline_us": [
+                  37.09718585014343,
+                  37.2762493789196
+                ],
+                "candidate_us": [
+                  22.228125482797623,
+                  22.039063274860382
+                ],
+                "order": [
+                  "candidate",
+                  "baseline",
+                  "baseline",
+                  "candidate"
+                ]
+              },
+              {
+                "baseline_us": [
+                  37.10812330245972,
+                  37.11187466979027
+                ],
+                "candidate_us": [
+                  22.030938416719437,
+                  21.905312314629555
+                ],
+                "order": [
+                  "baseline",
+                  "candidate",
+                  "candidate",
+                  "baseline"
+                ]
+              }
+            ],
+            "baseline_us": 37.094373255968094,
+            "candidate_us": 22.112811915576458,
+            "speedup": 1.6775059362684894,
+            "baseline_min_max_us": [
+              36.66749969124794,
+              37.28218749165535
+            ],
+            "candidate_min_max_us": [
+              21.905312314629555,
+              22.64625020325184
+            ]
+          }
+        }
+      },
+      "baseline_correctness": {
+        "passed": true,
+        "finite": true,
+        "max_abs": 1.0,
+        "relative_l2": 4.358373677924626e-05,
+        "max_tolerance_ratio": 0.4266666666666667,
+        "matched_ratio": 1.0,
+        "atol": 0.03125,
+        "rtol": 0.015625
+      }
+    },
+    {
+      "case": {
+        "name": "strong_decay",
+        "batch": 1,
+        "heads": 4,
+        "tokens": 512,
+        "qk_dim": 64,
+        "value_dim": 64,
+        "dtype": "bfloat16",
+        "slope_mode": "strong"
+      },
+      "input_seed": 20261134,
+      "input_sha256": [
+        "c803a1003dd68cb475e9bab52bc03191839e9a13d920dd06b14176eb6b3e6519",
+        "64f1763ab7e6ed1940093bd229e817f4fb5c2ecbf6882f075d95f8b640710703",
+        "0197136d5de006b783e592a24ec87f33bec97153a0f81a33378692958b8a9c06",
+        "24c60715698663563d76ecaf262778712879423eb057d12b74a037150009d619"
+      ],
+      "automatic_configuration": {
+        "tile": 128,
+        "column_tile": 128,
+        "native_qk": true,
+        "anchor": false,
+        "interleave": true,
+        "late_value": true,
+        "prune_tail": true,
+        "engine": "custom"
+      },
+      "variants": {
+        "optimized": {
+          "correctness": {
+            "passed": true,
+            "finite": true,
+            "max_abs": 0.0078125,
+            "relative_l2": 2.6793014076774566e-06,
+            "max_tolerance_ratio": 0.1277445109780439,
+            "matched_ratio": 1.0,
+            "atol": 0.03125,
+            "rtol": 0.015625,
+            "deterministic": true,
+            "shape_dtype_device_match": true,
+            "inputs_unchanged": true
+          },
+          "performance": {
+            "timing": "graph",
+            "capture_ops": 16,
+            "replays_per_measurement": 4,
+            "samples": [
+              {
+                "baseline_us": [
+                  36.84593737125397,
+                  37.18937560915947
+                ],
+                "candidate_us": [
+                  22.571874782443047,
+                  22.61750027537346
+                ],
+                "order": [
+                  "baseline",
+                  "candidate",
+                  "candidate",
+                  "baseline"
+                ]
+              },
+              {
+                "baseline_us": [
+                  37.08124905824661,
+                  36.8821881711483
+                ],
+                "candidate_us": [
+                  22.95999974012375,
+                  22.41343818604946
+                ],
+                "order": [
+                  "candidate",
+                  "baseline",
+                  "baseline",
+                  "candidate"
+                ]
+              },
+              {
+                "baseline_us": [
+                  36.85843572020531,
+                  36.777812987565994
+                ],
+                "candidate_us": [
+                  22.471874952316284,
+                  22.366562858223915
+                ],
+                "order": [
+                  "baseline",
+                  "candidate",
+                  "candidate",
+                  "baseline"
+                ]
+              },
+              {
+                "baseline_us": [
+                  36.99781373143196,
+                  36.74343600869179
+                ],
+                "candidate_us": [
+                  22.53156341612339,
+                  22.44500070810318
+                ],
+                "order": [
+                  "candidate",
+                  "baseline",
+                  "baseline",
+                  "candidate"
+                ]
+              },
+              {
+                "baseline_us": [
+                  37.107501178979874,
+                  36.51437535881996
+                ],
+                "candidate_us": [
+                  22.53156341612339,
+                  22.353125736117363
+                ],
+                "order": [
+                  "baseline",
+                  "candidate",
+                  "candidate",
+                  "baseline"
+                ]
+              },
+              {
+                "baseline_us": [
+                  37.16093674302101,
+                  36.874689161777496
+                ],
+                "candidate_us": [
+                  22.320937365293503,
+                  22.462187334895134
+                ],
+                "order": [
+                  "candidate",
+                  "baseline",
+                  "baseline",
+                  "candidate"
+                ]
+              },
+              {
+                "baseline_us": [
+                  36.886248737573624,
+                  37.296876311302185
+                ],
+                "candidate_us": [
+                  22.312499582767487,
+                  22.392500191926956
+                ],
+                "order": [
+                  "baseline",
+                  "candidate",
+                  "candidate",
+                  "baseline"
+                ]
+              }
+            ],
+            "baseline_us": 36.88421845436096,
+            "candidate_us": 22.453594021499157,
+            "speedup": 1.6426866193022187,
+            "baseline_min_max_us": [
+              36.51437535881996,
+              37.296876311302185
+            ],
+            "candidate_min_max_us": [
+              22.312499582767487,
+              22.95999974012375
+            ]
+          }
+        }
+      },
+      "baseline_correctness": {
+        "passed": true,
+        "finite": true,
+        "max_abs": 0.0078125,
+        "relative_l2": 2.6793017320458205e-06,
+        "max_tolerance_ratio": 0.1277445109780439,
+        "matched_ratio": 1.0,
+        "atol": 0.03125,
+        "rtol": 0.015625
+      }
+    },
+    {
+      "case": {
+        "name": "long8k",
+        "batch": 1,
+        "heads": 16,
+        "tokens": 8192,
+        "qk_dim": 64,
+        "value_dim": 64,
+        "dtype": "bfloat16",
+        "slope_mode": "normal"
+      },
+      "input_seed": 20261135,
+      "input_sha256": [
+        "41f58e1ec80927d83904bbf90e2a6cdca3f2fe4f8d854648df4e378f278d6761",
+        "27411862e2887a5c63faf5c0567b64a006c65dc2027909d04a5c94c392f4b4fc",
+        "aaf2fbf151e966d9efae6408cec24222ac418f1f12eeb438ca10905f0b8fcc9a",
+        "109bd3a967af77b69111895a551cb39f9ccbf790a057494d2b59df0319f7297a"
+      ],
+      "automatic_configuration": {
+        "tile": 128,
+        "column_tile": 128,
+        "native_qk": true,
+        "anchor": false,
+        "interleave": true,
+        "late_value": true,
+        "prune_tail": true,
+        "engine": "custom"
+      },
+      "variants": {
+        "optimized": {
+          "correctness": {
+            "passed": true,
+            "finite": true,
+            "max_abs": 0.5,
+            "relative_l2": 1.5970640331968653e-05,
+            "max_tolerance_ratio": 0.463768115942029,
+            "matched_ratio": 1.0,
+            "atol": 0.03125,
+            "rtol": 0.015625,
+            "deterministic": true,
+            "shape_dtype_device_match": true,
+            "inputs_unchanged": true
+          },
+          "performance": {
+            "timing": "graph",
+            "capture_ops": 16,
+            "replays_per_measurement": 4,
+            "samples": [
+              {
+                "baseline_us": [
+                  1377.1415948867798,
+                  1375.8478164672852
+                ],
+                "candidate_us": [
+                  879.6846866607666,
+                  880.4925084114075
+                ],
+                "order": [
+                  "baseline",
+                  "candidate",
+                  "candidate",
+                  "baseline"
+                ]
+              },
+              {
+                "baseline_us": [
+                  1378.292441368103,
+                  1378.343105316162
+                ],
+                "candidate_us": [
+                  879.6122074127197,
+                  880.2515864372253
+                ],
+                "order": [
+                  "candidate",
+                  "baseline",
+                  "baseline",
+                  "candidate"
+                ]
+              },
+              {
+                "baseline_us": [
+                  1375.1946687698364,
+                  1376.3184547424316
+                ],
+                "candidate_us": [
+                  879.8646926879883,
+                  881.0093998908997
+                ],
+                "order": [
+                  "baseline",
+                  "candidate",
+                  "candidate",
+                  "baseline"
+                ]
+              },
+              {
+                "baseline_us": [
+                  1374.8897314071655,
+                  1376.6096830368042
+                ],
+                "candidate_us": [
+                  880.1718950271606,
+                  879.2062401771545
+                ],
+                "order": [
+                  "candidate",
+                  "baseline",
+                  "baseline",
+                  "candidate"
+                ]
+              },
+              {
+                "baseline_us": [
+                  1377.0275115966797,
+                  1376.099705696106
+                ],
+                "candidate_us": [
+                  879.3084621429443,
+                  879.4378042221069
+                ],
+                "order": [
+                  "baseline",
+                  "candidate",
+                  "candidate",
+                  "baseline"
+                ]
+              },
+              {
+                "baseline_us": [
+                  1376.554012298584,
+                  1376.9068717956543
+                ],
+                "candidate_us": [
+                  879.1924715042114,
+                  883.4478259086609
+                ],
+                "order": [
+                  "candidate",
+                  "baseline",
+                  "baseline",
+                  "candidate"
+                ]
+              },
+              {
+                "baseline_us": [
+                  1375.3868341445923,
+                  1373.8172054290771
+                ],
+                "candidate_us": [
+                  883.8659524917603,
+                  883.3521604537964
+                ],
+                "order": [
+                  "baseline",
+                  "candidate",
+                  "candidate",
+                  "baseline"
+                ]
+              }
+            ],
+            "baseline_us": 1376.4362335205078,
+            "candidate_us": 880.0182938575745,
+            "speedup": 1.5640995683020147,
+            "baseline_min_max_us": [
+              1373.8172054290771,
+              1378.343105316162
+            ],
+            "candidate_min_max_us": [
+              879.1924715042114,
+              883.8659524917603
+            ]
+          }
+        }
+      },
+      "baseline_correctness": {
+        "passed": true,
+        "finite": true,
+        "max_abs": 0.5,
+        "relative_l2": 1.6923976904778426e-05,
+        "max_tolerance_ratio": 0.4740740740740741,
+        "matched_ratio": 1.0,
+        "atol": 0.03125,
+        "rtol": 0.015625
+      }
+    }
+  ],
+  "summary": {
+    "optimized": {
+      "measured_cases": 14,
+      "geomean_speedup": 1.642009374587144,
+      "min_speedup": 1.0056428638506878,
+      "max_speedup": 3.258613258837212
+    }
+  },
+  "all_passed": true
+}
